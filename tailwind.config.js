@@ -14,7 +14,7 @@ export default {
     extend: {
       fontFamily: {
         sans: ["Figtree", ...defaultTheme.fontFamily.sans],
-        geist: ["Geist"],
+        geist: ["Geist", ...defaultTheme.fontFamily.sans],
       },
       colors: {
         'beyours': {

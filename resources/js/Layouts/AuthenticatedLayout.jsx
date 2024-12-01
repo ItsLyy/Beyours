@@ -1,4 +1,5 @@
 import ApplicationLogo from "@/Components/ApplicationLogo";
+import DashboardHeader from "@/Components/Dashboard/Header";
 import Sidebar from "@/Components/Dashboard/Sidebar";
 import Dropdown from "@/Components/Dropdown";
 import NavLink from "@/Components/NavLink";
@@ -13,9 +14,12 @@ export default function AuthenticatedLayout({ header, children }) {
     useState(false);
 
   return (
-    <div className="min-h-screen bg-beyours-750">
+    <div className="min-h-screen bg-beyours-750 flex">
       <Sidebar />
-      {/* <main>{children}</main> */}
+      <main className="flex-grow relative pt-20 overflow-y-auto">
+        <DashboardHeader />
+        {children}
+      </main>
     </div>
   );
 }
