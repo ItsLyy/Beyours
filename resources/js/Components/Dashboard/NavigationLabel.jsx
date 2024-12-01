@@ -1,5 +1,5 @@
-export default function NavigationLabel({ children }) {
+export default function NavigationLabel({ children, isOpen }) {
   return (
-    <span className="hidden md:inline">{children}</span>
+    <span className={"hidden text-nowrap md:inline " + (isOpen ? "" : "md:hidden")}>{children}</span>
   );
 }
