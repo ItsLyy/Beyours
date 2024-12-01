@@ -1,6 +1,6 @@
 export default function ApplicationLogo(props) {
   return (
-    <svg {...props} viewBox="0 0 155 155" xmlns="http://www.w3.org/2000/svg">
+    <svg {...props} viewBox="0 0 155 130" xmlns="http://www.w3.org/2000/svg">
       <path
         className="fill-[#7A1CAC]"
         d="M694.74,241.17l-45.56,78.94A11.76,11.76,0,0,1,639,326H598.79a6.4,6.4,0,0,1-5.55-9.6l70.32-121.8a6.41,6.41,0,0,1,11.09,0l20.09,34.81A11.72,11.72,0,0,1,694.74,241.17Z"
