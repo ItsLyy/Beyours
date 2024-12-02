@@ -1,7 +1,7 @@
-export default function StatBar() {
+export default function StatBar({ className }) {
   return (
-    <div className="w-44 sm:w-64 bg-beyours-100 rounded-sm p-[1px] box-content">
-      <div className="bg-yellow-400 rounded-sm w-full h-[4px]"></div>
+    <div className="w-44 h-fit sm:w-64 bg-beyours-600 border-[1px] border-beyours-550 rounded-sm p-[1px] box-content">
+      <div className={"rounded-sm w-full " + className}></div>
     </div>
   )
 }

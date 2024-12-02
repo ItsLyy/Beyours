@@ -1,10 +1,6 @@
-import ApplicationLogo from "@/Components/ApplicationLogo";
 import DashboardHeader from "@/Components/Dashboard/Header";
 import Sidebar from "@/Components/Dashboard/Sidebar";
-import Dropdown from "@/Components/Dropdown";
-import NavLink from "@/Components/NavLink";
-import ResponsiveNavLink from "@/Components/ResponsiveNavLink";
-import { Link, usePage } from "@inertiajs/react";
+import { usePage } from "@inertiajs/react";
 import { useState } from "react";
 
 export default function AuthenticatedLayout({ header, children }) {
@@ -14,9 +10,9 @@ export default function AuthenticatedLayout({ header, children }) {
     useState(false);
 
   return (
-    <div className="min-h-screen bg-beyours-750 flex">
+    <div className="text-white h-screen bg-beyours-750 flex">
       <Sidebar />
-      <main className="flex-grow relative pt-20 overflow-y-auto">
+      <main className="flex-grow relative pt-24 px-10 h-full overflow-y-auto box-border">
         <DashboardHeader />
         {children}
       </main>

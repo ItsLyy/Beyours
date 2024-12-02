@@ -1,5 +1,5 @@
 import Dialog from "@/Components/Dialog";
-import IconEmail from "@/Components/Icons/Auth/IconEmail";
+import IconEmail from "@/Components/Icons/IconEmail";
 import IconPassword from "@/Components/Icons/Auth/IconPassword";
 import IconUser from "@/Components/Icons/IconUser";
 import InputError from "@/Components/InputError";

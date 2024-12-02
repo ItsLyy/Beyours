@@ -1,6 +1,6 @@
 import Checkbox from "@/Components/Checkbox";
 import Dialog from "@/Components/Dialog";
-import IconEmail from "@/Components/Icons/Auth/IconEmail";
+import IconEmail from "@/Components/Icons/IconEmail";
 import IconPassword from "@/Components/Icons/Auth/IconPassword";
 import InputError from "@/Components/InputError";
 import InputLabel from "@/Components/InputLabel";
