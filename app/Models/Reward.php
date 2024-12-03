@@ -9,4 +9,9 @@ class Reward extends Model
 {
     /** @use HasFactory<\Database\Factories\RewardFactory> */
     use HasFactory;
+
+    protected $fillable = [
+      'skill',
+      'quantity',
+    ];
 }

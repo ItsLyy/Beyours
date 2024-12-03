@@ -11,10 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('community_users', function (Blueprint $table) {
+        Schema::create('character_communities', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('character_id')->constrained(table: 'characters', indexName: 'member_id');
-            $table->foreignId('community_id')->constrained(table: 'communitys', indexName: 'community_user_id');
+            $table->foreignId('character_id')->constrained(table: 'characters', indexName: 'character_community_id');
+            $table->foreignId('community_id')->constrained(table: 'communitys', indexName: 'community_joined_id');
             $table->string('role');
             $table->timestamps();
         });
@@ -25,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('community_users');
+        Schema::dropIfExists('character_communities');
     }
 };

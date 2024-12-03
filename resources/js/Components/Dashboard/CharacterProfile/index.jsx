@@ -1,3 +1,4 @@
+import { usePage } from "@inertiajs/react";
 import BannerCharacter from "../BannerCharacter";
 import CharacterInfo from "./CharacterInfo";
 

@@ -11,7 +11,7 @@ export default function TaskOverview({ titles, datas, className }) {
             }
           </tr>
         </thead>
-        <tbody className="">
+        <tbody>
         {
           datas?.map((data, index) => {
             return (

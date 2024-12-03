@@ -12,12 +12,16 @@ class Character extends Model
 
     protected $fillable = [
       'fullname',
-    ];
-
-    protected $hidden = [
       'health',
       'level',
       'experience',
+    ];
+
+    protected $hidden = [
       'user_id',
     ];
+
+    public function skills() {
+      return $this->hasMany(Skill::class);
+    }
 }

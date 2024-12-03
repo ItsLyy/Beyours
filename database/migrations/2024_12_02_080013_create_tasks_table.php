@@ -14,7 +14,9 @@ return new class extends Migration
         Schema::create('tasks', function (Blueprint $table) {
             $table->id();
             $table->string('title');
-            $table->string('task');
+            $table->string('description');
+            $table->foreignId('assign_by')->constrained(table: 'characters', indexName: 'assign_by_id');
+            $table->foreignId('community_id')->constrained(table: 'communitys', indexName:'community_task_id')->nullable();
             $table->timestamps();
         });
     }

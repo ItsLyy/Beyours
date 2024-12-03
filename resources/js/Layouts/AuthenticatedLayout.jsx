@@ -10,9 +10,9 @@ export default function AuthenticatedLayout({ header, children }) {
     useState(false);
 
   return (
-    <div className="text-white h-screen bg-beyours-750 flex">
+    <div className="text-white min-h-screen h-screen bg-beyours-750 flex">
       <Sidebar />
-      <main className="flex-grow relative pt-24 px-10 h-full overflow-y-auto box-border">
+      <main className="flex-grow relative max-h-screen overflow-y-auto box-border px-4 py-2 sm:px-10 sm:py-8">
         <DashboardHeader />
         {children}
       </main>

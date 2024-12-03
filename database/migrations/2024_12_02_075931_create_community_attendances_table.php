@@ -13,7 +13,8 @@ return new class extends Migration
     {
         Schema::create('community_attendances', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('user_id')->constrained(table: 'users', indexName: 'attendance_user_id');
+            $table->foreignId('character_id')->constrained(table: 'characters', indexName: 'attendance_character_id');
+            $table->foreignId('attendance_id')->constrained(table: 'attendances', indexName: 'current_attendance_id');
             $table->timestamps();
         });
     }

@@ -13,6 +13,9 @@ return new class extends Migration
     {
         Schema::create('character_tasks', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('task_id')->constrained(table: 'tasks', indexName:'character_task_id');
+            $table->foreignId('assign_to')->constrained(table: 'characters', indexName:'assign_to_id');
+            $table->boolean('done')->default(false);
             $table->timestamps();
         });
     }
