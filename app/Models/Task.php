@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Tasks extends Model
+class Task extends Model
 {
   /** @use HasFactory<\Database\Factories\TasksFactory> */
   use HasFactory;
@@ -16,7 +16,7 @@ class Tasks extends Model
   ];
 
   public function assignBy() {
-    return $this->hasOne(Character::class);
+    return $this->belongsTo(Character::class, 'assign_by');
   }
 
   public function rewards() {

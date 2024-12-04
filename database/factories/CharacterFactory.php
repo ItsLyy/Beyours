@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -17,7 +18,12 @@ class CharacterFactory extends Factory
   public function definition(): array
   {
     return [
-      //
+      'fullname' => fake()->name(),
+      'health' => fake()->randomDigit(),
+      'level' => fake()->randomDigit(),
+      'experience' => fake()->randomDigit(),
+      'profession' => fake()->text(),
+      'user_id' => User::factory(),
     ];
   }
 }

@@ -16,14 +16,26 @@ export default function SidebarBody({ isOpen }) {
         >
           <IconHome /> <NavigationLabel isOpen={isOpen}>Home</NavigationLabel>
         </NavigationButton>
-        <NavigationButton className={isOpen ? "" : "pl-5"}>
+        <NavigationButton
+          className={isOpen ? "" : "pl-5"}
+          href={route("task.index")}
+          active={route().current("task.index")}
+        >
           <IconTask /> <NavigationLabel isOpen={isOpen}>Task</NavigationLabel>
         </NavigationButton>
-        <NavigationButton className={isOpen ? "" : "pl-5"}>
+        <NavigationButton
+          className={isOpen ? "" : "pl-5"}
+          href={route("community.index")}
+          active={route().current("community.index")}
+        >
           <IconCommunity />
           <NavigationLabel isOpen={isOpen}>Community</NavigationLabel>
         </NavigationButton>
-        <NavigationButton className={isOpen ? "" : "pl-5"}>
+        <NavigationButton
+          className={isOpen ? "" : "pl-5"}
+          href={route("profile.edit")}
+          active={route().current("profile")}
+        >
           <IconUser />
           <NavigationLabel isOpen={isOpen}>Profile</NavigationLabel>
         </NavigationButton>

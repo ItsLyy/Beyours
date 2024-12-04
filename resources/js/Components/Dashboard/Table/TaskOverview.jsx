@@ -1,4 +1,6 @@
-export default function TaskOverview({ titles, datas, className }) {
+import { TASK_STATUS_CLASS_MAP, TASK_STATUS_TEXT_MAP } from "@/constant"
+
+export default function TaskOverview({ titles, tasks, className }) {
   return (
     <div className={"bg-beyours-700 rounded-md h-full overflow-y-scroll " + className}>
       <table className="border-collapse table-fixed w-full">
@@ -13,11 +15,11 @@ export default function TaskOverview({ titles, datas, className }) {
         </thead>
         <tbody>
         {
-          datas?.map((data, index) => {
+          tasks?.data.map((task, index) => {
             return (
               <tr key={index} className="text-beyours-300 border-b-[.5px] border-b-[#141414]">
-                <td className="p-8">{data.task}</td>
-                <td className="p-8">{data.status}</td>
+                <td className="p-8">{task.tasks.title}</td>
+                <td className="p-8 "> <span className={"p-2 text-white rounded-md " + TASK_STATUS_CLASS_MAP[task.done]}>{TASK_STATUS_TEXT_MAP[task.done]}</span> </td>
               </tr>
             )
           })

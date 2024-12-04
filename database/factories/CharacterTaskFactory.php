@@ -17,7 +17,8 @@ class CharacterTaskFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+          "task_id" => 1,
+          ""
         ];
     }
 }

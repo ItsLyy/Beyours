@@ -2,11 +2,10 @@
 
 namespace App\Http\Resources;
 
-use App\Models\Character;
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class UserResource extends JsonResource
+class SkillResource extends JsonResource
 {
   /**
    * Transform the resource into an array.
@@ -18,11 +17,8 @@ class UserResource extends JsonResource
     return [
       "id" => $this->id,
       "name" => $this->name,
-      "email" => $this->email,
-      "photo_profile" => $this->photo_profile,
-      "phone_number" => $this->phone_number,
-      'character' => new CharacterResource($this->character),
-      "address" => $this->address,
+      "experience" => $this->experience,
+      "level" => $this->level,
     ];
   }
 }

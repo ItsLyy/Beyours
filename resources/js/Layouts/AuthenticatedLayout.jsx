@@ -2,9 +2,10 @@ import DashboardHeader from "@/Components/Dashboard/Header";
 import Sidebar from "@/Components/Dashboard/Sidebar";
 import { usePage } from "@inertiajs/react";
 import { useState } from "react";
+import NoCharacter from "./NoCharacter";
 
-export default function AuthenticatedLayout({ header, children }) {
-  const user = usePage().props.auth.user;
+export default function AuthenticatedLayout({ children }) {
+  const character = usePage().props.auth.character;
 
   const [showingNavigationDropdown, setShowingNavigationDropdown] =
     useState(false);
@@ -14,7 +15,8 @@ export default function AuthenticatedLayout({ header, children }) {
       <Sidebar />
       <main className="flex-grow relative max-h-screen overflow-y-auto box-border px-4 py-2 sm:px-10 sm:py-8">
         <DashboardHeader />
-        {children}
+        {character ? children : <NoCharacter /> }
+
       </main>
     </div>
   );
