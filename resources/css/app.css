@@ -1,13 +1,75 @@
-@import url('https://fonts.googleapis.com/css2?family=Geist:wght@100..900&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Geist:wght@100..900&display=swap");
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-*{
+* {
   scrollbar-width: none;
 }
 
 .skill::after {
   transform: scaleY(var(--scale-y));
+}
+
+.swal2-container .swal2-popup {
+  background-color: #141415;
+  border-radius: 8px;
+  font-family: "Geist";
+}
+
+.swal2-container .swal2-popup h1,
+.swal2-container .swal2-popup h2,
+.swal2-container .swal2-popup h3,
+.swal2-container .swal2-popup h4,
+.swal2-container .swal2-popup h5,
+.swal2-container .swal2-popup p {
+  font-family: inherit;
+  font-style: normal;
+  font-weight: 500;
+  text-align: center;
+  padding: 0;
+}
+
+.swal2-container .swal2-popup h2 {
+  border-bottom: 1px solid #171715;
+  color: white;
+  padding: 1rem 2rem;
+}
+
+.swal2-container .swal2-popup .swal2-html-container {
+  text-align: center;
+}
+
+.swal2-container .swal2-popup .swal2-actions {
+  background-color: transparent;
+  margin: 2rem 0 1rem;
+}
+
+.swal2-container .swal2-popup button {
+  border-radius: 2px;
+  font-family: inherit;
+  font-weight: 400;
+  background-color: #ad49e1;
+  border: 1px solid #ad49e1;
+  padding: .5rem 1.5rem;
+
+  transition: ease-in-out 300ms;
+}
+
+.swal2-container .swal2-popup button:hover {
+  transform: scale(1.05);
+  background-color: #ad49e1;
+}
+
+.swal2-container .swal2-popup .swal2-deny {
+  background-color: transparent;
+}
+
+.swal2-container .swal2-popup .swal2-confirm:hover {
+  background-color: transparent;
+}
+
+.swal2-styled:hover {
+  background: unset;
 }

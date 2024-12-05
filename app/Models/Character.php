@@ -12,6 +12,7 @@ class Character extends Model
 
   protected $fillable = [
     'fullname',
+    'profession',
     'health',
     'level',
     'experience',

@@ -14,7 +14,8 @@ import { Head, useForm } from "@inertiajs/react";
 import IconPhotoProfile from "@/Components/Icons/IconPhotoProfile";
 import IconCharacterBanner from "@/Components/Icons/IconCharacterBanner";
 import { useState } from "react";
-import SweetAlert2 from 'react-sweetalert2';
+import Swal from 'sweetalert2';
+import withReactContent from 'sweetalert2-react-content';
 
 export default function Create() {
   const [ photoProfileName, setPhotoProfileName ] = useState('');
@@ -29,7 +30,7 @@ export default function Create() {
     phone_number: "",
     address: "",
     photo_profile: "",
-    banner_character: "",
+    character_banner: "",
   });
 
   const photoProfileHandler = (e) => {
@@ -38,19 +39,24 @@ export default function Create() {
   };
 
   const characterBannerHandler = (e) => {
-    setData("banner_character", e.target.files[0]);
+    setData("character_banner", e.target.files[0]);
     setCharacterBannerName(e.target.value);
   };
 
   const submit = (e) => {
     e.preventDefault();
 
-    setSwalProps({
-      show: true,
-      title: 'Basic Usage',
-      text: 'Hello World',
-    });
-    // post(route("character.store"));
+    withReactContent(Swal).fire({
+      title: "Are you sure?",
+      showDenyButton: true,
+      confirmButtonText: 'Yes',
+      text: "Are ypu sure to want create a character?",
+      icon: "question",
+      denyButtonText: 'No',
+      preConfirm: () => {
+        post(route("character.store"));
+      },
+    })
   };
 
   return (
@@ -67,7 +73,7 @@ export default function Create() {
             <form className="flex gap-4 relative" onSubmit={submit} >
               <div className="relative h-full flex justify-center mb-10">
                 <PhotoProfile className="size-20 absolute -bottom-8" imagePreview={data.photo_profile} />
-                <BannerCharacter className="w-96" imagePreview={data.banner_character} />
+                <BannerCharacter className="w-96" imagePreview={data.character_banner} />
               </div>
               <div className="w-full h-full px-2 py-1">
                 <HeaderInputField title="Full Name" description="this name will displayed in the community and friend" className="mb-4" required />
@@ -86,7 +92,7 @@ export default function Create() {
                     required
                   />
 
-                  <InputError message={errors.name} className="mt-2 text-[#fff]" />
+                  <InputError message={errors.fullname} className="mt-2 text-[#fff]" />
                 </div>
 
                 <HeaderInputField title="Profession" description="Describe your profession or passion and choose only one. Example: Programmer, Artist, Adventurer." className="my-4" required />
@@ -105,7 +111,7 @@ export default function Create() {
                     required
                   />
 
-                  <InputError message={errors.email} className="mt-2 text-[#fff]" />
+                  <InputError message={errors.profession} className="mt-2 text-[#fff]" />
                 </div>
 
                 <HeaderInputField title="Skills" description="Add two skills that represent your abilities. Example: Coding, Video Editing, Swordsmanship." className="my-4" required />
@@ -125,7 +131,7 @@ export default function Create() {
                       required
                     />
 
-                    <InputError message={errors.email} className="mt-2 text-[#fff]" />
+                    <InputError message={errors.first_skill} className="mt-2 text-[#fff]" />
                   </div>
 
                   <div className="w-full">
@@ -142,7 +148,7 @@ export default function Create() {
                       required
                     />
 
-                    <InputError message={errors.email} className="mt-2 text-[#fff]" />
+                    <InputError message={errors.second_skill} className="mt-2 text-[#fff]" />
                   </div>
                 </div>
 
@@ -152,7 +158,7 @@ export default function Create() {
                   <div className="w-full">
                     <TextInput
                       id="phone_number"
-                      type="text"
+                      type="tel"
                       name="phone_number"
                       value={data.phone_number}
                       className="block w-full"
@@ -163,7 +169,7 @@ export default function Create() {
                       required
                     />
 
-                    <InputError message={errors.email} className="mt-2 text-[#fff]" />
+                    <InputError message={errors.phone_number} className="mt-2 text-[#fff]" />
                   </div>
 
                   <div className="w-full">
@@ -180,7 +186,7 @@ export default function Create() {
                       required
                     />
 
-                    <InputError message={errors.email} className="mt-2 text-[#fff]" />
+                    <InputError message={errors.address} className="mt-2 text-[#fff]" />
                   </div>
                 </div>
 
@@ -200,7 +206,7 @@ export default function Create() {
                     required
                   />
 
-                  <InputError message={errors.name} className="mt-2 text-[#fff]" />
+                  <InputError message={errors.photo_profile} className="mt-2 text-[#fff]" />
                 </div>
 
                 <HeaderInputField title="Banner Character" description="this banner character will displayed in dashboard" className="my-4" required />
@@ -219,7 +225,7 @@ export default function Create() {
                     required
                   />
 
-                  <InputError message={errors.name} className="mt-2 text-[#fff]" />
+                  <InputError message={errors.character_banner} className="mt-2 text-[#fff]" />
                 </div>
 
                 <div className="mt-16 flex items-center justify-end">
