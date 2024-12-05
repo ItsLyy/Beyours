@@ -17,7 +17,10 @@ class CommunityFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+          "name" => fake()->name(),
+          "description" => fake()->text(),
+          "useAttendance" => false,
+          "banner_path" => "0",
         ];
     }
 }

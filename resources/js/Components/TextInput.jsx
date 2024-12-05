@@ -26,7 +26,7 @@ export default forwardRef(function TextInput(
   return (
     <div className="relative flex items-center">
       {Icon ? (
-        <div className={"absolute left-0 m-[16.5px] w-4 h-4 z-10"}>
+        <div className={"absolute left-0 mx-4 s-4 z-10"}>
           {
             <label htmlFor={name}>
               <Icon
@@ -45,7 +45,7 @@ export default forwardRef(function TextInput(
         type={type}
         className={
           (Icon ? "pl-14 " : "") +
-          "text-sm rounded-sm bg-beyours-600 text-[#ffffff] py-4 border-0 shadow-sm transition-all ease-in-out duration-300 placeholder:text-beyours-450 placeholder:font-geist focus:border-beyours-500 focus:ring-beyours-500 " +
+          "text-sm rounded-sm bg-beyours-600 text-[#ffffff] py-4 border-0 shadow-sm transition-all ease-in-out duration-300 placeholder-beyours-450 placeholder:font-geist focus:border-beyours-500 focus:ring-beyours-500 file:absolute file:top-0 file:right-0 file:h-full file:font-geist file:bg-beyours-550 hover:file:bg-beyours-500 file:transition-all file:ease-in-out file:duration-300 file:text-white file:border-0 file:rounded-s-md file:px-4 file:mr-0 " +
           className
         }
         ref={localRef}
@@ -55,3 +55,4 @@ export default forwardRef(function TextInput(
     </div>
   );
 });
+

@@ -16,8 +16,11 @@ class CharacterCommunityFactory extends Factory
      */
     public function definition(): array
     {
-        return [
-            //
-        ];
+      return [
+        "character_id" => 1,
+        "description" => fake()->text(),
+        "useAttendance" => false,
+        "banner_path" => "0",
+      ];
     }
 }

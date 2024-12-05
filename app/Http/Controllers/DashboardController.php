@@ -21,6 +21,11 @@ class DashboardController extends Controller
   public function index()
   {
     $character = auth()->user()->character;
+
+    if (!$character) {
+      return redirect(route('character.index'));
+    }
+
     $tasks = $character->tasks()->skip(0)->take(10)->get();
 
     return inertia('Dashboard/Index', [

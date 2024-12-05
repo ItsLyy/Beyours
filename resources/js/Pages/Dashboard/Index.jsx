@@ -22,7 +22,7 @@ export default function DashboardHome({ tasks, character }) {
         />
         <div className="flex flex-col gap-4 md:flex-row md:h-[90%]">
           <div className="bg-beyours-700 rounded-md border-[1px] border-beyours-550 flex-grow col-span-1 row-span-2 relative md:w-[28rem] md:h-fit">
-            <BannerCharacter character={character} className="h-auto w-full aspect-[12/16] after:absolute after:bottom-0 after:left-0 after:bg-gradient-to-t after:from-beyours-700 after:h-full after:w-full" />
+            <BannerCharacter character={character} className="h-auto w-full after:absolute after:bottom-0 after:left-0 after:bg-gradient-to-t after:from-beyours-700 after:h-full after:w-full" />
             <CharacterInfo character={character} className="relative z-10" />
           </div>
           <div className="grid grid-cols-1 gap-4 h-full w-full md:grid-cols-3 grid-rows-3 xl:grid-rows-[1fr] box-border">

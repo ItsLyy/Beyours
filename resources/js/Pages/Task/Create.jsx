@@ -11,14 +11,9 @@ export default function Index({ tasks }) {
       <div className="flex flex-col gap-4 pb-26 w-full py-16 md:h-full md:pb-0">
         <div className="p-2 border-b-beyours-600 border-b-[1px]">
           <HeaderSection
-            title="Task"
-            subTitle="All task"
+            title="Add Task"
+            subTitle="Add your task in here"
           />
-          <PrimaryNavigationButton
-            href={route('task.create')}
-          >
-
-          </PrimaryNavigationButton>
         </div>
 
       </div>

@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CharacterController;
 use App\Http\Controllers\CommunityController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ProfileController;
@@ -21,6 +22,7 @@ Route::middleware(['auth', 'verified'])->group(function() {
   Route::get('/dashboard', [DashboardController::class, 'index'])->middleware(['auth', 'verified'])->name('dashboard');
   Route::resource('task', TaskController::class);
   Route::resource('community', CommunityController::class);
+  Route::resource('character', CharacterController::class);
 });
 
 Route::middleware('auth')->group(function () {

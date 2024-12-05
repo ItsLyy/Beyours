@@ -17,11 +17,11 @@ class Community extends Model
       'attendance',
     ];
 
-    public function attendance() {
+    public function attendances() {
       return $this->hasMany(Attendances::class);
     }
 
-    public function member() {
+    public function members() {
       return $this->hasMany(CharacterCommunity::class);
     }
 

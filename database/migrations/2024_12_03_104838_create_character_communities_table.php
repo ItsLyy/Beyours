@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('character_communities', function (Blueprint $table) {
             $table->id();
             $table->foreignId('character_id')->constrained(table: 'characters', indexName: 'character_community_id');
-            $table->foreignId('community_id')->constrained(table: 'communitys', indexName: 'community_joined_id');
+            $table->foreignId('community_id')->constrained(table: 'communities', indexName: 'community_joined_id');
             $table->string('role');
             $table->timestamps();
         });

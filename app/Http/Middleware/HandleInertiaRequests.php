@@ -3,6 +3,7 @@
 namespace App\Http\Middleware;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use Inertia\Middleware;
 
 class HandleInertiaRequests extends Middleware
@@ -34,6 +35,7 @@ class HandleInertiaRequests extends Middleware
             'auth' => [
               'user' => $request->user(),
               'character' => $request->user() ? $request->user()->character : null,
+              'photo_profile' => $request->user() ? $request->user()->photo_profile ? Storage::url($request->user()->photo_profile) : asset('images/defaultavatar.png') : "",
             ],
         ];
     }

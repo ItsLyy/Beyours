@@ -15,6 +15,10 @@ class CharacterCommunity extends Model
     ];
 
     public function character() {
-      return $this->hasMany(Character::class);
+      return $this->belongsTo(Character::class);
+    }
+
+    public function community() {
+      return $this->belongsTo(Community::class);
     }
 }

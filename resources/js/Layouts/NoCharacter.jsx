@@ -1,5 +1,5 @@
 import IconEmail from "@/Components/Icons/IconEmail";
-import PrimaryNavigationButton from "@/Components/PrimaryButton";
+import PrimaryNavigationButton from "@/Components/PrimaryNavigationButton";
 import { Head, usePage } from "@inertiajs/react";
 
 export default function NoCharacter() {
@@ -11,7 +11,7 @@ export default function NoCharacter() {
         <IconEmail className="!size-24 mb-8 stroke-1" />
         <h2 className="text-xl">Hey @{user.name}, you don’t have a character yet! Create one to start your adventure.</h2>
         <p className="text-beyours-400">Start completing tasks and building legacy.</p>
-        <PrimaryNavigationButton className="md:w-48 mt-8">Create a character</PrimaryNavigationButton>
+        <PrimaryNavigationButton href={route('character.create')} className="md:w-48 mt-8">Create a character</PrimaryNavigationButton>
       </div>
     </section>
   )

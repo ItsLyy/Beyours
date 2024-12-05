@@ -18,6 +18,7 @@ return new class extends Migration
             $table->biginteger('level');
             $table->double('experience');
             $table->string('profession');
+            $table->string('banner_path')->nullable();
             $table->foreignId('user_id')->constrained(table: 'users', indexName: 'user_character_id');
             $table->timestamps();
         });

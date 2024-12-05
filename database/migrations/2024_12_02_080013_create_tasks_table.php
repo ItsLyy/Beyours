@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('title');
             $table->string('description');
             $table->foreignId('assign_by')->constrained(table: 'characters', indexName: 'assign_by_id');
-            $table->foreignId('community_id')->constrained(table: 'communitys', indexName:'community_task_id')->nullable();
+            $table->foreignId('community_id')->constrained(table: 'communities', indexName:'community_task_id')->nullable();
             $table->timestamps();
         });
     }
