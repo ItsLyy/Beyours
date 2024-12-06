@@ -151,7 +151,7 @@ export default function Create() {
                   </div>
                 </div>
 
-                <HeaderInputField title="Aditional Information" description='Required details like "Phone Number: 123-456-7890", "Address: 123 Main Street".' className="my-4" required />
+                <HeaderInputField title="Aditional Information" description='Required details like "Phone Number: +6282137846519", "Address: 123 Main Street".' className="my-4" required />
 
                 <div className="mt-4 flex w-full gap-4">
                   <div className="w-full">

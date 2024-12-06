@@ -7,7 +7,6 @@ use App\Http\Resources\CommunityMemberResource;
 use App\Models\Attendance;
 use App\Models\Community;
 use App\Models\CommunityAttendances;
-use App\Models\CommunityAttendance;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 
@@ -27,10 +26,17 @@ class AttendanceCommunityController extends Controller
       return $attendance->created_at->between($startOfDay, $endOfDay);
     })->first();
 
+    $attendanceDatas = [];
+
+    if ($attendance) {
+      $attendanceDatas = AttendanceMemberResource::collection($attendance->characters);
+    }
+
+
     return inertia('Community/Attendance/Index', [
       "community" => $community,
       "yourCharacter" => $character->communities->where('pivot.community_id', $community->id)->first(),
-      "attendanceDatas" => AttendanceMemberResource::collection($attendance->characters),
+      "attendanceDatas" => $attendanceDatas,
       "members" => CommunityMemberResource::collection($community->characters),
     ]);
   }

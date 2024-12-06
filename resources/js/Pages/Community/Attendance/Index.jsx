@@ -18,6 +18,7 @@ export default function Index({
   members,
   attendanceDatas,
 }) {
+  console.log(attendanceDatas);
   return (
     <CommunityLayout
       community={community}
@@ -60,19 +61,19 @@ export default function Index({
                 </tr>
               </thead>
               <tbody className="text-beyours-150">
-                {attendanceDatas.data.map((attendanceData) => {
+                {attendanceDatas.data ? attendanceDatas.data.map((attendanceData) => {
                   return (
                     <tr
                       className="border-b-[1px] border-b-beyours-600"
-                      key={attendanceData.id}
+                      key={attendanceData.id || 0}
                     >
                       <td className="py-6 px-8 ">
                         <div className="flex items-center gap-4 text-white">
                           <PhotoProfile
                             className="size-12"
-                            imageData={attendanceData.user.photo_profile}
+                            imageData={attendanceData.user.photo_profile || ''}
                           />
-                          {attendanceData.fullname}
+                          {attendanceData.fullname || ''}
                         </div>
                       </td>
                       <td className="py-6 px-8 ">
@@ -117,7 +118,7 @@ export default function Index({
                       </td>
                     </tr>
                   );
-                })}
+                }) : ""}
               </tbody>
             </table>
           </div>
