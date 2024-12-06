@@ -75,31 +75,66 @@ export default function Index({
                           />
                           {attendanceData.fullname || ''}
                         </div>
+                        <dl className="xl:hidden flex flex-col gap-3">
+                            <dt className="sr-only">Status</dt>
+                            <dd className="mt-8 ">
+                              <span
+                                className={
+                                  "p-2 text-white rounded-md " +
+                                  ATTENDANCE_STATUS_CLASS_MAP[attendanceData.status]
+                                }
+                              >
+                                {ATTENDANCE_STATUS_TEXT_MAP[attendanceData.status]}
+                              </span>
+                            </dd>
+                            <dt className="sr-only">Time</dt>
+                            <dd className="mt-4 ">
+                              <div className="flex flex-col gap-3">
+                                <span className="p-2 bg-beyours-550 w-fit text-nowrap rounded-md text-sm">
+                                  {attendanceData.created_at}
+                                </span>
+                                <span className="p-2 bg-beyours-550 w-fit text-nowrap rounded-md text-sm">
+                                  {attendanceData.updated_at}
+                                </span>
+                              </div>
+                            </dd>
+                            <dt className="sr-only">Verify</dt>
+                            <dd className="mt-4 ">
+                              <span
+                                className={
+                                  "text-white px-3 py-2 rounded-md text-nowrap " +
+                                  ATTENDANCE_VERIFY_CLASS_MAP[attendanceData.verified]
+                                }
+                              >
+                                {ATTENDANCE_VERIFY_TEXT_MAP[attendanceData.verified]}
+                              </span>
+                            </dd>
+                          </dl>
                       </td>
-                      <td className="py-6 px-8 ">
+                      <td className="py-6 px-8 hidden xl:table-cell ">
                         <span
                           className={
-                            "text-white px-3 py-2 rounded-md " +
+                            "text-white px-3 py-2 rounded-md text-nowrap " +
                             ATTENDANCE_STATUS_CLASS_MAP[attendanceData.status]
                           }
                         >
                           {ATTENDANCE_STATUS_TEXT_MAP[attendanceData.status]}
                         </span>
                       </td>
-                      <td className="py-6 px-8 ">
+                      <td className="py-6 px-8 hidden xl:table-cell ">
                         <div className="flex flex-col gap-3">
-                          <span className="p-2 bg-beyours-550 w-fit rounded-md text-sm">
+                          <span className="p-2 bg-beyours-550 w-fit text-nowrap rounded-md text-sm">
                             {attendanceData.created_at}
                           </span>
-                          <span className="p-2 bg-beyours-550 w-fit rounded-md text-sm">
+                          <span className="p-2 bg-beyours-550 w-fit text-nowrap rounded-md text-sm">
                             {attendanceData.updated_at}
                           </span>
                         </div>
                       </td>
-                      <td className="py-6 px-8 ">
+                      <td className="py-6 px-8 hidden xl:table-cell ">
                         <span
                           className={
-                            "text-white px-3 py-2 rounded-md " +
+                            "text-white px-3 py-2 rounded-md text-nowrap " +
                             ATTENDANCE_VERIFY_CLASS_MAP[attendanceData.verified]
                           }
                         >

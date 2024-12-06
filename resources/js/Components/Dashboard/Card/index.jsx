@@ -14,7 +14,7 @@ export default function Card({ href, title, owner, bannerPath }) {
         <Link href={href}><h3>{title}</h3></Link>
         <p className="text-beyours-250">by {owner}</p>
         <p className="text-beyours-250">
-          <span className="text-white">36</span> Member
+          <span className="text-white">-</span> Member
         </p>
       </div>
     </div>

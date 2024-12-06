@@ -1,0 +1,18 @@
+{
+  "id": "beyours-1.0.0",
+  "start_url": "../index.html",
+  "name": "Beyours",
+  "short_name": "Beyours",
+  "description": "Attendance App for Beyours Member",
+  "display": "standalone",
+  "background_color": "#191a19",
+  "theme_color": "#191a19",
+  "icons": [
+    {
+      "src": "/public/icons/favicon.png",
+      "sizes": "500x500",
+      "type": "image/png",
+      "purpose": "any"
+    }
+  ]
+}

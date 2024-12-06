@@ -14,7 +14,8 @@ import withReactContent from 'sweetalert2-react-content'
 
 export default function Index({ communities }) {
   const [searchValue, setSearchValue] = useState("");
-  const [inputValue, setInputValue] = useState('')
+  const [inputValue, setInputValue] = useState('');
+  console.log(communities);
 
   const searchHandler = (e) => {
     setSearchValue(e.target.value);
