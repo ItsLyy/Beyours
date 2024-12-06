@@ -1,10 +1,14 @@
 <?php
 
+use App\Http\Controllers\AssignmentCommunityController;
+use App\Http\Controllers\AttendanceCommunityController;
 use App\Http\Controllers\CharacterController;
 use App\Http\Controllers\CommunityController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\MemberCommunityController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\TaskController;
+use App\Http\Middleware\CharacterMiddleware;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -21,8 +25,12 @@ Route::get('/', function () {
 Route::middleware(['auth', 'verified'])->group(function() {
   Route::get('/dashboard', [DashboardController::class, 'index'])->middleware(['auth', 'verified'])->name('dashboard');
   Route::resource('task', TaskController::class);
+  Route::post('/community/join/{token}', [CommunityController::class, 'join' ])->name('community.join');
+  Route::resource('community.assignment', AssignmentCommunityController::class);
+  Route::resource('community.attendance', AttendanceCommunityController::class);
+  Route::resource('community.member', MemberCommunityController::class);
   Route::resource('community', CommunityController::class);
-  Route::resource('character', CharacterController::class);
+  Route::resource('character', CharacterController::class)->middleware([CharacterMiddleware::class]);
 });
 
 Route::middleware('auth')->group(function () {

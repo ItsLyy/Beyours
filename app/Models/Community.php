@@ -15,14 +15,15 @@ class Community extends Model
       'description',
       'banner_path',
       'attendance',
+      'join_token',
     ];
 
     public function attendances() {
-      return $this->hasMany(Attendances::class);
+      return $this->hasMany(Attendance::class);
     }
 
-    public function members() {
-      return $this->hasMany(CharacterCommunity::class);
+    public function characters() {
+      return $this->belongsToMany(Character::class, "character_communities")->withTimestamps()->withPivot("role");
     }
 
     public function tasks() {

@@ -13,6 +13,7 @@ class Character extends Model
   protected $fillable = [
     'fullname',
     'profession',
+    'banner_path',
     'health',
     'level',
     'experience',
@@ -35,10 +36,19 @@ class Character extends Model
 
   public function communities()
   {
-    return $this->hasMany(CharacterCommunity::class);
+    return $this->belongsToMany(Community::class, 'character_communities')->withTimestamps()->withPivot('role');
   }
 
-  public function user() {
+  public function user()
+  {
     return $this->hasOne(User::class);
+  }
+
+  public function attendance()
+  {
+    return $this->belongsToMany(
+      Attendance::class,
+      'community_attendances'
+    )->withTimestamps()->withPivot('first_photo_path', 'second_photo_path', 'journal', 'status', 'verified');
   }
 }

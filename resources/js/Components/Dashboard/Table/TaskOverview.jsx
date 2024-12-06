@@ -26,6 +26,21 @@ export default function TaskOverview({ titles, tasks, className }) {
         }
         </tbody>
       </table>
+      {tasks.data.filter((task) =>
+        searchValue
+          ? task.tasks.title
+              .toLowerCase()
+              .includes(searchValue.toLowerCase())
+          : task
+      ).length === 0 && (
+        <div className="flex justify-center items-center w-full h-full min-h-96">
+          <span
+            className="py-6 px-8 text-center text-beyours-300 italic"
+          >
+            There is no task matching your search.
+          </span>
+        </div>
+      )}
     </div>
   )
 }

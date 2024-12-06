@@ -12,13 +12,7 @@ class CharacterCommunity extends Model
 
     protected $fillable = [
       'role',
+      'character_id',
+      'community_id',
     ];
-
-    public function character() {
-      return $this->belongsTo(Character::class);
-    }
-
-    public function community() {
-      return $this->belongsTo(Community::class);
-    }
 }

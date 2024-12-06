@@ -21,7 +21,7 @@ export default function Index({ tasks }) {
     <AuthenticatedLayout>
       <Head title="Task" />
 
-      <div className="flex flex-col gap-4 pb-26 w-full py-16 md:h-full md:pb-0">
+      <div className="flex flex-col gap-4 pb-24 w-full py-16 h-full md:pb-0">
         {/* Header */}
         <div className="flex justify-between items-center p-2 border-b-beyours-600 border-b-[1px]">
           <HeaderSection title="Task" subTitle="All task" />
@@ -131,20 +131,20 @@ export default function Index({ tasks }) {
               </tbody>
             </table>
             {tasks.data.filter((task) =>
-                  searchValue
-                    ? task.tasks.title
-                        .toLowerCase()
-                        .includes(searchValue.toLowerCase())
-                    : task
-                ).length === 0 && (
-                  <div className="flex justify-center items-center w-full h-full min-h-96">
-                    <span
-                      className="py-6 px-8 text-center text-beyours-300 italic"
-                    >
-                      There is no task matching your search.
-                    </span>
-                  </div>
-                )}
+              searchValue
+                ? task.tasks.title
+                    .toLowerCase()
+                    .includes(searchValue.toLowerCase())
+                : task
+            ).length === 0 && (
+              <div className="flex justify-center items-center w-full h-full min-h-96">
+                <span
+                  className="py-6 px-8 text-center text-beyours-300 italic"
+                >
+                  There is no task matching your search or created.
+                </span>
+              </div>
+            )}
           </div>
           <div className="w-full flex absolute bottom-0 bg-beyours-650 border-t-beyours-600 border-t-[1px] px-6 py-4 h-20 box-border">
             <Pagination links={tasks.meta.links} />

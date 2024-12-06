@@ -14,13 +14,17 @@ class CommunityResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
+      $owner = $this->characters->firstWhere('pivot.role', 'owner');
       return [
         "id" => $this->id,
-        "name" => $this->name,
-        "description" => $this->description,
-        "useAttendance" => $this->attendance,
-        "members" => CommunityMemberResource::collection($this->members),
-        "tasks" => CommunityMemberResource::collection($this->tasks),
+        'name' => $this->name,
+        'description' => $this->description,
+        'banner_path' => $this->banner_path,
+        'attendance' => $this->attendance,
+        'owner' => [
+          "id" => $owner->id,
+          "name" => $owner->fullname,
+        ]
       ];
     }
 }

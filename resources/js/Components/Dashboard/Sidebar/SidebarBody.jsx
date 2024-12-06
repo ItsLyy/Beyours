@@ -34,7 +34,7 @@ export default function SidebarBody({ isOpen }) {
         <NavigationButton
           className={isOpen ? "" : "pl-5"}
           href={route("profile.edit")}
-          active={route().current("profile")}
+          active={route().current("profile.edit")}
         >
           <IconUser />
           <NavigationLabel isOpen={isOpen}>Profile</NavigationLabel>

@@ -20,9 +20,8 @@ import withReactContent from 'sweetalert2-react-content';
 export default function Create() {
   const [ photoProfileName, setPhotoProfileName ] = useState('');
   const [ characterBannerName, setCharacterBannerName ] = useState('');
-  const [ swalProps, setSwalProps ] = useState({});
 
-  const { data, setData, post, processing, errors, reset } = useForm({
+  const { data, setData, post, processing, errors } = useForm({
     fullname: "",
     profession: "",
     first_skill: "",
@@ -50,7 +49,7 @@ export default function Create() {
       title: "Are you sure?",
       showDenyButton: true,
       confirmButtonText: 'Yes',
-      text: "Are ypu sure to want create a character?",
+      text: "Are you sure to want create a character?",
       icon: "question",
       denyButtonText: 'No',
       preConfirm: () => {
@@ -72,8 +71,8 @@ export default function Create() {
           <div>
             <form className="flex gap-4 relative" onSubmit={submit} >
               <div className="relative h-full flex justify-center mb-10">
-                <PhotoProfile className="size-20 absolute -bottom-8" imagePreview={data.photo_profile} />
-                <BannerCharacter className="w-96" imagePreview={data.character_banner} />
+                <PhotoProfile className="size-20 absolute -bottom-8" imagePreview={data.photo_profile || null} />
+                <BannerCharacter className="w-96" imagePreview={data.character_banner || null} />
               </div>
               <div className="w-full h-full px-2 py-1">
                 <HeaderInputField title="Full Name" description="this name will displayed in the community and friend" className="mb-4" required />

@@ -75,7 +75,7 @@ class CharacterController extends Controller
       $dataCharacter = [
         "fullname" => $validadateCharacter['fullname'],
         "profession" => $validadateCharacter['profession'],
-        "banner_path" => $pathCharacterBanner . $filenameCharacterBanner,
+        "banner_path" => $pathCharacterBanner . '/' . $filenameCharacterBanner,
         "health" => 5,
         "level" => 1,
         "experience" => 0,
@@ -85,21 +85,23 @@ class CharacterController extends Controller
       $dataUser = [
         "phone_number" => $validateUser['phone_number'],
         "address" => $validateUser['address'],
-        "photo_profile" => $pathPhotoProfile . $filenamePhotoProfile,
+        "photo_profile" => $pathPhotoProfile . '/' . $filenamePhotoProfile,
       ];
 
       $character = Character::create($dataCharacter);
       User::where('id', $user->id)->update($dataUser);
 
       $dataSkills = [
-        ["character_id" => $character->id, "name" => "Health", "level" => 0, "experience" => 0, "created_at" => Carbon::now()->toDateTimeString(), "updated_at" => Carbon::now()->toDateTimeString()],
-        ["character_id" => $character->id, "name" => "Dicipline", "level" => 0, "experience" => 0, "created_at" => Carbon::now()->toDateTimeString(), "updated_at" => Carbon::now()->toDateTimeString()],
-        ["character_id" => $character->id, "name" => "Charisma", "level" => 0, "experience" => 0, "created_at" => Carbon::now()->toDateTimeString(), "updated_at" => Carbon::now()->toDateTimeString()],
-        ["character_id" => $character->id, "name" => $validateSkill['first_skill'], "level" => 0, "experience" => 0, "created_at" => Carbon::now()->toDateTimeString(), "updated_at" => Carbon::now()->toDateTimeString()],
-        ["character_id" => $character->id, "name" => $validateSkill['second_skill'], "level" => 0, "experience" => 0, "created_at" => Carbon::now()->toDateTimeString(), "updated_at" => Carbon::now()->toDateTimeString()],
+        ["character_id" => $character->id, "name" => "Health", "level" => 1, "experience" => 0, "created_at" => Carbon::now()->toDateTimeString(), "updated_at" => Carbon::now()->toDateTimeString()],
+        ["character_id" => $character->id, "name" => "Dicipline", "level" => 1, "experience" => 0, "created_at" => Carbon::now()->toDateTimeString(), "updated_at" => Carbon::now()->toDateTimeString()],
+        ["character_id" => $character->id, "name" => "Charisma", "level" => 1, "experience" => 0, "created_at" => Carbon::now()->toDateTimeString(), "updated_at" => Carbon::now()->toDateTimeString()],
+        ["character_id" => $character->id, "name" => $validateSkill['first_skill'], "level" => 1, "experience" => 0, "created_at" => Carbon::now()->toDateTimeString(), "updated_at" => Carbon::now()->toDateTimeString()],
+        ["character_id" => $character->id, "name" => $validateSkill['second_skill'], "level" => 1, "experience" => 0, "created_at" => Carbon::now()->toDateTimeString(), "updated_at" => Carbon::now()->toDateTimeString()],
       ];
 
       Skill::insert($dataSkills);
+
+      return to_route('dashboard');
     }
 
     /**

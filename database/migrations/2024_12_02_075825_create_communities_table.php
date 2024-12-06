@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('name');
             $table->string('banner_path')->nullable();
             $table->string('description')->nullable();
+            $table->string('join_token')->unique();
             $table->boolean('attendance');
             $table->timestamps();
         });
