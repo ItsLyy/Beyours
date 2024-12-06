@@ -3,6 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Http\Resources\TaskDetailResource;
+use App\Models\Character;
+use App\Models\CharacterTask;
+use App\Models\Task;
 use Illuminate\Http\Request;
 
 class TaskController extends Controller
@@ -33,7 +36,28 @@ class TaskController extends Controller
    */
   public function store(Request $request)
   {
-    //
+    $validateData = $request->validate([
+      "title" => 'required|string|max:500',
+      'description' => 'nullable|string|max:500',
+      'due_at' => 'nullable|date',
+    ]);
+
+    $character = auth()->user()->character;
+
+    $taskCreated = Task::create([
+      "title" => $validateData['title'],
+      "description" => $validateData['description'],
+      "due_at" => $validateData['due_at'],
+      "assign_by" => $character->id,
+    ]);
+
+    CharacterTask::create([
+      "task_id" => $taskCreated->id,
+      "assign_to" => $character->id,
+      "done" => false,
+    ]);
+
+    return to_route("task.index");
   }
 
   /**
@@ -41,7 +65,11 @@ class TaskController extends Controller
    */
   public function show(string $id)
   {
-    //
+    $task = CharacterTask::find($id)->first();
+
+    return inertia('Task/Show', [
+      "task" => new TaskDetailResource($task),
+    ]);
   }
 
   /**
@@ -63,8 +91,17 @@ class TaskController extends Controller
   /**
    * Remove the specified resource from storage.
    */
-  public function destroy(string $id)
+  public function destroy(String $id)
   {
-    //
+    $task = CharacterTask::find($id);
+
+    if ($task) {
+      $id = $task->task_id;
+      $task->delete();
+      Task::destroy($id);
+      return to_route('task.index')->with('success', 'Task deleted successfully.');
+    }
+
+    return to_route('task.index')->with('error', 'Task not found.');
   }
 }

@@ -1,36 +1,15 @@
 import ContactItem from "./ContactItem";
 
-export default function ContactList({className}) {
+export default function ContactList({className, globalFriends}) {
   return(
     <ul className={"bg-beyours-700 overflow-y-auto h-full rounded-md "+className}>
-      <li className=""><ContactItem/></li>
-      <li><ContactItem/></li>
-      <li><ContactItem/></li>
-      <li><ContactItem/></li>
-      <li><ContactItem/></li>
-      <li><ContactItem/></li>
-      <li><ContactItem/></li>
-      <li><ContactItem/></li>
-      <li><ContactItem/></li>
-      <li><ContactItem/></li>
-      <li><ContactItem/></li>
-      <li><ContactItem/></li>
-      <li><ContactItem/></li>
-      <li><ContactItem/></li>
-      <li><ContactItem/></li>
-      <li><ContactItem/></li>
-      <li><ContactItem/></li>
-      <li><ContactItem/></li>
-      <li><ContactItem/></li>
-      <li><ContactItem/></li>
-      <li><ContactItem/></li>
-      <li><ContactItem/></li>
-      <li><ContactItem/></li>
-      <li><ContactItem/></li>
-      <li><ContactItem/></li>
-      <li><ContactItem/></li>
-      <li><ContactItem/></li>
-      <li><ContactItem/></li>
+      {
+        globalFriends.data.map(globalFriend => {
+          return (
+            <li key={globalFriend.id}><ContactItem fullname={globalFriend.character.fullname} name={globalFriend.name} imageData={globalFriend.photo_profile} /></li>
+          )
+        })
+      }
     </ul>
   )
 }

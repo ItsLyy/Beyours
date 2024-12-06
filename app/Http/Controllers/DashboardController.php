@@ -21,6 +21,7 @@ class DashboardController extends Controller
   public function index()
   {
     $character = auth()->user()->character;
+    $userGlobals = User::get();
 
     if (!$character) {
       return redirect(route('character.index'));
@@ -31,6 +32,7 @@ class DashboardController extends Controller
     return inertia('Dashboard/Index', [
       "tasks" => TaskDetailResource::collection($tasks),
       "character" => new CharacterResource($character),
+      "globalFriends" => UserResource::collection($userGlobals),
     ]);
   }
 

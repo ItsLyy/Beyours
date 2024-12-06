@@ -8,7 +8,7 @@ import TaskOverview from "@/Components/Dashboard/Table/TaskOverview";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Head, usePage } from "@inertiajs/react";
 
-export default function DashboardHome({ tasks, character }) {
+export default function DashboardHome({ tasks, character, globalFriends }) {
   const user = usePage().props.auth.user;
   const titles = ['Task', 'Status'];
   return (
@@ -30,7 +30,7 @@ export default function DashboardHome({ tasks, character }) {
               <TaskOverview titles={titles} tasks={tasks}/>
             </div>
             <div className="bg-beyours-700 rounded-md max-h-96 border-[1px] border-beyours-550 col-span-1 row-span-1 md:col-span-3 md:row-span-1 md:max-h-none xl:col-span-1 xl:row-span-4">
-              <ContactList />
+              <ContactList globalFriends={globalFriends} />
             </div>
             <div className="bg-beyours-700 rounded-md max-h-96 h-fit border-[1px] border-beyours-550 col-span-1 row-span-1 md:col-span-3 md:row-span-1 md:max-h-none xl:col-span-2 xl:row-span-1">
               <SkillTree character={character} />

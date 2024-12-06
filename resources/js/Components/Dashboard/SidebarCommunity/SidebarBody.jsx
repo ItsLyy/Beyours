@@ -15,25 +15,20 @@ export default function SidebarBody({ role, communityId }) {
           <IconDiamondFour /> <NavigationLabel isOpen={true}>Overview</NavigationLabel>
         </NavigationButton>
         <NavigationButton
-          active={route().current("community.assignment.index")}
-        >
-          <IconClipboard /> <NavigationLabel isOpen={true}>Assignment</NavigationLabel>
-        </NavigationButton>
-        <NavigationButton
           href={route("community.attendance.index", communityId)}
           active={route().current("community.attendance.index")}
         >
           <IconHand />
           <NavigationLabel isOpen={true}>Attendance</NavigationLabel>
         </NavigationButton>
-        { role === "owner" ?
+        {/* { role === "owner" ?
         <NavigationButton
           active={route().current("community.member.index")}
         >
           <IconMember />
           <NavigationLabel isOpen={true}>Member</NavigationLabel>
         </NavigationButton>
-        : "" }
+        : "" } */}
 
       </li>
     </ul>

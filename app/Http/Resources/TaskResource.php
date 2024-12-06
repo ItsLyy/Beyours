@@ -18,6 +18,7 @@ class TaskResource extends JsonResource
           "id" => $this->id,
           "title" => $this->title,
           "description" => $this->description,
+          "due_at" => $this->due_at,
           "assignBy" => new CharacterResource($this->assignBy),
           "community_id" => null,
         ];

@@ -13,6 +13,9 @@ class Task extends Model
   protected $fillable = [
     'title',
     'description',
+    'assign_by',
+    'community_id',
+    'due_at',
   ];
 
   public function assignBy() {
