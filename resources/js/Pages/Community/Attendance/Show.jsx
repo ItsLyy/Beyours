@@ -13,14 +13,13 @@ import withReactContent from "sweetalert2-react-content";
 import OptionInput from "@/Components/OptionInput";
 import SecondaryButton from "@/Components/SecondaryButton";
 
-export default function Show({ community, yourCharacter, attendance }) {
-  const character = usePage().props.auth.character;
+export default function Show({ community, character, attendance }) {
   const [secondJournalImageName, setSecondJournalImageName] = useState("");
   const [isEdit, setIsEdit] = useState(false);
-  const { data, setData, post, put, processing, errors } = useForm({
+  const { data, setData, post, processing, errors } = useForm({
     second_journal_image: null,
-    journal: attendance.journal,
-    status: attendance.status,
+    journal: attendance.attendance.journal,
+    status: attendance.attendance.status,
   });
 
   const secondJournalImageHandler = (e) => {
@@ -43,7 +42,6 @@ export default function Show({ community, yourCharacter, attendance }) {
   const submit = (e) => {
     e.preventDefault();
 
-    console.log(data);
 
     withReactContent(Swal).fire({
       title: "Are you sure?",
@@ -53,37 +51,38 @@ export default function Show({ community, yourCharacter, attendance }) {
       icon: "question",
       denyButtonText: "No",
       preConfirm: () => {
-        put(route("community.attendance.update", [community.id, attendance]));
+        post(route("community.attendance.update", { _method: 'put', community: community.id, attendance: attendance.id }));
       },
     });
   };
+
   return (
-    <CommunityLayout community={community} yourCharacter={yourCharacter}>
+    <CommunityLayout community={community} character={character.data}>
       <Head title="Detail"></Head>
 
-      <div className="flex justify-center items-center w-full min-h-screen p-4 pb-24 xl:pb-4">
+      <div className="flex justify-center items-center w-full min-h-screen h-full p-4 pb-24 xl:pb-4">
         <Dialog
           title="Detail attendance"
           useFooter={true}
           className="md:max-w-none md:w-[90%] md:h-5/6"
         >
-          <div>
+          <div className="h-full">
             <form
-              className="flex flex-col xl:flex-row gap-4 relative"
+              className="flex flex-col xl:flex-row gap-4 relative h-full"
               onSubmit={submit}
             >
-              <div className="flex gap-2 w-full flex-col xl:flex-row">
+              <div className="flex gap-2 w-full h-full flex-col xl:flex-row">
                 <img
                   src={
                     data.first_journal_image
                       ? URL.createObjectURL(data.first_journal_image)
                       : "/" +
-                        (attendance.first_photo_path || "logo/logobeyours.svg")
+                        (attendance.attendance.first_photo_path || "logo/logobeyours.svg")
                   }
                   alt="First Journal Photo"
                   className={
                     "xl:w-72 w-full box-border h-fit aspect-[9/16] border-[1px] border-beyours-550 bg-beyours-600 rounded-md text-transparent " +
-                    (data.first_journal_image || attendance.first_photo_path
+                    (data.first_journal_image || attendance.attendance.first_photo_path
                       ? "object-cover object-center"
                       : "p-20 grayscale")
                   }
@@ -93,18 +92,18 @@ export default function Show({ community, yourCharacter, attendance }) {
                     data.second_journal_image
                       ? URL.createObjectURL(data.second_journal_image)
                       : "/" +
-                        (attendance.second_photo_path || "logo/logobeyours.svg")
+                        (attendance.attendance.second_photo_path || "logo/logobeyours.svg")
                   }
                   alt="Second Journal Photo"
                   className={
                     "xl:w-72 w-full box-border h-fit aspect-[9/16] border-[1px] border-beyours-550 bg-beyours-600 rounded-md text-transparent " +
-                    (data.second_journal_image || attendance.second_photo_path
+                    (data.second_journal_image || attendance.attendance.second_photo_path
                       ? "object-cover object-center"
                       : "p-20 grayscale")
                   }
                 />
               </div>
-              <div className="w-full max-h-[94%] overflow-y-auto p-1">
+              <div className="w-full max-h-[94%] h-full overflow-y-auto p-1 pb-16">
                 <HeaderInputField
                   title="Journal"
                   description="Capture the essence of your activity today in a few sentences. What makes it special?"
@@ -151,7 +150,6 @@ export default function Show({ community, yourCharacter, attendance }) {
                     placeholder="Enter your attendance's status"
                     onChange={(e) => {
                       setData("status", e.target.value);
-                      console.log(data.status);
                     }}
                     required
                   >
@@ -166,7 +164,7 @@ export default function Show({ community, yourCharacter, attendance }) {
                   />
                 </div>
 
-                {character.id === attendance.character_id ? isEdit ? (
+                {character.id === attendance.attendance.character_id ? isEdit ? (
                   <>
                     <HeaderInputField
                       title="Sunset Photo"

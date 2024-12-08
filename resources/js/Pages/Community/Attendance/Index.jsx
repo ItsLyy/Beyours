@@ -14,16 +14,14 @@ import { Head, Link } from "@inertiajs/react";
 
 export default function Index({
   community,
-  yourCharacter,
-  members,
-  attendanceDatas,
+  character,
+  attendances,
 }) {
-  console.log(attendanceDatas);
+  console.log(attendances);
   return (
     <CommunityLayout
       community={community}
-      yourCharacter={yourCharacter}
-      members={members}
+      character={character.data}
     >
       <Head title="Attendance" />
 
@@ -61,19 +59,19 @@ export default function Index({
                 </tr>
               </thead>
               <tbody className="text-beyours-150">
-                {attendanceDatas.data ? attendanceDatas.data.map((attendanceData) => {
+                {attendances ? attendances.data.characters.map((attendance) => {
                   return (
                     <tr
                       className="border-b-[1px] border-b-beyours-600"
-                      key={attendanceData.id || 0}
+                      key={attendance.id || 0}
                     >
                       <td className="py-6 px-8 ">
                         <div className="flex items-center gap-4 text-white">
                           <PhotoProfile
                             className="size-12"
-                            imageData={attendanceData.user.photo_profile || ''}
+                            imageData={attendance.photo_profile || ''}
                           />
-                          {attendanceData.fullname || ''}
+                          {attendance.fullname || ''}
                         </div>
                         <dl className="xl:hidden flex flex-col gap-3">
                             <dt className="sr-only">Status</dt>
@@ -81,20 +79,20 @@ export default function Index({
                               <span
                                 className={
                                   "p-2 text-white rounded-md " +
-                                  ATTENDANCE_STATUS_CLASS_MAP[attendanceData.status]
+                                  ATTENDANCE_STATUS_CLASS_MAP[attendance.status]
                                 }
                               >
-                                {ATTENDANCE_STATUS_TEXT_MAP[attendanceData.status]}
+                                {ATTENDANCE_STATUS_TEXT_MAP[attendance.status]}
                               </span>
                             </dd>
                             <dt className="sr-only">Time</dt>
                             <dd className="mt-4 ">
                               <div className="flex flex-col gap-3">
                                 <span className="p-2 bg-beyours-550 w-fit text-nowrap rounded-md text-sm">
-                                  {attendanceData.created_at}
+                                  {attendance.created_at}
                                 </span>
                                 <span className="p-2 bg-beyours-550 w-fit text-nowrap rounded-md text-sm">
-                                  {attendanceData.updated_at}
+                                  {attendance.updated_at}
                                 </span>
                               </div>
                             </dd>
@@ -103,10 +101,10 @@ export default function Index({
                               <span
                                 className={
                                   "text-white px-3 py-2 rounded-md text-nowrap " +
-                                  ATTENDANCE_VERIFY_CLASS_MAP[attendanceData.verified]
+                                  ATTENDANCE_VERIFY_CLASS_MAP[attendance.verified]
                                 }
                               >
-                                {ATTENDANCE_VERIFY_TEXT_MAP[attendanceData.verified]}
+                                {ATTENDANCE_VERIFY_TEXT_MAP[attendance.verified]}
                               </span>
                             </dd>
                           </dl>
@@ -115,19 +113,19 @@ export default function Index({
                         <span
                           className={
                             "text-white px-3 py-2 rounded-md text-nowrap " +
-                            ATTENDANCE_STATUS_CLASS_MAP[attendanceData.status]
+                            ATTENDANCE_STATUS_CLASS_MAP[attendance.status]
                           }
                         >
-                          {ATTENDANCE_STATUS_TEXT_MAP[attendanceData.status]}
+                          {ATTENDANCE_STATUS_TEXT_MAP[attendance.status]}
                         </span>
                       </td>
                       <td className="py-6 px-8 hidden xl:table-cell ">
                         <div className="flex flex-col gap-3">
                           <span className="p-2 bg-beyours-550 w-fit text-nowrap rounded-md text-sm">
-                            {attendanceData.created_at}
+                            {attendance.created_at}
                           </span>
                           <span className="p-2 bg-beyours-550 w-fit text-nowrap rounded-md text-sm">
-                            {attendanceData.updated_at}
+                            {attendance.updated_at}
                           </span>
                         </div>
                       </td>
@@ -135,17 +133,17 @@ export default function Index({
                         <span
                           className={
                             "text-white px-3 py-2 rounded-md text-nowrap " +
-                            ATTENDANCE_VERIFY_CLASS_MAP[attendanceData.verified]
+                            ATTENDANCE_VERIFY_CLASS_MAP[attendance.verified]
                           }
                         >
-                          {ATTENDANCE_VERIFY_TEXT_MAP[attendanceData.verified]}
+                          {ATTENDANCE_VERIFY_TEXT_MAP[attendance.verified]}
                         </span>
                       </td>
                       <td className="py-6 px-8 ">
                         <div className="h-full w-full flex justify-end">
                           <Link
                             className="rounded-full bg-beyours-1100 border-[1px] border-beyours-900 p-[4px] hover:bg-beyours-900 hover:scale-110 transition-all ease-in-out duration-300 "
-                            href={route("community.attendance.show", [community.id, attendanceData ])}
+                            href={route("community.attendance.show", {community: community.id, attendance: attendance.attendance_id, character_id: attendance.character_id})}
                           >
                             <IconDetail className="stroke-white" />
                           </Link>

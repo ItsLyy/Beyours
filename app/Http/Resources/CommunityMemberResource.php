@@ -24,6 +24,7 @@ class CommunityMemberResource extends JsonResource
         "banner_path" => $this->banner_path,
         "attendance" => $this->attendance,
         "user" => $user,
+        "community" => $this->community,
       ];
     }
 }

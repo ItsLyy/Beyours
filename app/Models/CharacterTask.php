@@ -12,18 +12,7 @@ class CharacterTask extends Model
   use HasFactory;
 
   protected $fillable = [
-    'task_id',
     'assign_to',
     'done',
   ];
-
-  public function assignTo()
-  {
-    return $this->belongsTo(Character::class, 'assign_to');
-  }
-
-  public function task()
-  {
-    return $this->belongsTo(ModelsTask::class, 'task_id');
-  }
 }

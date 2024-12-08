@@ -13,6 +13,8 @@ import { useState } from "react";
 export default function Index({ tasks }) {
   const [searchValue, setSearchValue] = useState("");
 
+  console.log(tasks);
+
   const searchHandler = (e) => {
     setSearchValue(e.target.value);
   };
@@ -63,10 +65,10 @@ export default function Index({ tasks }) {
                 </tr>
               </thead>
               <tbody className="text-beyours-150">
-                {tasks.data
-                  .filter((task) =>
+                {
+                  tasks.data.filter((task) =>
                     searchValue
-                      ? task.tasks.title
+                      ? task.title
                           .toLowerCase()
                           .includes(searchValue.toLowerCase())
                       : task
@@ -75,26 +77,26 @@ export default function Index({ tasks }) {
                     return (
                       <tr key={task.id}>
                         <td className="py-6 px-8">
-                          {task.tasks.title}
+                          {task.title}
                           <dl className="xl:hidden flex gap-3">
                             <dt className="sr-only">Status</dt>
                             <dd className="mt-4 ">
                               <span
                                 className={
                                   "p-2 text-white rounded-md " +
-                                  TASK_STATUS_CLASS_MAP[task.done]
+                                  TASK_STATUS_CLASS_MAP[task.assignTo.pivot.done]
                                 }
                               >
-                                {TASK_STATUS_TEXT_MAP[task.done]}
+                                {TASK_STATUS_TEXT_MAP[task.assignTo.pivot.done]}
                               </span>
                             </dd>
                             <dt className="sr-only">Assign By</dt>
                             <dd className="mt-4 ">
-                              | {task.tasks.assignBy.fullname} |
+                              | {task.assignBy.fullname} |
                             </dd>
                             <dt className="sr-only">Due At</dt>
                             <dd className="mt-4 ">
-                              {task.tasks.due_at ? task.tasks.due_at : "Free"}
+                              {task.due_at ? task.due_at : "Free"}
                             </dd>
                           </dl>
                         </td>
@@ -102,17 +104,17 @@ export default function Index({ tasks }) {
                           <span
                             className={
                               "p-2 text-white rounded-md " +
-                              TASK_STATUS_CLASS_MAP[task.done]
+                              TASK_STATUS_CLASS_MAP[task.assignTo.pivot.done]
                             }
                           >
-                            {TASK_STATUS_TEXT_MAP[task.done]}
+                            {TASK_STATUS_TEXT_MAP[task.assignTo.pivot.done]}
                           </span>
                         </td>
                         <td className="py-6 px-8 hidden xl:table-cell">
-                          {task.tasks.assignBy.fullname}
+                          {task.assignBy.fullname}
                         </td>
                         <td className="py-6 px-8 hidden xl:table-cell">
-                          {task.tasks.due_at ? task.tasks.due_at : "Free"}
+                          {task.due_at ? task.due_at : "Free"}
                         </td>
                         <td className="py-6 px-8 ">
                           <div className="h-full w-full flex justify-end">
@@ -126,13 +128,14 @@ export default function Index({ tasks }) {
                         </td>
                       </tr>
                     );
-                  })}
+                  })
+                }
 
               </tbody>
             </table>
             {tasks.data.filter((task) =>
               searchValue
-                ? task.tasks.title
+                ? task.title
                     .toLowerCase()
                     .includes(searchValue.toLowerCase())
                 : task

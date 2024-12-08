@@ -15,10 +15,12 @@ class CommunityDetailResource extends JsonResource
   public function toArray(Request $request): array
   {
     return [
-      'id' => $this->id,
-      'name' => $this->name,
-      'role' => $this->whenPivotLoaded('character_community', function () {
-        return $this->pivot->role;
+      "id" => $this->id,
+      "fullname" => $this->fullname,
+      'communities' => $this->communities->map(function($community) {
+        return [
+          "data" => $community
+        ];
       }),
     ];
   }

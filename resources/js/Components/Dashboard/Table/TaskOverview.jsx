@@ -15,11 +15,11 @@ export default function TaskOverview({ titles, tasks, className }) {
         </thead>
         <tbody>
         {
-          tasks?.data.map((task, index) => {
+          tasks?.map((task, index) => {
             return (
               <tr key={index} className="text-beyours-300 border-b-[.5px] border-b-[#141414]">
-                <td className="p-8">{task.tasks.title}</td>
-                <td className="p-8 "> <span className={"p-2 text-white rounded-md " + TASK_STATUS_CLASS_MAP[task.done]}>{TASK_STATUS_TEXT_MAP[task.done]}</span> </td>
+                <td className="p-8">{task.title}</td>
+                <td className="p-8 "> <span className={"p-2 text-white rounded-md " + TASK_STATUS_CLASS_MAP[task.task.done]}>{TASK_STATUS_TEXT_MAP[task.task.done]}</span> </td>
               </tr>
             )
           })

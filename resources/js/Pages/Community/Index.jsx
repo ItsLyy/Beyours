@@ -15,7 +15,6 @@ import withReactContent from 'sweetalert2-react-content'
 export default function Index({ communities }) {
   const [searchValue, setSearchValue] = useState("");
   const [inputValue, setInputValue] = useState('');
-  console.log(communities);
 
   const searchHandler = (e) => {
     setSearchValue(e.target.value);
@@ -35,8 +34,8 @@ export default function Index({ communities }) {
           return false;
         }
 
-        const url = route("community.join", inputValue); // Generate URL for the token
-        return url; // This will be the resolved result of the Swal
+        const url = route("community.join", inputValue);
+        return url;
       },
     }).then((result) => {
       if (result.isConfirmed) {
@@ -85,7 +84,17 @@ export default function Index({ communities }) {
         <div className="w-full grid px-2 gap-3 grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
           {
             communities.data.filter(community => searchValue ? community.name.toLowerCase().includes(searchValue.toLocaleLowerCase()) : community)
-              .map(community => <Card key={community.id} title={community.name} owner={community.owner.name} href={route('community.show', community.id)} bannerPath={community.banner_path} />)
+              .map(community =>
+              <Card
+                key={community.id}
+                title={community.name}
+                bannerPath={community.banner_path}
+                memberCount={community.members.length}
+                owner={
+                  community.members.filter(member => member.role === 'owner').map(member => member.fullname)
+                }
+                href={route('community.show', community.id)}
+              />)
           }
         </div>
         {communities.data.filter((community) =>

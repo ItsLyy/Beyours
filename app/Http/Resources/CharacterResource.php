@@ -23,6 +23,7 @@ class CharacterResource extends JsonResource
       'profession' => $this->profession,
       'skills' => SkillResource::collection($this->skills),
       'created_at' => $this->created_at,
+      'photo_profile' => $this->user->photo_profile,
     ];
   }
 }

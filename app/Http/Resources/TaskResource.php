@@ -14,13 +14,17 @@ class TaskResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-        return [
-          "id" => $this->id,
-          "title" => $this->title,
-          "description" => $this->description,
-          "due_at" => $this->due_at,
-          "assignBy" => new CharacterResource($this->assignBy),
-          "community_id" => null,
-        ];
+      $character = auth()->user()->character;
+      return [
+        "id" => $this->id,
+        "title" => $this->title,
+        "description" => $this->description,
+        "due_at" => $this->due_at,
+        "assignTo" => $this->assignTo->map(function ($assign) {
+          return $assign;
+        })->firstWhere('id', $character->id),
+        "assignBy" => new CharacterResource($this->assignBy),
+        "community_id" => null,
+      ];
     }
 }

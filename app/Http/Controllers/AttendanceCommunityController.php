@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Resources\AttendanceMemberResource;
 use App\Http\Resources\CommunityMemberResource;
+use App\Http\Resources\MemberCommunityResource;
 use App\Models\Attendance;
 use App\Models\Community;
 use App\Models\CommunityAttendances;
@@ -17,27 +18,30 @@ class AttendanceCommunityController extends Controller
    */
   public function index(Community $community)
   {
-    $character = auth()->user()->character;
+    $characterId = auth()->user()->character->id;
+
     $startOfDay = Carbon::today();
     $endOfDay = Carbon::tomorrow();
 
-    $community->load('attendances');
-    $attendance = $community->attendances->filter(function ($attendance) use ($startOfDay, $endOfDay) {
+    $community->load('attendances')->attendances->filter(function ($attendance) use ($startOfDay, $endOfDay) {
       return $attendance->created_at->between($startOfDay, $endOfDay);
-    })->first();
+    });
 
-    $attendanceDatas = [];
+    $attendances = $community->attendances()
+    ->with('characters')
+    ->whereBetween('created_at', [$startOfDay, $endOfDay])
+    ->first();
 
-    if ($attendance) {
-      $attendanceDatas = AttendanceMemberResource::collection($attendance->characters);
+    if ($attendances) {
+      $attendances = new AttendanceMemberResource($attendances);
     }
 
+    $character = $community->members->firstWhere('id', $characterId);
 
     return inertia('Community/Attendance/Index', [
       "community" => $community,
-      "yourCharacter" => $character->communities->where('pivot.community_id', $community->id)->first(),
-      "attendanceDatas" => $attendanceDatas,
-      "members" => CommunityMemberResource::collection($community->characters),
+      "character" => new MemberCommunityResource($character),
+      "attendances" => $attendances,
     ]);
   }
 
@@ -46,10 +50,25 @@ class AttendanceCommunityController extends Controller
    */
   public function create(Community $community)
   {
-    $character = auth()->user()->character;
+    $characterId = auth()->user()->character->id;
+    $character = $community->members->firstWhere('id', $characterId);
+
+    $startOfDay = Carbon::today();
+    $endOfDay = Carbon::tomorrow();
+
+    $community->load('attendances');
+    $attendance = $community->attendances->filter(function ($attendance) use ($startOfDay, $endOfDay) {
+      return $attendance->created_at->between($startOfDay, $endOfDay);
+    })->first();
+
+    if ($attendance) {
+      $attendance = $attendance->characters->first();
+    }
+
     return inertia("Community/Attendance/Create", [
       "community" => $community,
-      "yourCharacter" => $character->communities->where('pivot.community_id', $community->id)->first(),
+      "character" => new MemberCommunityResource($character),
+      "attendance" => $attendance ,
     ]);
   }
 
@@ -92,7 +111,7 @@ class AttendanceCommunityController extends Controller
     })->first();
 
     if ($attendance) {
-      $attendance->characters()->sync([
+      $attendance->characters()->syncWithoutDetaching([
         ($character->id) => [
           "journal" => $attendanceData['journal'],
           "status" => $attendanceData['status'],
@@ -107,7 +126,7 @@ class AttendanceCommunityController extends Controller
       "community_id" => $community->id,
     ]);
 
-    $attendanceCreated->characters()->sync([
+    $attendanceCreated->characters()->syncWithoutDetaching([
       ($character->id) => [
         "journal" => $attendanceData['journal'],
         "status" => $attendanceData['status'],
@@ -121,15 +140,19 @@ class AttendanceCommunityController extends Controller
   /**
    * Display the specified resource.
    */
-  public function show(Community $community, CommunityAttendances $attendance)
+  public function show(Community $community, Attendance $attendance, Request $request)
   {
-    $character = auth()->user()->character;
+    $characterId = $request->query('character_id');
+    $authCharacterId = auth()->user()->character->id;
+    $character = $community->members->firstWhere('id', $authCharacterId);
+
     $community->load('attendances');
+    $attendance = $community->attendances->find($attendance->id);
 
     return inertia('Community/Attendance/Show', [
       "community" => $community,
-      "attendance" => $attendance,
-      "yourCharacter" => $character->communities->where('pivot.community_id', $community->id)->first(),
+      "character" => new MemberCommunityResource($character),
+      "attendance" => $attendance->characters->firstWhere("id", $characterId),
     ]);
   }
 
@@ -146,29 +169,26 @@ class AttendanceCommunityController extends Controller
    */
 
 
-  public function update(Request $request, Community $community, CommunityAttendances $attendance)
+  public function update(Request $request, Community $community, Attendance $attendance)
   {
-    dd($request);
+    $characterId = auth()->user()->character->id;
 
-    $validated = $request->validate([
+    $request->validate([
       "second_journal_image" => 'required|mimes:png,jpg,jpeg,webp|max:2048', // Validate the image
-      'journal' => 'nullable|string|max:500',
-      'status' => 'nullable|string',
     ]);
 
     // Handle file upload if provided
     if ($request->hasFile('second_journal_image')) {
       $fileJournalPhoto = $request->file('second_journal_image');
-      $filenameJournalPhoto = time() . '.' . $fileJournalPhoto->getClientOriginalExtension();
-      $path = 'images/community_attendance/' . $community->id . '/' . Carbon::now()->timestamp . '/' . str()->random(20);
+      $extensionJournalPhoto = $fileJournalPhoto->getClientOriginalExtension();
 
-      // Store the file
-      $fileJournalPhoto->storeAs('public/' . $path, $filenameJournalPhoto);
+      $filenameJournalPhoto = time() . '.' . $extensionJournalPhoto;
+      $pathJournalPhoto = 'images/community_attendance/' . $community->id . '/' . Carbon::now()->timestamp . '/' . str()->random(20);
+      $fileJournalPhoto->move($pathJournalPhoto, $filenameJournalPhoto);
 
-      // Update the attendance with the new photo path
-      $attendance->update([
-        'second_photo_path' => $path . '/' . $filenameJournalPhoto,
-      ]);
+      $attendance->characters()->syncWithoutDetaching([ $characterId => [
+        'second_photo_path' => $pathJournalPhoto . '/' . $filenameJournalPhoto,
+      ]]);
     }
 
     return redirect()->route('community.attendance.index', $community->id)->with('success', 'Attendance updated successfully.');

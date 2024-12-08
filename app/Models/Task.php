@@ -26,4 +26,7 @@ class Task extends Model
     return $this->hasMany(Reward::class);
   }
 
+  public function assignTo() {
+    return $this->belongsToMany(Character::class,'character_tasks', 'task_id', 'assign_to')->withTimestamps()->withPivot('done');
+  }
 }

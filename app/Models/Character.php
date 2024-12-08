@@ -31,17 +31,17 @@ class Character extends Model
 
   public function tasks()
   {
-    return $this->hasMany(CharacterTask::class, 'assign_to');
+    return $this->belongsToMany(Task::class, 'character_tasks', 'assign_to', 'task_id')->as('task')->withTimestamps()->withPivot('done');
   }
 
   public function communities()
   {
-    return $this->belongsToMany(Community::class, 'character_communities')->withTimestamps()->withPivot('role');
+    return $this->belongsToMany(Community::class, 'character_communities', "character_id", "community_id")->as("members")->withTimestamps()->withPivot('role');
   }
 
   public function user()
   {
-    return $this->hasOne(User::class);
+    return $this->belongsTo(User::class);
   }
 
   public function attendance()

@@ -8,12 +8,15 @@ import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import TextAreaInput from "@/Components/TextAreaInput";
 import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
+import OptionInput from "@/Components/OptionInput";
 
-export default function Create() {
+export default function Create({ skills }) {
   const { data, setData, post, processing, errors } = useForm({
     title: "",
     description: "",
     due_at: "",
+    category: "none",
+    difficult: "easy",
   })
 
 
@@ -37,7 +40,7 @@ export default function Create() {
     <AuthenticatedLayout>
       <Head title="Add Community" />
 
-      <div className="flex justify-center items-center w-full min-h-screen p-4">
+      <div className="flex justify-center items-center w-full min-h-screen p-4 py-24 sm:py-4">
         <Dialog
           title="Create a task"
           useFooter={true}
@@ -85,7 +88,7 @@ export default function Create() {
                 <HeaderInputField title="Due at" description="Make this more chalange your kind" className="my-4" required />
 
                 <div className="mt-4">
-                <TextInput
+                  <TextInput
                     id="due_at"
                     name="due_at"
                     type="date"
@@ -98,7 +101,51 @@ export default function Create() {
                     required
                   />
 
-                  <InputError message={errors.description} className="mt-2 text-[#fff]" />
+                  <InputError message={errors.due_at} className="mt-2 text-[#fff]" />
+                </div>
+                <HeaderInputField title="Category" description="What is your skill to handle this challenge" className="my-4" required />
+
+                <div className="mt-4">
+                  <OptionInput
+                    id="category"
+                    name="category"
+                    type="date"
+                    value={data.category}
+                    className="block w-full"
+                    autoComplete="category"
+                    placeholder="Enter your task's category"
+                    isFocused={true}
+                    onChange={(e) => setData("category", e.target.value)}
+                    required
+                  >
+                    <option value="none">None</option>
+                    <option value={ skills[3].name }>{ skills[3].name }</option>
+                    <option value={ skills[4].name }>{ skills[4].name }</option>
+                  </OptionInput>
+
+                  <InputError message={errors.category} className="mt-2 text-[#fff]" />
+                </div>
+                <HeaderInputField title="Dificult" description="Chalange your self with high risk, high reward" className="my-4" required />
+
+                <div className="mt-4">
+                  <OptionInput
+                    id="difficult"
+                    name="difficult"
+                    type="date"
+                    value={data.difficult}
+                    className="block w-full"
+                    autoComplete="difficult"
+                    placeholder="Enter your task's difficult"
+                    isFocused={true}
+                    onChange={(e) => setData("difficult", e.target.value)}
+                    required
+                  >
+                    <option value="easy">Easy</option>
+                    <option value="normal">Normal</option>
+                    <option value="hard">Hard</option>
+                  </OptionInput>
+
+                  <InputError message={errors.difficult} className="mt-2 text-[#fff]" />
                 </div>
 
                 <div className="mt-16 flex items-center justify-end">

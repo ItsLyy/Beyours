@@ -30,7 +30,7 @@ class DashboardController extends Controller
     $tasks = $character->tasks()->skip(0)->take(10)->get();
 
     return inertia('Dashboard/Index', [
-      "tasks" => TaskDetailResource::collection($tasks),
+      "tasks" => $tasks,
       "character" => new CharacterResource($character),
       "globalFriends" => UserResource::collection($userGlobals),
     ]);

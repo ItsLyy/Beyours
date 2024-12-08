@@ -22,8 +22,8 @@ class Community extends Model
       return $this->hasMany(Attendance::class);
     }
 
-    public function characters() {
-      return $this->belongsToMany(Character::class, "character_communities")->withTimestamps()->withPivot("role");
+    public function members() {
+      return $this->belongsToMany(Character::class, "character_communities", "community_id", "character_id")->as('community')->withTimestamps()->withPivot("role");
     }
 
     public function tasks() {
