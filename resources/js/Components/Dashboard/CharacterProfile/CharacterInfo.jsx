@@ -11,5 +11,5 @@ export default function CharacterInfo({ className, character }) {
       <CharacterBody character={character?.data} className="mt-4" />
       <CharacterLevelUp character={character?.data} className="mt-2" />
     </div>
-  )
+  );
 }

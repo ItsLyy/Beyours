@@ -1,8 +1,15 @@
 import { useState } from "react";
 
-export default function SearchBar({ type = "text", className = "", Icon, name, eventHandler, ...props }) {
+export default function SearchBar({
+  type = "text",
+  className = "",
+  Icon,
+  name,
+  eventHandler,
+  ...props
+}) {
   const [isFocus, setIsFocus] = useState(false);
-  const [inputValue, setInputValue] = useState('');
+  const [inputValue, setInputValue] = useState("");
   return (
     <div className={"relative flex items-center " + className}>
       {Icon ? (
@@ -11,7 +18,9 @@ export default function SearchBar({ type = "text", className = "", Icon, name, e
             <label htmlFor={name}>
               <Icon
                 className={
-                  isFocus || inputValue.length > 0 ? "stroke-beyours-100" : "stroke-beyours-600"
+                  isFocus || inputValue.length > 0
+                    ? "stroke-beyours-100"
+                    : "stroke-beyours-600"
                 }
               />
             </label>
@@ -32,9 +41,9 @@ export default function SearchBar({ type = "text", className = "", Icon, name, e
         onBlur={() => setIsFocus(false)}
         onChange={(e) => {
           setInputValue(e.target.value);
-          eventHandler ? eventHandler(e) : '';
+          eventHandler ? eventHandler(e) : "";
         }}
       />
     </div>
-  )
+  );
 }

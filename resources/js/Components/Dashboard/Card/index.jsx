@@ -6,12 +6,14 @@ export default function Card({ href, title, owner, bannerPath, memberCount }) {
       <div className="w-full h-fit">
         <img
           className="aspect-video object-cover object-center w-full"
-          src={ bannerPath || "images/defaultavatar.png"}
+          src={bannerPath || "images/defaultavatar.png"}
           alt=""
         />
       </div>
       <div className="w-full h-full flex-1 p-3 box-border relative">
-        <Link href={href}><h3>{title}</h3></Link>
+        <Link href={href}>
+          <h3>{title}</h3>
+        </Link>
         <p className="text-beyours-250">by {owner}</p>
         <p className="text-beyours-250">
           <span className="text-white">{memberCount || 0}</span> Members

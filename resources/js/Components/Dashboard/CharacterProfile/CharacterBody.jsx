@@ -8,7 +8,9 @@ export default function CharacterBody({ className, character }) {
         </tr>
         <tr>
           <td className="text-beyours-400 w-24 block">Skill</td>
-          <td>: { `${character.skills[3].name}, ${character.skills[4].name}` }</td>
+          <td>
+            : {`${character.skills[3].name}, ${character.skills[4].name}`}
+          </td>
         </tr>
       </tbody>
     </table>

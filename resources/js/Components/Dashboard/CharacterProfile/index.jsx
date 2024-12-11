@@ -7,5 +7,5 @@ export default function CharacterProfile() {
       <BannerCharacter />
       <CharacterInfo />
     </div>
-  )
+  );
 }
