@@ -14,34 +14,31 @@ import OptionInput from "@/Components/OptionInput";
 import SecondaryButton from "@/Components/SecondaryButton";
 
 export default function Show({ community, character, attendance }) {
+  console.log(attendance);
   const [secondJournalImageName, setSecondJournalImageName] = useState("");
   const [isEdit, setIsEdit] = useState(false);
   const { data, setData, post, processing, errors } = useForm({
     second_journal_image: null,
-    journal: attendance.attendance.journal,
-    status: attendance.attendance.status,
+    journal: attendance.attendance.journal || "",
   });
 
-  const secondJournalImageHandler = (e) => {
-    setSecondJournalImageName(e.target.value);
-    setData('second_journal_image', e.target.files[0]);
-  };
-
-  const editHandler = (e) => {
+  const socondAttendanceHandler = (e) => {
     e.preventDefault();
-
-    setIsEdit(true);
+    setIsEdit(isEdit ? false : true);
   };
 
   const cancelHandler = (e) => {
     e.preventDefault();
+    setIsEdit(isEdit ? false : true);
+  };
 
-    setIsEdit(false);
+  const secondJournalImageHandler = (e) => {
+    setSecondJournalImageName(e.target.value);
+    setData("second_journal_image", e.target.files[0]);
   };
 
   const submit = (e) => {
     e.preventDefault();
-
 
     withReactContent(Swal).fire({
       title: "Are you sure?",
@@ -51,7 +48,13 @@ export default function Show({ community, character, attendance }) {
       icon: "question",
       denyButtonText: "No",
       preConfirm: () => {
-        post(route("community.attendance.update", { _method: 'put', community: community.id, attendance: attendance.id }));
+        post(
+          route("community.attendance.update", {
+            _method: "put",
+            community: community.id,
+            attendance: attendance.id,
+          })
+        );
       },
     });
   };
@@ -60,31 +63,33 @@ export default function Show({ community, character, attendance }) {
     <CommunityLayout community={community} character={character.data}>
       <Head title="Detail"></Head>
 
-      <div className="flex justify-center items-center w-full min-h-screen h-full p-4 pb-24 xl:pb-4">
+      <section className="flex justify-center items-center w-full min-h-screen p-4 pb-24 2xl:pb-4 h-full 2xl:h-screen">
         <Dialog
-          title="Detail attendance"
+          title="Take a attendance"
           useFooter={true}
-          className="md:max-w-none md:w-[90%] md:h-5/6"
+          className="sm:max-w-none md:w-[90%] 2xl:h-5/6"
         >
-          <div className="h-full">
+          <div className="h-full ">
             <form
-              className="flex flex-col xl:flex-row gap-4 relative h-full"
+              className="flex flex-col 2xl:flex-row gap-4 h-full "
               onSubmit={submit}
             >
-              <div className="flex gap-2 w-full h-full flex-col xl:flex-row">
+              <div className="flex gap-2 w-full min-w-fit flex-row h-full">
                 <img
                   src={
                     data.first_journal_image
                       ? URL.createObjectURL(data.first_journal_image)
                       : "/" +
-                        (attendance.attendance.first_photo_path || "logo/logobeyours.svg")
+                        (attendance.attendance.first_photo_path ||
+                          "logo/logobeyours.svg")
                   }
-                  alt="First Journal Photo"
+                  alt="First Journal"
                   className={
-                    "xl:w-72 w-full box-border h-fit aspect-[9/16] border-[1px] border-beyours-550 bg-beyours-600 rounded-md text-transparent " +
-                    (data.first_journal_image || attendance.attendance.first_photo_path
+                    "w-full 2xl:w-72 box-border h-fit aspect-[9/16] border-[1px] border-beyours-550 bg-beyours-600 rounded-md text-transparent " +
+                    (data.first_journal_image ||
+                    attendance.attendance.first_photo_path
                       ? "object-cover object-center"
-                      : "p-20 grayscale")
+                      : " grayscale")
                   }
                 />
                 <img
@@ -92,14 +97,16 @@ export default function Show({ community, character, attendance }) {
                     data.second_journal_image
                       ? URL.createObjectURL(data.second_journal_image)
                       : "/" +
-                        (attendance.attendance.second_photo_path || "logo/logobeyours.svg")
+                        (attendance.attendance.second_photo_path ||
+                          "logo/logobeyours.svg")
                   }
-                  alt="Second Journal Photo"
+                  alt="Second Journal"
                   className={
-                    "xl:w-72 w-full box-border h-fit aspect-[9/16] border-[1px] border-beyours-550 bg-beyours-600 rounded-md text-transparent " +
-                    (data.second_journal_image || attendance.attendance.second_photo_path
+                    "w-full 2xl:w-72 box-border h-fit aspect-[9/16] border-[1px] border-beyours-550 bg-beyours-600 rounded-md text-transparent " +
+                    (data.second_journal_image ||
+                    attendance.attendance.second_photo_path
                       ? "object-cover object-center"
-                      : "p-20 grayscale")
+                      : " grayscale")
                   }
                 />
               </div>
@@ -113,7 +120,7 @@ export default function Show({ community, character, attendance }) {
 
                 <div className="mt-4">
                   <TextAreaInput
-                    readOnly={true}
+                    readOnly={!isEdit}
                     id="journal"
                     type="text"
                     isFocused={true}
@@ -135,8 +142,7 @@ export default function Show({ community, character, attendance }) {
                 <HeaderInputField
                   title="Status"
                   description="What is your status now copy!!"
-                  className="my-4"
-                  required
+                  className="my-4 opacity-55"
                 />
 
                 <div>
@@ -145,7 +151,7 @@ export default function Show({ community, character, attendance }) {
                     id="status"
                     name="status"
                     value={data.status}
-                    className="block w-full"
+                    className="block w-full opacity-45"
                     autoComplete="status"
                     placeholder="Enter your attendance's status"
                     onChange={(e) => {
@@ -164,68 +170,97 @@ export default function Show({ community, character, attendance }) {
                   />
                 </div>
 
-                {character.id === attendance.attendance.character_id ? isEdit ? (
-                  <>
-                    <HeaderInputField
-                      title="Sunset Photo"
-                      description="Take your photo and share your happiness"
-                      className="my-4"
-                      required
-                    />
-                    <div>
-                      <TextInput
-                        id="second_journal_image"
-                        type="file"
-                        name="second_journal_image"
-                        value={secondJournalImageName}
-                        className={
-                          "block w-full cursor-pointer text-beyours-500 " +
-                          (secondJournalImageName ? "text-white" : "")
-                        }
-                        autoComplete="secondJournalImageName"
-                        Icon={IconCharacterBanner}
-                        onChange={secondJournalImageHandler}
-                        required
-                      />
-
-                      <InputError
-                        message={errors.second_journal_image}
-                        className="mt-2 text-[#fff]"
-                      />
-                    </div>
-                    <div className="mt-16 flex items-center justify-end gap-4">
-                      <SecondaryButton
-                        className="text-white px-3 py-4"
-                        onClick={cancelHandler}
-                        disabled={processing}
-                      >
-                        Cancel
-                      </SecondaryButton>
-
-                      <PrimaryButton
-                        disabled={processing}
-                        className="text-white !w-fit !h-fit"
-                      >
-                        Update
-                      </PrimaryButton>
-                    </div>
-                  </>
+                {!attendance.attendance.journal &&
+                character.data.id === attendance.id ? (
+                  <EditForm
+                    isEdit={isEdit}
+                    socondAttendanceHandler={socondAttendanceHandler}
+                    secondJournalImageHandler={secondJournalImageHandler}
+                    secondJournalImageName={secondJournalImageName}
+                    processing={processing}
+                    errors={errors}
+                    cancelHandler={cancelHandler}
+                  />
                 ) : (
-                  <div className="flex justify-end mt-8 text-white w-full h-fit">
-                    <PrimaryButton
-                      disabled={processing}
-                      className="!w-fit"
-                      onClick={editHandler}
-                    >
-                      Edit
-                    </PrimaryButton>
-                  </div>
-                ) : ""}
+                  ""
+                )}
               </div>
             </form>
           </div>
         </Dialog>
-      </div>
+      </section>
     </CommunityLayout>
   );
+}
+
+function EditForm({
+  isEdit,
+  socondAttendanceHandler,
+  secondJournalImageHandler,
+  secondJournalImageName,
+  cancelHandler,
+  processing,
+  errors,
+}) {
+  if (isEdit) {
+    return (
+      <>
+        <HeaderInputField
+          title="Capture the Moment"
+          description="Take a photo to celebrate your second attendance!"
+          className="my-4"
+          required
+        />
+        <div>
+          <TextInput
+            id="second_journal_image"
+            type="file"
+            name="second_journal_image"
+            value={secondJournalImageName}
+            className={
+              "block w-full cursor-pointer text-beyours-500 " +
+              (secondJournalImageName ? "text-white" : "")
+            }
+            autoComplete="secondJournalImageName"
+            Icon={IconCharacterBanner}
+            onChange={secondJournalImageHandler}
+            required
+          />
+
+          <InputError
+            message={errors.second_journal_image}
+            className="mt-2 text-[#fff]"
+          />
+        </div>
+        <div className="mt-16 flex items-center justify-end gap-4">
+          <SecondaryButton
+            className="text-white px-3 py-4"
+            onClick={cancelHandler}
+            disabled={processing}
+          >
+            Cancel
+          </SecondaryButton>
+
+          <PrimaryButton
+            disabled={processing}
+            className="text-white !w-fit !h-fit"
+          >
+            Send
+          </PrimaryButton>
+        </div>
+      </>
+    );
+  } else {
+    return (
+      <div className="flex justify-end mt-8 text-white w-full h-fit">
+        <PrimaryButton
+          disabled={processing}
+          className="!w-fit"
+          onClick={socondAttendanceHandler}
+        >
+          Second Attendance
+        </PrimaryButton>
+      </div>
+    );
+  }
 }

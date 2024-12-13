@@ -2,7 +2,9 @@ import HeaderSection from "@/Components/Dashboard/HeaderSection";
 import PhotoProfile from "@/Components/Dashboard/PhotoProfile";
 import IconAdd from "@/Components/Icons/IconAdd";
 import IconDetail from "@/Components/Icons/IconDetail";
+import PrimaryButton from "@/Components/PrimaryButton";
 import PrimaryNavigationButton from "@/Components/PrimaryNavigationButton";
+import TextInput from "@/Components/TextInput";
 import {
   ATTENDANCE_STATUS_CLASS_MAP,
   ATTENDANCE_STATUS_TEXT_MAP,
@@ -10,37 +12,126 @@ import {
   ATTENDANCE_VERIFY_TEXT_MAP,
 } from "@/constant";
 import CommunityLayout from "@/Layouts/CommunityLayout";
-import { Head, Link } from "@inertiajs/react";
+import { Head, Link, router } from "@inertiajs/react";
+import { useState } from "react";
+import Swal from "sweetalert2";
+import withReactContent from "sweetalert2-react-content";
+import DatePicker from "react-datepicker";
+import { createPortal } from "react-dom";
+import "react-datepicker/dist/react-datepicker.css";
 
 export default function Index({
   community,
   character,
   attendances,
+  queryParams = null,
 }) {
-  console.log(attendances);
+  const [swalShown, setSwalShown] = useState(false);
+  const [reportDate, setReportDate] = useState(new Date());
+  console.log(queryParams.date);
+
+  const queryHandler = (name, value) => {
+    const updatedParams = { ...queryParams };
+    if (value) {
+      updatedParams[name] = value;
+    } else {
+      delete updatedParams[name];
+    }
+
+    queryParams = updatedParams;
+    router.get(
+      route("community.attendance.index", [community.id, updatedParams])
+    );
+  };
+
+  const renderMonthContent = (shortMonth, longMonth, day) => {
+    const fullYear = new Date(day).getFullYear();
+    const tooltipText = `Tooltip for month: ${longMonth} ${fullYear}`;
+
+    return <span title={tooltipText}>{shortMonth}</span>;
+  };
+
+  const exportDataHandler = () => {
+    withReactContent(Swal).fire({
+      icon: "question",
+      title: `Are you want to get report?`,
+      html: `If you get report on month's selected it will automatically delete the data and export to pdf. Are you sure? <br/>`,
+      didOpen: () => setSwalShown(true),
+      didClose: () => setSwalShown(false),
+      showDenyButton: true,
+      preConfirm: () => {
+        window.open(
+          route("community.attendance.report", [community.id]),
+          "_blank"
+        );
+      },
+    });
+  };
+
   return (
-    <CommunityLayout
-      community={community}
-      character={character.data}
-    >
+    <CommunityLayout community={community} character={character.data}>
       <Head title="Attendance" />
 
-      <section className="w-full h-full box-border text-white flex justify-center items-center flex-col p-8">
-        <div className="flex justify-between items-center p-2 border-b-beyours-600 border-b-[1px] w-full mb-4">
+      {swalShown &&
+        createPortal(
+          <DatePicker
+            selected={reportDate}
+            onChange={(date) => setReportDate(date)}
+            renderMonthContent={renderMonthContent}
+            calendarClassName="!bg-beyours-600 !font-geist !text-beyours-100"
+            popperClassName="!bg-beyours-600"
+            className="my-4 bg-beyours-600 border-beyours-550"
+            popperPlacement="top"
+            showMonthYearPicker
+            dateFormat="MM/yyyy"
+          />,
+          Swal.getHtmlContainer()
+        )}
+
+      <section className="w-full h-screen box-border text-white flex justify-center items-center flex-col p-8">
+        <div className="flex justify-between items-center p-2 border-b-beyours-600 border-b-[1px] w-full mb-4 text-sm md:text-base">
           <HeaderSection
             title="Attendance List"
             subTitle="Take any attendance every morning and afternoon"
           />
-          <PrimaryNavigationButton
-            href={route("community.attendance.create", community.id)}
-            className="!w-fit !h-fit !p-[.5rem]"
-          >
-            <IconAdd className="size-5" />
-          </PrimaryNavigationButton>
+          <div className="flex gap-2">
+            {character.data.role === "owner" ? (
+              <>
+                <TextInput
+                  type="date"
+                  id="filter-date"
+                  name="filter-date"
+                  className="cursor-pointer"
+                  value={queryParams ? queryParams["date"] : ""}
+                  onChange={(e) => queryHandler("date", e.target.value)}
+                />
+                <PrimaryButton
+                  onClick={exportDataHandler}
+                  className="text-nowrap"
+                >
+                  Export PDF
+                </PrimaryButton>
+              </>
+            ) : (
+              ""
+            )}
+
+            {!attendances.data.some(
+              (attendance) =>
+                attendance.id === character.data.id && attendance.attendances
+            ) && character.data.role !== "owner" ? (
+              <PrimaryNavigationButton
+                href={route("community.attendance.create", community.id)}
+                className="!w-fit !h-fit !p-[.5rem]"
+              >
+                <IconAdd className="size-5" />
+              </PrimaryNavigationButton>
+            ) : null}
+          </div>
         </div>
         <div className="w-full h-4/5 box-border bg-beyours-700 rounded-md relative">
-          <div className="w-full max-h-full overflow-y-auto block">
-            <table className="w-full h-full table-fixed border-collapse">
+          <div className="w-full max-h-full overflow-y-auto block pb-20">
+            <table className="w-full h-full table-fixed border-collapse ">
               <thead className="border-b-[2px] h-12 border-b-beyours-600 bg-beyours-650 sticky top-0">
                 <tr className="h-16">
                   <th className="py-6 px-8 text-start font-normal">Name</th>
@@ -59,99 +150,160 @@ export default function Index({
                 </tr>
               </thead>
               <tbody className="text-beyours-150">
-                {attendances ? attendances.data.characters.map((attendance) => {
-                  return (
-                    <tr
-                      className="border-b-[1px] border-b-beyours-600"
-                      key={attendance.id || 0}
-                    >
-                      <td className="py-6 px-8 ">
-                        <div className="flex items-center gap-4 text-white">
-                          <PhotoProfile
-                            className="size-12"
-                            imageData={attendance.photo_profile || ''}
-                          />
-                          {attendance.fullname || ''}
-                        </div>
-                        <dl className="xl:hidden flex flex-col gap-3">
-                            <dt className="sr-only">Status</dt>
-                            <dd className="mt-8 ">
-                              <span
-                                className={
-                                  "p-2 text-white rounded-md " +
-                                  ATTENDANCE_STATUS_CLASS_MAP[attendance.status]
-                                }
-                              >
-                                {ATTENDANCE_STATUS_TEXT_MAP[attendance.status]}
-                              </span>
-                            </dd>
-                            <dt className="sr-only">Time</dt>
-                            <dd className="mt-4 ">
-                              <div className="flex flex-col gap-3">
-                                <span className="p-2 bg-beyours-550 w-fit text-nowrap rounded-md text-sm">
-                                  {attendance.created_at}
-                                </span>
-                                <span className="p-2 bg-beyours-550 w-fit text-nowrap rounded-md text-sm">
-                                  {attendance.updated_at}
-                                </span>
-                              </div>
-                            </dd>
-                            <dt className="sr-only">Verify</dt>
-                            <dd className="mt-4 ">
-                              <span
-                                className={
-                                  "text-white px-3 py-2 rounded-md text-nowrap " +
-                                  ATTENDANCE_VERIFY_CLASS_MAP[attendance.verified]
-                                }
-                              >
-                                {ATTENDANCE_VERIFY_TEXT_MAP[attendance.verified]}
-                              </span>
-                            </dd>
-                          </dl>
-                      </td>
-                      <td className="py-6 px-8 hidden xl:table-cell ">
-                        <span
+                {attendances
+                  ? attendances.data.map((attendance) => {
+                      return (
+                        <tr
                           className={
-                            "text-white px-3 py-2 rounded-md text-nowrap " +
-                            ATTENDANCE_STATUS_CLASS_MAP[attendance.status]
+                            "border-b-[1px] border-b-beyours-600 " +
+                            (attendance.attendances ? "" : "opacity-40")
                           }
+                          key={attendance.id}
                         >
-                          {ATTENDANCE_STATUS_TEXT_MAP[attendance.status]}
-                        </span>
-                      </td>
-                      <td className="py-6 px-8 hidden xl:table-cell ">
-                        <div className="flex flex-col gap-3">
-                          <span className="p-2 bg-beyours-550 w-fit text-nowrap rounded-md text-sm">
-                            {attendance.created_at}
-                          </span>
-                          <span className="p-2 bg-beyours-550 w-fit text-nowrap rounded-md text-sm">
-                            {attendance.updated_at}
-                          </span>
-                        </div>
-                      </td>
-                      <td className="py-6 px-8 hidden xl:table-cell ">
-                        <span
-                          className={
-                            "text-white px-3 py-2 rounded-md text-nowrap " +
-                            ATTENDANCE_VERIFY_CLASS_MAP[attendance.verified]
-                          }
-                        >
-                          {ATTENDANCE_VERIFY_TEXT_MAP[attendance.verified]}
-                        </span>
-                      </td>
-                      <td className="py-6 px-8 ">
-                        <div className="h-full w-full flex justify-end">
-                          <Link
-                            className="rounded-full bg-beyours-1100 border-[1px] border-beyours-900 p-[4px] hover:bg-beyours-900 hover:scale-110 transition-all ease-in-out duration-300 "
-                            href={route("community.attendance.show", {community: community.id, attendance: attendance.attendance_id, character_id: attendance.character_id})}
-                          >
-                            <IconDetail className="stroke-white" />
-                          </Link>
-                        </div>
-                      </td>
-                    </tr>
-                  );
-                }) : ""}
+                          <td className="py-6 px-8 ">
+                            <div className="flex items-center gap-4 text-white">
+                              <PhotoProfile
+                                className="size-12"
+                                imageData={attendance.photo_profile || ""}
+                              />
+                              {attendance.fullname || ""}
+                            </div>
+                            <dl className="xl:hidden flex flex-col gap-3">
+                              <dt className="sr-only">Status</dt>
+                              <dd className="mt-8 ">
+                                <span
+                                  className={
+                                    "p-2 text-white rounded-md " +
+                                    ATTENDANCE_STATUS_CLASS_MAP[
+                                      attendance.attendances
+                                        ? attendance.attendances.pivot.status
+                                        : "none"
+                                    ]
+                                  }
+                                >
+                                  {
+                                    ATTENDANCE_STATUS_TEXT_MAP[
+                                      attendance.attendances
+                                        ? attendance.attendances.pivot.status
+                                        : "none"
+                                    ]
+                                  }
+                                </span>
+                              </dd>
+                              <dt className="sr-only">Time</dt>
+                              <dd className="mt-4 ">
+                                <div className="flex flex-col gap-3">
+                                  <span className="p-2 bg-beyours-550 w-fit text-nowrap rounded-md text-sm">
+                                    {attendance.attendances
+                                      ? attendance.attendances.pivot.created_at
+                                      : "0000-00-00 00:00:00"}
+                                  </span>
+                                  <span className="p-2 bg-beyours-550 w-fit text-nowrap rounded-md text-sm">
+                                    {attendance.attendances
+                                      ? attendance.attendances.pivot.updated_at
+                                      : "0000-00-00 00:00:00"}
+                                  </span>
+                                </div>
+                              </dd>
+                              <dt className="sr-only">Verify</dt>
+                              <dd className="mt-4 ">
+                                <span
+                                  className={
+                                    "text-white px-3 py-2 rounded-md text-nowrap " +
+                                    ATTENDANCE_VERIFY_CLASS_MAP[
+                                      attendance.attendances
+                                        ? attendance.attendances.pivot.verified
+                                        : 0
+                                    ]
+                                  }
+                                >
+                                  {
+                                    ATTENDANCE_VERIFY_TEXT_MAP[
+                                      attendance.attendances
+                                        ? attendance.attendances.pivot.verified
+                                        : 0
+                                    ]
+                                  }
+                                </span>
+                              </dd>
+                            </dl>
+                          </td>
+                          <td className="py-6 px-8 hidden xl:table-cell ">
+                            <span
+                              className={
+                                "text-white px-3 py-2 rounded-md text-nowrap " +
+                                ATTENDANCE_STATUS_CLASS_MAP[
+                                  attendance.attendances
+                                    ? attendance.attendances.pivot.status
+                                    : "none"
+                                ]
+                              }
+                            >
+                              {
+                                ATTENDANCE_STATUS_TEXT_MAP[
+                                  attendance.attendances
+                                    ? attendance.attendances.pivot.status
+                                    : "none"
+                                ]
+                              }
+                            </span>
+                          </td>
+                          <td className="py-6 px-8 hidden xl:table-cell ">
+                            <div className="flex flex-col gap-3">
+                              <span className="p-2 bg-beyours-550 w-fit text-nowrap rounded-md text-sm">
+                                {attendance.attendances
+                                  ? attendance.attendances.pivot.created_at
+                                  : "0000-00-00 00:00:00"}
+                              </span>
+                              <span className="p-2 bg-beyours-550 w-fit text-nowrap rounded-md text-sm">
+                                {attendance.attendances
+                                  ? attendance.attendances.pivot.updated_at
+                                  : "0000-00-00 00:00:00"}
+                              </span>
+                            </div>
+                          </td>
+                          <td className="py-6 px-8 hidden xl:table-cell ">
+                            <span
+                              className={
+                                "text-white px-3 py-2 rounded-md text-nowrap " +
+                                ATTENDANCE_VERIFY_CLASS_MAP[
+                                  attendance.attendances
+                                    ? attendance.attendances.pivot.verified
+                                    : 0
+                                ]
+                              }
+                            >
+                              {
+                                ATTENDANCE_VERIFY_TEXT_MAP[
+                                  attendance.attendances
+                                    ? attendance.attendances.pivot.verified
+                                    : 0
+                                ]
+                              }
+                            </span>
+                          </td>
+                          <td className="py-6 px-8 ">
+                            <div className="h-full w-full flex justify-end">
+                              {attendance.attendances ? (
+                                <Link
+                                  className="rounded-full bg-beyours-1100 border-[1px] border-beyours-900 p-[4px] hover:bg-beyours-900 hover:scale-110 transition-all ease-in-out duration-300 "
+                                  href={route("community.attendance.show", {
+                                    community: community.id,
+                                    attendance: attendance.attendances.id,
+                                    c: attendance.id,
+                                  })}
+                                >
+                                  <IconDetail className="stroke-white" />
+                                </Link>
+                              ) : (
+                                ""
+                              )}
+                            </div>
+                          </td>
+                        </tr>
+                      );
+                    })
+                  : ""}
               </tbody>
             </table>
           </div>

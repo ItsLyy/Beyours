@@ -3,12 +3,10 @@ import SidebarCommunity from "@/Components/Dashboard/SidebarCommunity";
 
 export default function CommunityLayout({ children, community, character }) {
   return (
-    <div className="flex bg-beyours-750 h-screen">
+    <div className="flex bg-beyours-750 min-h-screen">
       <Sidebar />
-      <SidebarCommunity community = {community} character={character}  />
-      <main className="grow h-full">
-        {children}
-      </main>
+      <SidebarCommunity community={community} character={character} />
+      <main className="grow h-full">{children}</main>
     </div>
-  )
+  );
 }

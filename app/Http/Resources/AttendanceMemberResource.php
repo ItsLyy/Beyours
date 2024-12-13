@@ -18,7 +18,18 @@ class AttendanceMemberResource extends JsonResource
   {
     return [
       "id" => $this->id,
-      "characters" => MemberAttendanceResource::collection($this->characters),
+      "community_id" => $this->community_id,
+      "pivot" => [
+        "attendance_id" => $this->pivot->attendance_id,
+        "character_id" => $this->pivot->character_id,
+        "journal" => $this->pivot->journal,
+        "first_photo_path" => $this->pivot->fist_photo_path,
+        "second_photo_path" => $this->pivot->second_photo_path,
+        "status" => $this->pivot->status,
+        "created_at" => Carbon::createFromFormat('Y-m-d H:i:s', $this->pivot->created_at)->toDateTimeString(),
+        "updated_at" => Carbon::createFromFormat('Y-m-d H:i:s', $this->pivot->updated_at)->toDateTimeString(),
+        "verified" => $this->pivot->verified,
+      ],
     ];
   }
 }

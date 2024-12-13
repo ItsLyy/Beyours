@@ -2,12 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Resources\AttendanceMemberResource;
-use App\Http\Resources\CommunityMemberResource;
+use App\Http\Resources\MemberAttendancesResource;
 use App\Http\Resources\MemberCommunityResource;
 use App\Models\Attendance;
 use App\Models\Community;
-use App\Models\CommunityAttendances;
+use Barryvdh\DomPDF\Facade\Pdf as FacadePdf;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 
@@ -20,28 +19,31 @@ class AttendanceCommunityController extends Controller
   {
     $characterId = auth()->user()->character->id;
 
+
     $startOfDay = Carbon::today();
     $endOfDay = Carbon::tomorrow();
 
-    $community->load('attendances')->attendances->filter(function ($attendance) use ($startOfDay, $endOfDay) {
-      return $attendance->created_at->between($startOfDay, $endOfDay);
-    });
 
-    $attendances = $community->attendances()
-    ->with('characters')
-    ->whereBetween('created_at', [$startOfDay, $endOfDay])
-    ->first();
-
-    if ($attendances) {
-      $attendances = new AttendanceMemberResource($attendances);
+    if (request("date")) {
+      $startOfDay = Carbon::parse(request('date'))->startOfDay();
+      $endOfDay = Carbon::parse(request('date'))->endOfDay();
     }
+
+    $members = $community->members()->wherePivot("role", "!=", "owner")
+      ->with(['attendances' => function ($query) use ($startOfDay, $endOfDay, $community) {
+        $query->whereBetween('attendances.created_at', [$startOfDay, $endOfDay])->where('attendances.community_id', $community->id);
+      }])
+      ->get();
+
+    $memberAttendances = MemberAttendancesResource::collection($members);
 
     $character = $community->members->firstWhere('id', $characterId);
 
     return inertia('Community/Attendance/Index', [
       "community" => $community,
       "character" => new MemberCommunityResource($character),
-      "attendances" => $attendances,
+      "attendances" => $memberAttendances,
+      "queryParams" => request()->query(),
     ]);
   }
 
@@ -53,22 +55,11 @@ class AttendanceCommunityController extends Controller
     $characterId = auth()->user()->character->id;
     $character = $community->members->firstWhere('id', $characterId);
 
-    $startOfDay = Carbon::today();
-    $endOfDay = Carbon::tomorrow();
-
     $community->load('attendances');
-    $attendance = $community->attendances->filter(function ($attendance) use ($startOfDay, $endOfDay) {
-      return $attendance->created_at->between($startOfDay, $endOfDay);
-    })->first();
-
-    if ($attendance) {
-      $attendance = $attendance->characters->first();
-    }
 
     return inertia("Community/Attendance/Create", [
       "community" => $community,
       "character" => new MemberCommunityResource($character),
-      "attendance" => $attendance ,
     ]);
   }
 
@@ -81,11 +72,9 @@ class AttendanceCommunityController extends Controller
 
 
     $validatedAttendance = $request->validate([
-      "journal" => 'required|string',
       "status" => 'required|max:30|string',
       "first_journal_image" => 'required|mimes:png,jpg,jpeg,webp',
     ]);
-
 
     if ($request->has('first_journal_image')) {
       $fileJournalPhoto = $request->file('first_journal_image');
@@ -97,7 +86,6 @@ class AttendanceCommunityController extends Controller
     }
 
     $attendanceData = [
-      'journal' => $validatedAttendance['journal'],
       'status' => $validatedAttendance['status'],
       'photo_path' => $pathJournalPhoto . '/' . $filenameJournalPhoto,
     ];
@@ -113,7 +101,6 @@ class AttendanceCommunityController extends Controller
     if ($attendance) {
       $attendance->characters()->syncWithoutDetaching([
         ($character->id) => [
-          "journal" => $attendanceData['journal'],
           "status" => $attendanceData['status'],
           'first_photo_path' => $pathJournalPhoto . '/' . $filenameJournalPhoto,
         ]
@@ -128,7 +115,6 @@ class AttendanceCommunityController extends Controller
 
     $attendanceCreated->characters()->syncWithoutDetaching([
       ($character->id) => [
-        "journal" => $attendanceData['journal'],
         "status" => $attendanceData['status'],
         'first_photo_path' => $pathJournalPhoto . '/' . $filenameJournalPhoto,
       ]
@@ -142,9 +128,10 @@ class AttendanceCommunityController extends Controller
    */
   public function show(Community $community, Attendance $attendance, Request $request)
   {
-    $characterId = $request->query('character_id');
+    $characterId = $request->query('c');
     $authCharacterId = auth()->user()->character->id;
     $character = $community->members->firstWhere('id', $authCharacterId);
+
 
     $community->load('attendances');
     $attendance = $community->attendances->find($attendance->id);
@@ -174,6 +161,7 @@ class AttendanceCommunityController extends Controller
     $characterId = auth()->user()->character->id;
 
     $request->validate([
+      "journal" => 'required|string',
       "second_journal_image" => 'required|mimes:png,jpg,jpeg,webp|max:2048', // Validate the image
     ]);
 
@@ -186,7 +174,8 @@ class AttendanceCommunityController extends Controller
       $pathJournalPhoto = 'images/community_attendance/' . $community->id . '/' . Carbon::now()->timestamp . '/' . str()->random(20);
       $fileJournalPhoto->move($pathJournalPhoto, $filenameJournalPhoto);
 
-      $attendance->characters()->syncWithoutDetaching([ $characterId => [
+      $attendance->characters()->syncWithoutDetaching([$characterId => [
+        'journal' => $request->journal,
         'second_photo_path' => $pathJournalPhoto . '/' . $filenameJournalPhoto,
       ]]);
     }
@@ -200,5 +189,13 @@ class AttendanceCommunityController extends Controller
   public function destroy(string $id)
   {
     //
+  }
+
+  public function report(Community $community)
+  {
+    return Community::get()->attendance;
+
+    $pdf = FacadePdf::loadView('attendance_report');
+    return $pdf->download('attendance_report.pdf');
   }
 }

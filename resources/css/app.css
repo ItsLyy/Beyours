@@ -8,6 +8,10 @@
   scrollbar-width: none;
 }
 
+html {
+  background-color: #0d0d0d;
+}
+
 .skill::after {
   transform: scaleY(var(--scale-y));
 }
@@ -52,7 +56,7 @@
   font-weight: 400;
   background-color: #ad49e1;
   border: 1px solid #ad49e1;
-  padding: .5rem 1.5rem;
+  padding: 0.5rem 1.5rem;
 
   transition: ease-in-out 300ms;
 }
@@ -72,4 +76,36 @@
 
 .swal2-styled:hover {
   background: unset;
+}
+
+.react-datepicker__header.react-datepicker-year-header {
+  background-color: #242425;
+  color: #fff;
+  padding: 1rem;
+  display: flex;
+  justify-content: center;
+}
+
+.react-datepicker .react-datepicker__navigation {
+  top: 10px;
+  margin: 0 0.5rem;
+}
+
+.react-datepicker .react-datepicker__navigation span {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.react-datepicker__month-text {
+  padding: 1rem;
+}
+
+.react-datepicker__month-text:hover {
+  background-color: #0d0d0d;
+}
+
+.react-datepicker-popper[data-placement^="top"] .react-datepicker__triangle {
+  fill: #242425;
+  color: #242425;
 }
