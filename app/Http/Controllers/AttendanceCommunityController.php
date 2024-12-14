@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\AttendanceReportResource;
 use App\Http\Resources\MemberAttendancesResource;
 use App\Http\Resources\MemberCommunityResource;
 use App\Models\Attendance;
@@ -9,6 +10,7 @@ use App\Models\Community;
 use Barryvdh\DomPDF\Facade\Pdf as FacadePdf;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\View;
 
 class AttendanceCommunityController extends Controller
 {
@@ -158,11 +160,11 @@ class AttendanceCommunityController extends Controller
 
   public function update(Request $request, Community $community, Attendance $attendance)
   {
-    $characterId = auth()->user()->character->id;
+    $character = auth()->user()->character;
 
     $request->validate([
       "journal" => 'required|string',
-      "second_journal_image" => 'required|mimes:png,jpg,jpeg,webp|max:2048', // Validate the image
+      "second_journal_image" => 'required|mimes:png,jpg,jpeg,webp|max:2048',
     ]);
 
     // Handle file upload if provided
@@ -174,7 +176,7 @@ class AttendanceCommunityController extends Controller
       $pathJournalPhoto = 'images/community_attendance/' . $community->id . '/' . Carbon::now()->timestamp . '/' . str()->random(20);
       $fileJournalPhoto->move($pathJournalPhoto, $filenameJournalPhoto);
 
-      $attendance->characters()->syncWithoutDetaching([$characterId => [
+      $character->attendances()->syncWithoutDetaching([($attendance->id) => [
         'journal' => $request->journal,
         'second_photo_path' => $pathJournalPhoto . '/' . $filenameJournalPhoto,
       ]]);
@@ -193,9 +195,18 @@ class AttendanceCommunityController extends Controller
 
   public function report(Community $community)
   {
-    return Community::get()->attendance;
+    $authCharacterId = auth()->user()->character->id;
+    $character = $community->members->firstWhere('id', $authCharacterId);
 
-    $pdf = FacadePdf::loadView('attendance_report');
-    return $pdf->download('attendance_report.pdf');
+    $startOfMonth = Carbon::parse(request('date'))->startOfMonth();
+    $endOfMonth = Carbon::parse(request('date'))->endOfMonth();
+
+    $attendances = $community->attendances->whereBetween('created_at', [$startOfMonth, $endOfMonth]);
+
+    return inertia('Community/Attendance/Report/Index', [
+      'community' => $community,
+      "character" => new MemberCommunityResource($character),
+      'attendances' => AttendanceReportResource::collection($attendances),
+    ]);
   }
 }

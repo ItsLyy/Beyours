@@ -23,7 +23,7 @@ class AttendanceMemberResource extends JsonResource
         "attendance_id" => $this->pivot->attendance_id,
         "character_id" => $this->pivot->character_id,
         "journal" => $this->pivot->journal,
-        "first_photo_path" => $this->pivot->fist_photo_path,
+        "first_photo_path" => $this->pivot->first_photo_path,
         "second_photo_path" => $this->pivot->second_photo_path,
         "status" => $this->pivot->status,
         "created_at" => Carbon::createFromFormat('Y-m-d H:i:s', $this->pivot->created_at)->toDateTimeString(),

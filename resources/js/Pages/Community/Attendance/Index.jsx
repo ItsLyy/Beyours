@@ -19,6 +19,7 @@ import withReactContent from "sweetalert2-react-content";
 import DatePicker from "react-datepicker";
 import { createPortal } from "react-dom";
 import "react-datepicker/dist/react-datepicker.css";
+import SecondaryButton from "@/Components/SecondaryButton";
 
 export default function Index({
   community,
@@ -28,7 +29,7 @@ export default function Index({
 }) {
   const [swalShown, setSwalShown] = useState(false);
   const [reportDate, setReportDate] = useState(new Date());
-  console.log(queryParams.date);
+  console.log(reportDate);
 
   const queryHandler = (name, value) => {
     const updatedParams = { ...queryParams };
@@ -44,7 +45,7 @@ export default function Index({
     );
   };
 
-  const renderMonthContent = (shortMonth, longMonth, day) => {
+  const renderMonthContent = (month, shortMonth, longMonth, day) => {
     const fullYear = new Date(day).getFullYear();
     const tooltipText = `Tooltip for month: ${longMonth} ${fullYear}`;
 
@@ -58,13 +59,7 @@ export default function Index({
       html: `If you get report on month's selected it will automatically delete the data and export to pdf. Are you sure? <br/>`,
       didOpen: () => setSwalShown(true),
       didClose: () => setSwalShown(false),
-      showDenyButton: true,
-      preConfirm: () => {
-        window.open(
-          route("community.attendance.report", [community.id]),
-          "_blank"
-        );
-      },
+      showConfirmButton: false,
     });
   };
 
@@ -74,17 +69,33 @@ export default function Index({
 
       {swalShown &&
         createPortal(
-          <DatePicker
-            selected={reportDate}
-            onChange={(date) => setReportDate(date)}
-            renderMonthContent={renderMonthContent}
-            calendarClassName="!bg-beyours-600 !font-geist !text-beyours-100"
-            popperClassName="!bg-beyours-600"
-            className="my-4 bg-beyours-600 border-beyours-550"
-            popperPlacement="top"
-            showMonthYearPicker
-            dateFormat="MM/yyyy"
-          />,
+          <div className="flex flex-col justify-center items-center gap-5">
+            <DatePicker
+              selected={reportDate}
+              onChange={(date) => setReportDate(date)}
+              renderMonthContent={renderMonthContent}
+              calendarClassName="!bg-beyours-600 !font-geist !text-beyours-100"
+              popperClassName="!bg-beyours-600"
+              className="my-4 bg-beyours-600 border-beyours-550"
+              popperPlacement="top"
+              showMonthYearPicker
+              dateFormat="MM/yyyy"
+            />
+            <PrimaryButton
+              className="!w-fit h-10"
+              onClick={() => {
+                window.open(
+                  route("community.attendance.report", {
+                    community: community.id,
+                    date: reportDate,
+                  }),
+                  "_blank"
+                );
+              }}
+            >
+              YES
+            </PrimaryButton>
+          </div>,
           Swal.getHtmlContainer()
         )}
 

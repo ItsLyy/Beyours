@@ -19,6 +19,9 @@ class MemberAttendancesResource extends JsonResource
       "fullname" => $this->fullname,
       "profession" => $this->profession,
       "photo_profile" => $this->user->photo_profile,
+      "address" => $this->user->address,
+      "email" => $this->user->email,
+      "phone_number" => $this->user->phone_number,
       "attendances" => new AttendanceMemberResource($this->attendances->first()),
     ];
   }

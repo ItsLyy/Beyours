@@ -52,7 +52,7 @@ export default function Show({ community, character, attendance }) {
           route("community.attendance.update", {
             _method: "put",
             community: community.id,
-            attendance: attendance.id,
+            attendance: attendance.attendance.attendance_id,
           })
         );
       },
