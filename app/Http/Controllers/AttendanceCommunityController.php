@@ -209,4 +209,15 @@ class AttendanceCommunityController extends Controller
       'attendances' => AttendanceReportResource::collection($attendances),
     ]);
   }
+
+  public function verify(Community $community, Attendance $attendance)
+  {
+    $characterId = request('member');
+
+    $attendance->characters()->syncWithoutDetaching([($characterId) => [
+      'verified' => true,
+    ]]);
+
+    return redirect()->route('community.attendance.index', $community->id)->with('success', 'Attendance updated successfully.');
+  }
 }

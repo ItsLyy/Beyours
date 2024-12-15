@@ -14,7 +14,6 @@ import OptionInput from "@/Components/OptionInput";
 import SecondaryButton from "@/Components/SecondaryButton";
 
 export default function Show({ community, character, attendance }) {
-  console.log(attendance);
   const [secondJournalImageName, setSecondJournalImageName] = useState("");
   const [isEdit, setIsEdit] = useState(false);
   const { data, setData, post, processing, errors } = useForm({
@@ -35,6 +34,30 @@ export default function Show({ community, character, attendance }) {
   const secondJournalImageHandler = (e) => {
     setSecondJournalImageName(e.target.value);
     setData("second_journal_image", e.target.files[0]);
+  };
+
+  const verifyHandler = (e) => {
+    e.preventDefault();
+
+    withReactContent(Swal).fire({
+      title: "Are you sure?",
+      showDenyButton: true,
+      confirmButtonText: "Yes",
+      text: "Are you sure want to verify?",
+      icon: "question",
+      denyButtonText: "No",
+      preConfirm: () => {
+        post(
+          route("community.attendance.verify", {
+            _method: "put",
+            community: community.id,
+            attendance: attendance.attendance.attendance_id,
+            character: character,
+            member: attendance.id,
+          })
+        );
+      },
+    });
   };
 
   const submit = (e) => {
@@ -181,6 +204,20 @@ export default function Show({ community, character, attendance }) {
                     errors={errors}
                     cancelHandler={cancelHandler}
                   />
+                ) : (
+                  ""
+                )}
+
+                {character.data.role === "owner" ? (
+                  <div className="mt-16 flex items-center justify-end gap-4">
+                    <PrimaryButton
+                      disabled={processing}
+                      className="text-white !w-fit !h-fit"
+                      onClick={verifyHandler}
+                    >
+                      Verify
+                    </PrimaryButton>
+                  </div>
                 ) : (
                   ""
                 )}

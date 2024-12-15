@@ -17,7 +17,7 @@ class CommunityController extends Controller
   public function index()
   {
     $characterId = auth()->user()->character->id;
-    $community = Community::whereHas('members', function($query) use ($characterId) {
+    $community = Community::whereHas('members', function ($query) use ($characterId) {
       $query->where('characters.id', $characterId);
     })->get();
 
@@ -80,11 +80,15 @@ class CommunityController extends Controller
     $characterId = auth()->user()->character->id;
 
     $community = $community->load('members');
-    $character = $community->members->firstWhere('id', $characterId);
+    $members = $community->members;
+    $character = $members->firstWhere('id', $characterId);
+    $ownerCommunity = $members->firstWhere('community.role', 'owner');
 
     return inertia('Community/Show', [
       "community" => new CommunityResource($community),
       "character" => new MemberCommunityResource($character),
+      "members" => MemberCommunityResource::collection($members),
+      "ownerCommunity" => new MemberCommunityResource($ownerCommunity),
     ]);
   }
 

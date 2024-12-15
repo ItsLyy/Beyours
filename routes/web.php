@@ -9,6 +9,7 @@ use App\Http\Controllers\MemberCommunityController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\TaskController;
 use App\Http\Middleware\CharacterMiddleware;
+use App\Http\Middleware\OwnerCommunityMiddleware;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -28,6 +29,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
   Route::post('/community/join/{token}', [CommunityController::class, 'join'])->name('community.join');
   Route::resource('community.assignment', AssignmentCommunityController::class);
   Route::get('/community/{community}/attendance/report', [AttendanceCommunityController::class, 'report'])->name('community.attendance.report');
+  Route::put('/community/{community}/attendance/{attendance}/verify', [AttendanceCommunityController::class, 'verify'])->middleware(OwnerCommunityMiddleware::class)->name('community.attendance.verify');
   Route::resource('community.attendance', AttendanceCommunityController::class);
   Route::resource('community.member', MemberCommunityController::class);
   Route::resource('community', CommunityController::class);

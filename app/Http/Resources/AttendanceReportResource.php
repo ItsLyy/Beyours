@@ -20,7 +20,9 @@ class AttendanceReportResource extends JsonResource
       "community_id" => $this->community_id,
       "created_at" => Carbon::parse($this->created_at)->format('d F Y'),
       "updated_at" => Carbon::parse($this->created_at)->format('d F Y'),
-      "characters" => MemberAttendancesResource::collection($this->characters),
+      "characters" => AttendanceReportMemberResource::collection(
+        $this->characters
+      ),
     ];
   }
 }

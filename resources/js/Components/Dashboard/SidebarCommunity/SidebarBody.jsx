@@ -1,4 +1,4 @@
-import NavigationButton from "../NavigationButton"
+import NavigationButton from "../NavigationButton";
 import NavigationLabel from "../NavigationLabel";
 import IconDiamondFour from "@/Components/Icons/IconDiamondFour";
 import IconClipboard from "@/Components/Icons/IconClipboard";
@@ -10,20 +10,23 @@ export default function SidebarBody({ role, communityId, attendanced }) {
     <ul className="md:flex-grow">
       <li className="md:w-full flex md:block md:p-4 pl-4 py-4 gap-4 box-border">
         <NavigationButton
-          active={route().current("dashboard")}
+          href={route("community.show", communityId)}
+          active={route().current("community.show")}
         >
-          <IconDiamondFour /> <NavigationLabel isOpen={true}>Overview</NavigationLabel>
+          <IconDiamondFour />
+          <NavigationLabel isOpen={true}>Overview</NavigationLabel>
         </NavigationButton>
-        {
-          attendanced ?
-            <NavigationButton
-              href={route("community.attendance.index", communityId)}
-              active={route().current("community.attendance.index")}
-            >
-              <IconHand />
-              <NavigationLabel isOpen={true}>Attendance</NavigationLabel>
-            </NavigationButton> : ""
-        }
+        {attendanced ? (
+          <NavigationButton
+            href={route("community.attendance.index", communityId)}
+            active={route().current("community.attendance.index")}
+          >
+            <IconHand />
+            <NavigationLabel isOpen={true}>Attendance</NavigationLabel>
+          </NavigationButton>
+        ) : (
+          ""
+        )}
 
         {/* { role === "owner" ?
         <NavigationButton
@@ -33,7 +36,6 @@ export default function SidebarBody({ role, communityId, attendanced }) {
           <NavigationLabel isOpen={true}>Member</NavigationLabel>
         </NavigationButton>
         : "" } */}
-
       </li>
     </ul>
   );

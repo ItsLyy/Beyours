@@ -56,7 +56,7 @@ export default function Index({
     withReactContent(Swal).fire({
       icon: "question",
       title: `Are you want to get report?`,
-      html: `If you get report on month's selected it will automatically delete the data and export to pdf. Are you sure? <br/>`,
+      html: `If you get report on month's selected it will automatically go to pdf stream and you can export it to pdf. Are you sure? <br/>`,
       didOpen: () => setSwalShown(true),
       didClose: () => setSwalShown(false),
       showConfirmButton: false,
@@ -99,7 +99,7 @@ export default function Index({
           Swal.getHtmlContainer()
         )}
 
-      <section className="w-full h-screen box-border text-white flex justify-center items-center flex-col p-8">
+      <section className="w-full h-screen box-border text-white flex justify-center items-center flex-col p-8 py-24 md:py-8">
         <div className="flex justify-between items-center p-2 border-b-beyours-600 border-b-[1px] w-full mb-4 text-sm md:text-base">
           <HeaderSection
             title="Attendance List"
@@ -120,7 +120,7 @@ export default function Index({
                   onClick={exportDataHandler}
                   className="text-nowrap"
                 >
-                  Export PDF
+                  Export
                 </PrimaryButton>
               </>
             ) : (
@@ -173,10 +173,12 @@ export default function Index({
                         >
                           <td className="py-6 px-8 ">
                             <div className="flex items-center gap-4 text-white">
-                              <PhotoProfile
-                                className="size-12"
-                                imageData={attendance.photo_profile || ""}
-                              />
+                              <div>
+                                <PhotoProfile
+                                  className="size-14"
+                                  imageData={attendance.photo_profile || ""}
+                                />
+                              </div>
                               {attendance.fullname || ""}
                             </div>
                             <dl className="xl:hidden flex flex-col gap-3">

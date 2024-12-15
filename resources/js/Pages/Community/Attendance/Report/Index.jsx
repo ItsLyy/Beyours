@@ -13,7 +13,7 @@ import {
 
 export default function Index({ community, character, attendances }) {
   return (
-    <CommunityLayout community={community} character={character}>
+    <CommunityLayout community={community} character={character.data}>
       <Head title="Report" />
 
       <section className="flex flex-col h-screen">
@@ -32,7 +32,6 @@ export default function Index({ community, character, attendances }) {
 }
 
 function ReportDocument({ character, attendances }) {
-  console.log(attendances);
   return (
     <Document
       title="report-attendance"
@@ -41,60 +40,75 @@ function ReportDocument({ character, attendances }) {
     >
       {attendances.map((attendance) => {
         return attendance.characters.map((character) => {
-          return (
-            <Page key={attendance.id} size="A4">
-              <View style={styles.container}>
-                <View style={styles.imageContainer}>
-                  <Image
-                    style={styles.image}
-                    source={"/" + character.attendances.pivot.first_photo_path}
-                  />
-                  <Image
-                    style={styles.image}
-                    source={"/" + character.attendances.pivot.second_photo_path}
-                  />
-                </View>
-                <View style={styles.content}>
-                  <Text style={styles.date}># {attendance.created_at}</Text>
-                  <View style={styles.profile}>
+          if (character.attendances) {
+            return (
+              <Page key={attendance.id} size="A4">
+                <View style={styles.container}>
+                  <View style={styles.imageContainer}>
                     <Image
-                      style={styles.photoProfile}
-                      src={"/" + character.photo_profile}
+                      style={styles.image}
+                      source={
+                        "/" + character.attendances.pivot.first_photo_path || ""
+                      }
                     />
-                    <View>
-                      <Text style={styles.nameProfile}>
-                        {character.fullname}
+                    <Image
+                      style={styles.image}
+                      source={
+                        "/" + character.attendances.pivot.second_photo_path ||
+                        ""
+                      }
+                    />
+                  </View>
+                  <View style={styles.content}>
+                    <Text style={styles.date}># {attendance.created_at}</Text>
+                    <View style={styles.profile}>
+                      <Image
+                        style={styles.photoProfile}
+                        src={"/" + character.photo_profile}
+                      />
+                      <View>
+                        <Text style={styles.nameProfile}>
+                          {character.fullname}
+                        </Text>
+                        <Text style={styles.subProfile}>
+                          {character.email} | {character.phone_number} |{" "}
+                          {character.address}
+                        </Text>
+                      </View>
+                    </View>
+                    <View style={styles.informationContainer}>
+                      <Text style={styles.title}>Status: </Text>
+                      <Text style={styles.value}>
+                        {character.attendances.pivot.status || ""}
                       </Text>
-                      <Text style={styles.subProfile}>
-                        {character.email} | {character.phone_number} |{" "}
-                        {character.address}
+                      <Text style={styles.title}>Journal: </Text>
+                      <Text style={styles.value}>
+                        {character.attendances.pivot.journal ||
+                          "wduadhiaudwhaudhwuiduasudi"}
                       </Text>
+                      <Text style={styles.title}>First Attendance: </Text>
+                      <Text style={styles.value}>
+                        {character.attendances.pivot.created_at || ""}
+                      </Text>
+                      <Text style={styles.title}>Second Attendance: </Text>
+                      <Text style={styles.value}>
+                        {character.attendances.pivot.updated_at || ""}
+                      </Text>
+                      <Text style={styles.title}>PKL:</Text>
+                      <Text style={styles.value}>PT. Tilikgram</Text>
                     </View>
                   </View>
-                  <View style={styles.informationContainer}>
-                    <Text style={styles.title}>Status: </Text>
-                    <Text style={styles.value}>
-                      {character.attendances.pivot.status || ""}
-                    </Text>
-                    <Text style={styles.title}>Journal: </Text>
-                    <Text style={styles.value}>
-                      {character.attendances.pivot.journal ||
-                        "wduadhiaudwhaudhwuiduasudi"}
-                    </Text>
-                    <Text style={styles.title}>PKL:</Text>
-                    <Text style={styles.value}>PT. Tilikgram</Text>
-                  </View>
                 </View>
-              </View>
-              <Text
-                style={styles.pageNumber}
-                render={({ pageNumber, totalPages }) =>
-                  `${pageNumber} / ${totalPages}`
-                }
-                fixed
-              />
-            </Page>
-          );
+                <Text
+                  style={styles.pageNumber}
+                  render={({ pageNumber, totalPages }) =>
+                    `${pageNumber} / ${totalPages}`
+                  }
+                  fixed
+                />
+              </Page>
+            );
+          }
         });
       })}
     </Document>
@@ -183,8 +197,8 @@ const styles = StyleSheet.create({
     backgroundColor: "grey",
   },
   image: {
-    aspectRatio: 9 / 16,
-    height: "100%",
+    aspectRatio: 3 / 4,
+    width: 180,
     objectFit: "cover",
     objectPosition: "center",
     backgroundColor: "grey",
