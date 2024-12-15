@@ -134,33 +134,39 @@ export default function Show({ community, character, attendance }) {
                 />
               </div>
               <div className="w-full max-h-[94%] h-full overflow-y-auto p-1 pb-16">
-                <HeaderInputField
-                  title="Journal"
-                  description="Capture the essence of your activity today in a few sentences. What makes it special?"
-                  className="my-4"
-                  required
-                />
+                {isEdit || data.journal ? (
+                  <>
+                    <HeaderInputField
+                      title="Journal"
+                      description="Capture the essence of your activity today in a few sentences. What makes it special?"
+                      className="my-4"
+                      required
+                    />
 
-                <div className="mt-4">
-                  <TextAreaInput
-                    readOnly={!isEdit}
-                    id="journal"
-                    type="text"
-                    isFocused={true}
-                    name="journal"
-                    value={data.journal}
-                    className="block w-full h-64"
-                    placeholder="Enter your journal"
-                    autoComplete="journal"
-                    onChange={(e) => setData("journal", e.target.value)}
-                    required
-                  />
+                    <div className="mt-4">
+                      <TextAreaInput
+                        readOnly={!isEdit}
+                        id="journal"
+                        type="text"
+                        isFocused={true}
+                        name="journal"
+                        value={data.journal}
+                        className="block w-full h-64"
+                        placeholder="Enter your journal"
+                        autoComplete="journal"
+                        onChange={(e) => setData("journal", e.target.value)}
+                        required
+                      />
 
-                  <InputError
-                    message={errors.profession}
-                    className="mt-2 text-[#fff]"
-                  />
-                </div>
+                      <InputError
+                        message={errors.profession}
+                        className="mt-2 text-[#fff]"
+                      />
+                    </div>
+                  </>
+                ) : (
+                  ""
+                )}
 
                 <HeaderInputField
                   title="Status"

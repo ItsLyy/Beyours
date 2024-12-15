@@ -123,7 +123,7 @@ class CommunityController extends Controller
     $community = Community::where('join_token', $token)->first();
 
     if (!$community) {
-      return to_route('community.index');
+      abort(404, 'Community not found for the provided token.');
     }
 
     $community->members()->syncWithoutDetaching([

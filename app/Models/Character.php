@@ -17,6 +17,7 @@ class Character extends Model
     'health',
     'level',
     'experience',
+    'pkl',
     'user_id',
   ];
 

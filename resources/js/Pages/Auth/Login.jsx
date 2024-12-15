@@ -11,7 +11,7 @@ import { Head, Link, useForm } from "@inertiajs/react";
 
 export default function Login({ status, canResetPassword }) {
   const { data, setData, post, processing, errors, reset } = useForm({
-    email: "",
+    input_type: "",
     password: "",
     remember: false,
   });
@@ -43,19 +43,22 @@ export default function Login({ status, canResetPassword }) {
           <form onSubmit={submit} className="text-beyours-500">
             <div>
               <TextInput
-                id="email"
-                type="email"
-                name="email"
-                value={data.email}
+                id="input_type"
+                type="text"
+                name="input_type"
+                value={data.input_type}
                 className="mt-1 block w-full"
                 autoComplete="username"
-                placeholder="Enter you email"
+                placeholder="Enter you email or username"
                 Icon={IconEmail}
                 isFocused={true}
-                onChange={(e) => setData("email", e.target.value)}
+                onChange={(e) => setData("input_type", e.target.value)}
               />
 
-              <InputError message={errors.email} className="mt-2 text-[#fff]" />
+              <InputError
+                message={errors.input_type}
+                className="mt-2 text-[#fff]"
+              />
             </div>
 
             <div className="mt-4">
@@ -84,7 +87,9 @@ export default function Login({ status, canResetPassword }) {
                   checked={data.remember}
                   onChange={(e) => setData("remember", e.target.checked)}
                 />
-                <span className="ms-2 text-sm text-beyours-250">Remember me</span>
+                <span className="ms-2 text-sm text-beyours-250">
+                  Remember me
+                </span>
               </label>
               {canResetPassword && (
                 <Link

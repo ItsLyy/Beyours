@@ -83,8 +83,7 @@ function ReportDocument({ character, attendances }) {
                       </Text>
                       <Text style={styles.title}>Journal: </Text>
                       <Text style={styles.value}>
-                        {character.attendances.pivot.journal ||
-                          "wduadhiaudwhaudhwuiduasudi"}
+                        {character.attendances.pivot.journal || ""}
                       </Text>
                       <Text style={styles.title}>First Attendance: </Text>
                       <Text style={styles.value}>
@@ -95,7 +94,9 @@ function ReportDocument({ character, attendances }) {
                         {character.attendances.pivot.updated_at || ""}
                       </Text>
                       <Text style={styles.title}>PKL:</Text>
-                      <Text style={styles.value}>PT. Tilikgram</Text>
+                      <Text style={styles.value}>
+                        {character.attendances.pivot.pkl || ""}
+                      </Text>
                     </View>
                   </View>
                 </View>
