@@ -7,14 +7,14 @@ export default function CharacterHealth({ className, character }) {
   const characterCalculation = new CharacterCalculation();
 
   const [maxHealth, setMaxHealth] = useState(
-    characterCalculation.CalculationMaxHealth(character.level)
+    characterCalculation.calculationMaxHealth(character.level)
   );
   const [scaleHealthBar, setScaleHealthBar] = useState(
     character.health / maxHealth
   );
 
   useEffect(() => {
-    setMaxHealth(characterCalculation.CalculationMaxHealth(character.level));
+    setMaxHealth(characterCalculation.calculationMaxHealth(character.level));
   }, [character.level]);
 
   useEffect(() => {

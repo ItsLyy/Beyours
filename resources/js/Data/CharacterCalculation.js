@@ -1,14 +1,24 @@
 class CharacterCalculation {
-  CalculationMaxHealth(level = 1) {
+  calculationMaxHealth(level = 1) {
     return 5 * level;
   }
 
-  CalculationMaxExperience(level = 1) {
+  calculationMaxExperience(level = 1) {
     return 10 ^ level;
   }
 
-  CalculationMaxSkillExperience(level = 1) {
+  calculationMaxSkillExperience(level = 1) {
     return 15 ^ level;
+  }
+
+  calculationExperience({
+    skillExp1,
+    skillExp2,
+    skillExp3,
+    skillExp4,
+    skillExp5,
+  }) {
+    return (skillExp1 + skillExp2 + skillExp3 + skillExp4 + skillExp5) / 5;
   }
 }
 

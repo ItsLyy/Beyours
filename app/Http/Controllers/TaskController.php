@@ -103,7 +103,7 @@ class TaskController extends Controller
   public function show(Task $task)
   {
     return inertia('Task/Show', [
-      "task" => $task,
+      "task" => new TaskResource($task),
     ]);
   }
 
@@ -118,30 +118,40 @@ class TaskController extends Controller
   /**
    * Update the specified resource in storage.
    */
-  public function update(Request $request, string $id)
-  {
-    //
-  }
+  public function update(Request $request, string $id) {}
 
   /**
    * Remove the specified resource from storage.
    */
-  public function destroy(String $id)
+  public function destroy(Task $task)
+  {
+    $character = auth()->user()->character;
+    $task->assignTo()->detach($character->id);
+
+    if ($task->where('assign_by', $character->id)) {
+      $task->delete();
+    }
+
+    return to_route('task.index');
+  }
+
+  public function done(String $id)
   {
     $character = auth()->user()->character;
     $task = Task::find($id);
 
-
     if ($task) {
       if ($character) {
-        $i = 0;
         foreach ($task->rewards as $reward) {
-          $skillImprovement = $reward['quantity'];
-
-          $character->skills[$i]->update([
-            "experience" => $skillImprovement,
-          ]);
-          $i++;
+          foreach ($character->skills as $skill) {
+            if (strtolower($skill->name) === strtolower($reward['name'])) {
+              $skillImprovement = $skill->experience + $reward['quantity'];
+              $skill->update([
+                "experience" => $skillImprovement,
+              ]);
+              $reward->delete();
+            }
+          }
         }
         $characterId = auth()->user()->character->id;
         $task->assignTo()->syncWithoutDetaching([

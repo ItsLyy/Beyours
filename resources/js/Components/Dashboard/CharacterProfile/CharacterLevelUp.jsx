@@ -2,7 +2,7 @@ import CharacterCalculation from "@/Data/CharacterCalculation";
 import StatBar from "../StatBar";
 
 export default function CharacterLevelUp({ className, character }) {
-  const maxExperience = new CharacterCalculation().CalculationMaxExperience(
+  const maxExperience = new CharacterCalculation().calculationMaxExperience(
     character.level
   );
   const progress = character.experience / maxExperience;
@@ -16,7 +16,7 @@ export default function CharacterLevelUp({ className, character }) {
         />
         <span>{`${
           character.experience
-        }/${new CharacterCalculation().CalculationMaxExperience(
+        }/${new CharacterCalculation().calculationMaxExperience(
           character.level
         )}`}</span>
       </div>
