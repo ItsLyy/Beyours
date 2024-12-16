@@ -18,7 +18,7 @@ class User extends Authenticatable
    * @var array<int, string>
    */
   protected $fillable = [
-    'name',
+    'username',
     'email',
     'password',
     'photo_profile',
@@ -49,7 +49,8 @@ class User extends Authenticatable
     ];
   }
 
-  public function character() {
+  public function character()
+  {
     return $this->hasOne(Character::class);
   }
 }

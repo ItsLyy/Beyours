@@ -1,13 +1,14 @@
 export default function CharacterBody({ className, character }) {
+  console.log(character);
   return (
     <table className={className}>
       <tbody>
         <tr>
-          <td className="text-beyours-400 w-24 block">Profession</td>
+          <td className="text-beyours-200 w-24 block">Profession</td>
           <td>: {character.profession}</td>
         </tr>
         <tr>
-          <td className="text-beyours-400 w-24 block">Skill</td>
+          <td className="text-beyours-200 w-24 block">Skill</td>
           <td>
             : {`${character.skills[3].name}, ${character.skills[4].name}`}
           </td>

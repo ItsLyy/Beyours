@@ -11,7 +11,7 @@ import { Head, Link, useForm } from "@inertiajs/react";
 
 export default function Register() {
   const { data, setData, post, processing, errors, reset } = useForm({
-    name: "",
+    username: "",
     email: "",
     password: "",
     password_confirmation: "",
@@ -45,19 +45,22 @@ export default function Register() {
           <form onSubmit={submit}>
             <div>
               <TextInput
-                id="name"
-                name="name"
-                value={data.name}
+                id="username"
+                name="username"
+                value={data.username}
                 className="mt-1 block w-full"
-                autoComplete="name"
+                autoComplete="username"
                 placeholder="Enter your username"
                 Icon={IconUser}
                 isFocused={true}
-                onChange={(e) => setData("name", e.target.value)}
+                onChange={(e) => setData("username", e.target.value)}
                 required
               />
 
-              <InputError message={errors.name} className="mt-2 text-[#fff]" />
+              <InputError
+                message={errors.username}
+                className="mt-2 text-[#fff]"
+              />
             </div>
 
             <div className="mt-4">
@@ -120,9 +123,7 @@ export default function Register() {
             </div>
 
             <div className="mt-16 flex items-center justify-end">
-              <PrimaryButton disabled={processing}>
-                Register
-              </PrimaryButton>
+              <PrimaryButton disabled={processing}>Register</PrimaryButton>
             </div>
           </form>
         </Dialog>

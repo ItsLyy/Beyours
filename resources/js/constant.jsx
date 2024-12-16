@@ -1,5 +1,5 @@
 export const TASK_STATUS_CLASS_MAP = {
-  0: "bg-amber-500",
+  0: "bg-amber-700",
   1: "bg-green-500",
 };
 

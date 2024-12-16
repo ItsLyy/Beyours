@@ -6,38 +6,19 @@ export default function Show({ task }) {
   console.log(task);
   return (
     <AuthenticatedLayout>
-      <div
-        className={
-          "flex justify-center h-fit w-fit overflow-y-scroll "
-        }
-      >
-        <Head title="Detail"/>
-        <table className="border-collapse table-fixed w-fit bg-beyours-700 rounded-md p-4 border-[1px] border-beyours-550">
-          <tbody className="text-white">
-            <tr>
-              <td className="py-4 px-8 border-beyours-550 border-[1px] xl:w-[20%]">Title</td>
-              <td className="py-4 px-8">{task.title}</td>
-            </tr>
-            <tr>
-              <td className="py-4 px-8 border-beyours-550 border-[1px]">Description</td>
-              <td className="py-4 px-8">{task.description}</td>
-            </tr>
-            <tr>
-              <td className="py-4 px-8 border-beyours-550 border-[1px]">Due at</td>
-              <td className="py-4 px-8">{task.due_at}</td>
-            </tr>
-            <tr>
-              <td className="py-4 px-8 border-beyours-550 border-[1px]">Status</td>
-              <td className="p-8" > <span className={TASK_STATUS_CLASS_MAP[task.assignTo || "Present"] + ' p-2 text-white rounded-md'}>{TASK_STATUS_TEXT_MAP[task.assignTo || 'Present'] || "Present"}</span></td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-      <Link
-        className="p-4 bg-beyours-550 rounded-md inline-block box-border m-4"
-          href={route('task.destroy', [task.id])} method="delete">
-            Done
-          </Link>
+      <section className={"h-screen w-fit "}>
+        <Head title="Detail" />
+
+        <div className="bg-beyours-700 h-full w-96"></div>
+
+        {/* <Link
+          className="p-4 bg-beyours-550 rounded-md inline-block box-border m-4"
+          href={route("task.destroy", [task.id])}
+          method="delete"
+        >
+          Done
+        </Link> */}
+      </section>
     </AuthenticatedLayout>
   );
 }

@@ -13,6 +13,7 @@ export default function SidebarBody({ isOpen }) {
           className={isOpen ? "" : "pl-5"}
           href={route("dashboard")}
           active={route().current("dashboard")}
+          aria-label="Home Navigation"
         >
           <IconHome /> <NavigationLabel isOpen={isOpen}>Home</NavigationLabel>
         </NavigationButton>
@@ -20,6 +21,7 @@ export default function SidebarBody({ isOpen }) {
           className={isOpen ? "" : "pl-5"}
           href={route("task.index")}
           active={route().current("task.index")}
+          aria-label="Task Navigation"
         >
           <IconTask /> <NavigationLabel isOpen={isOpen}>Task</NavigationLabel>
         </NavigationButton>
@@ -27,6 +29,7 @@ export default function SidebarBody({ isOpen }) {
           className={isOpen ? "" : "pl-5"}
           href={route("community.index")}
           active={route().current("community.index")}
+          aria-label="Community Navigation"
         >
           <IconCommunity />
           <NavigationLabel isOpen={isOpen}>Community</NavigationLabel>
@@ -35,6 +38,7 @@ export default function SidebarBody({ isOpen }) {
           className={isOpen ? "" : "pl-5"}
           href={route("profile.edit")}
           active={route().current("profile.edit")}
+          aria-label="Profile Navigation"
         >
           <IconUser />
           <NavigationLabel isOpen={isOpen}>Profile</NavigationLabel>

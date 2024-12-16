@@ -22,7 +22,7 @@ export default function SkillTree({ character }) {
           experience={character.data.skills[1].experience}
           level={character.data.skills[1].level}
         >
-          <IconStar className="size-10 stroke-1 relative z-10" />
+          <IconFire className="size-10 stroke-1 relative z-10" />
         </SkillItem>
       </li>
       <li>
@@ -31,7 +31,7 @@ export default function SkillTree({ character }) {
           experience={character.data.skills[2].experience}
           level={character.data.skills[2].level}
         >
-          <IconFire className="size-10 stroke-1 relative z-10" />
+          <IconStar className="size-10 stroke-1 relative z-10" />
         </SkillItem>
       </li>
       <li>
