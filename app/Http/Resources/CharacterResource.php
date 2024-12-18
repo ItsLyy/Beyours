@@ -21,6 +21,8 @@ class CharacterResource extends JsonResource
       'level' => $this->level,
       'experience' => $this->experience,
       'profession' => $this->profession,
+      'pkl' => $this->pkl,
+      'instructor' => $this->instructor,
       'skills' => SkillResource::collection($this->skills),
       'created_at' => $this->created_at,
       'photo_profile' => $this->user->photo_profile,

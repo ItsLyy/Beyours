@@ -18,6 +18,8 @@ class AttendanceReportMemberResource extends JsonResource
       "id" => $this->id,
       "fullname" => $this->fullname,
       "profession" => $this->profession,
+      "pkl" => $this->pkl,
+      "instructor" => $this->instructor,
       "photo_profile" => $this->user->photo_profile,
       "address" => $this->user->address,
       "email" => $this->user->email,

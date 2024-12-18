@@ -6,7 +6,7 @@ import { useEffect, useState } from "react";
 import { AuthenticatedProvider } from "@/Contexts/AuthenticatedContext";
 
 export default function AuthenticatedLayout({ children, isMain = true }) {
-  const character = usePage().props.auth.character;
+  const character = usePage().props.auth.character ?? null;
   const [onlineUsers, setOnlineUsers] = useState({});
   const isUsersOnline = (characterId) => onlineUsers[characterId];
 
@@ -41,17 +41,17 @@ export default function AuthenticatedLayout({ children, isMain = true }) {
 
     return () => Echo.leave("online");
   }, []);
-
-  useEffect(() => {
-    Echo.private(`leveling.character.${character.id}`)
-      .error((error) => {
-        console.log(error);
-      })
-      .listen("LevelCharacterEvent", (e) => {
-        console.log(e.character);
-      });
-  }, []);
-
+  if (character) {
+    useEffect(() => {
+      Echo.private(`leveling.character.${character.id}`)
+        .error((error) => {
+          console.log(error);
+        })
+        .listen("LevelCharacterEvent", (e) => {
+          console.log(e.character);
+        });
+    }, []);
+  }
   return (
     <div className="text-white bg-beyours-750 flex">
       {character ? <Sidebar /> : ""}

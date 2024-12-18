@@ -11,20 +11,38 @@ import {
   Text,
   View,
 } from "@react-pdf/renderer";
+import { useState } from "react";
 
-const Index = ({ character, attendances, attendancesv2 }) => {
-  console.log(attendancesv2);
+const Index = ({ character, attendances, memberAttendances }) => {
+  const [isMonthFilter, setIsMonthFilter] = useState(false);
+
+  const changeFilterHandler = (e) => {
+    e.preventDefault();
+
+    setIsMonthFilter(!isMonthFilter);
+  };
+
   return (
     <>
       <Head title="Report" />
 
       <section className="flex flex-col h-screen w-full">
+        <div className="h-48">
+          <button onClick={changeFilterHandler}>CHANGE FILTER</button>
+        </div>
         <div className="w-full h-full">
           <PDFViewer className="w-full h-full">
-            <ReportDocument
-              attendances={attendances.data}
-              character={character}
-            />
+            {isMonthFilter ? (
+              <ReportDocument1
+                members={memberAttendances}
+                character={character}
+              />
+            ) : (
+              <ReportDocument
+                attendances={attendances.data}
+                character={character}
+              />
+            )}
           </PDFViewer>
         </div>
       </section>
@@ -32,91 +50,103 @@ const Index = ({ character, attendances, attendancesv2 }) => {
   );
 };
 
-// const ReportDocument = ({ character, attendances }) => {
-//   return (
-//     <Document
-//       title="report-attendance"
-//       creator={character.data.fullname}
-//       producer={character.data.fullname}
-//     >
-//       {attendances.map((attendance) => {
-//         return attendance.characters.map((character) => {
-//           if (character.attendances) {
-//             return (
-//               <Page key={attendance.id} size="A4">
-//                 <View style={styles.tableHead}>
-//                   <View style={styles.tableHeadRow}>
-//                     <Text style={styles.tableHeadTitle}>
-//                       Nama Peserta Didik
-//                     </Text>
-//                     <Text style={styles.tableHeadValue}>: ...</Text>
-//                   </View>
-//                   <View style={styles.tableHeadRow}>
-//                     <Text style={styles.tableHeadTitle}>
-//                       Dunia Kerja Tempat PKL
-//                     </Text>
-//                     <Text style={styles.tableHeadValue}>: ...</Text>
-//                   </View>
-//                   <View style={styles.tableHeadRow}>
-//                     <Text style={styles.tableHeadTitle}>Nama Instruktur</Text>
-//                     <Text style={styles.tableHeadValue}>: ...</Text>
-//                   </View>
-//                   <View style={styles.tableHeadRow}>
-//                     <Text style={styles.tableHeadTitle}>
-//                       Nama Guru Mapel PKL
-//                     </Text>
-//                     <Text style={styles.tableHeadValue}>: ...</Text>
-//                   </View>
-//                 </View>
-//                 <View style={styles.tableContent}>
-//                   <View style={styles.tableRow}>
-//                     <View style={styles.tableHeader1}>
-//                       <Text style={styles.tableTextTitle}>No.</Text>
-//                     </View>
-//                     <View style={styles.tableHeader2}>
-//                       <Text style={styles.tableTextTitle}>Hari/Tanggal</Text>
-//                     </View>
-//                     <View style={styles.tableHeader3}>
-//                       <Text style={styles.tableTextTitle}>
-//                         Unit Kerja/Pekerjaan
-//                       </Text>
-//                     </View>
-//                     <View style={styles.tableHeader4}>
-//                       <Text style={styles.tableTextTitle}>Catatan</Text>
-//                     </View>
-//                   </View>
-//                   <View style={styles.tableRow}>
-//                     <View style={styles.tableColumn1}>
-//                       <Text style={styles.tableText}>1</Text>
-//                     </View>
-//                     <View style={styles.tableColumn2}>
-//                       <Text style={styles.tableText}>ww</Text>
-//                     </View>
-//                     <View style={styles.tableColumn3}>
-//                       <Text style={styles.tableText}>jwdahjwak</Text>
-//                     </View>
-//                     <View style={styles.tableColumn4}>
-//                       <Text style={styles.tableText}>
-//                         isofjesifosidwa dwad awda dwa
-//                       </Text>
-//                     </View>
-//                   </View>
-//                 </View>
-//                 <Text
-//                   style={styles.pageNumber}
-//                   render={({ pageNumber, totalPages }) =>
-//                     `${pageNumber} / ${totalPages}`
-//                   }
-//                   fixed
-//                 />
-//               </Page>
-//             );
-//           }
-//         });
-//       })}
-//     </Document>
-//   );
-// };
+const ReportDocument1 = ({ character, members }) => {
+  let i = 1;
+  return (
+    <Document
+      title="report-attendance"
+      creator={character.data.fullname}
+      producer={character.data.fullname}
+    >
+      {members.map((member) => {
+        if (member.attendances) {
+          return (
+            <Page key={member.id} size="A4">
+              <View style={styles.tableHead}>
+                <View style={styles.tableHeadRow}>
+                  <Text style={styles.tableHeadTitle}>Nama Peserta Didik</Text>
+                  <Text style={styles.tableHeadValue}>: {member.fullname}</Text>
+                </View>
+                <View style={styles.tableHeadRow}>
+                  <Text style={styles.tableHeadTitle}>
+                    Dunia Kerja Tempat PKL
+                  </Text>
+                  <Text style={styles.tableHeadValue}>: {member.pkl}</Text>
+                </View>
+                <View style={styles.tableHeadRow}>
+                  <Text style={styles.tableHeadTitle}>Nama Instruktur</Text>
+                  <Text style={styles.tableHeadValue}>
+                    : {member.instructor}
+                  </Text>
+                </View>
+                <View style={styles.tableHeadRow}>
+                  <Text style={styles.tableHeadTitle}>Nama Guru Mapel PKL</Text>
+                  <Text style={styles.tableHeadValue}>: ...</Text>
+                </View>
+              </View>
+              <View style={styles.tableContent}>
+                <View style={styles.tableRow}>
+                  <View style={styles.tableHeader1}>
+                    <Text style={styles.tableTextTitle}>No.</Text>
+                  </View>
+                  <View style={styles.tableHeader2}>
+                    <Text style={styles.tableTextTitle}>Hari/Tanggal</Text>
+                  </View>
+                  <View style={styles.tableHeader3}>
+                    <Text style={styles.tableTextTitle}>
+                      Unit Kerja/Pekerjaan
+                    </Text>
+                  </View>
+                  <View style={styles.tableHeader4}>
+                    <Text style={styles.tableTextTitle}>Catatan</Text>
+                  </View>
+                </View>
+                {member.attendances.length > 0
+                  ? member.attendances.map((attendance) => {
+                      return (
+                        <View key={attendance.id} style={styles.tableRow}>
+                          <View style={styles.tableColumn1}>
+                            <Text style={styles.tableText}>{i++}</Text>
+                          </View>
+                          <View style={styles.tableColumn2}>
+                            <Text style={styles.tableText}>
+                              {attendance.created_at}
+                            </Text>
+                          </View>
+                          <View style={styles.tableColumn3}>
+                            <Text style={styles.tableText}>
+                              {attendance.pivot.journal}
+                            </Text>
+                          </View>
+                          <View style={styles.tableColumn4}>
+                            <Image
+                              style={styles.tableImage}
+                              source={"/" + attendance.pivot.first_photo_path}
+                            />
+                            <Image
+                              style={styles.tableImage}
+                              source={"/" + attendance.pivot.second_photo_path}
+                            />
+                          </View>
+                        </View>
+                      );
+                    })
+                  : ""}
+              </View>
+              <Text
+                style={styles.pageNumber}
+                render={({ pageNumber, totalPages }) =>
+                  `${pageNumber} / ${totalPages}`
+                }
+                fixed
+              />
+            </Page>
+          );
+        }
+      })}
+    </Document>
+  );
+};
 
 const ReportDocument = ({ character, attendances }) => {
   return (
@@ -166,25 +196,26 @@ const ReportDocument = ({ character, attendances }) => {
                     <View style={styles.informationContainer}>
                       <Text style={styles.title}>Status: </Text>
                       <Text style={styles.value}>
-                        {character.attendances.pivot.status || ""}
+                        {character.attendances.pivot.status || "-"}
                       </Text>
                       <Text style={styles.title}>Journal: </Text>
                       <Text style={styles.value}>
-                        {character.attendances.pivot.journal ||
-                          "wduadhiaudwhaudhwuiduasudi"}
+                        {character.attendances.pivot.journal || "-"}
                       </Text>
                       <Text style={styles.title}>First Attendance: </Text>
                       <Text style={styles.value}>
                         {character.attendances.pivot.first_attendance_time ||
-                          ""}
+                          "-"}
                       </Text>
                       <Text style={styles.title}>Second Attendance: </Text>
                       <Text style={styles.value}>
                         {character.attendances.pivot.second_attendance_time ||
-                          ""}
+                          "-"}
                       </Text>
                       <Text style={styles.title}>PKL:</Text>
-                      <Text style={styles.value}>PT. Tilikgram</Text>
+                      <Text style={styles.value}>{character.pkl}</Text>
+                      <Text style={styles.title}>Instructor:</Text>
+                      <Text style={styles.value}>{character.instructor}</Text>
                     </View>
                   </View>
                 </View>
@@ -367,6 +398,9 @@ const styles = StyleSheet.create({
     borderColor: "black",
     padding: 4,
     width: "30%",
+    display: "flex",
+    flexDirection: "row",
+    gap: 2,
   },
   tableTextTitle: {
     width: "100%",
@@ -392,6 +426,10 @@ const styles = StyleSheet.create({
   tableHeadValue: {
     width: "70%",
     fontSize: 12,
+  },
+  tableImage: {
+    aspectRatio: 3 / 4,
+    width: 50,
   },
 });
 

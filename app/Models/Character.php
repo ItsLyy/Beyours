@@ -18,6 +18,8 @@ class Character extends Model
     'level',
     'experience',
     'user_id',
+    'pkl',
+    'instructor',
   ];
 
   protected $hidden = [

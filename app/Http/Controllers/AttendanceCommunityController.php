@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\AttendanceReportMemberResource;
 use App\Http\Resources\AttendanceReportResource;
 use App\Http\Resources\MemberAttendancesResource;
 use App\Http\Resources\MemberCommunityResource;
@@ -136,6 +137,7 @@ class AttendanceCommunityController extends Controller
     $community->load('attendances');
     $attendance = $community->attendances->find($attendance->id);
 
+
     return inertia('Community/Attendance/Show', [
       "community" => $community,
       "character" => new MemberCommunityResource($character),
@@ -200,13 +202,24 @@ class AttendanceCommunityController extends Controller
     $endOfMonth = Carbon::parse(request('date'))->endOfMonth();
 
     $attendances = $community->attendances->whereBetween('created_at', [$startOfMonth, $endOfMonth]);
-    $attendancesv2 = auth()->user()->character->with('attendances')->first();
+    $members = $community->members;
+    $memberAttendances = $members->load('attendances')->map(function ($member) use ($community) {
+      return [
+        "id" => $member->id,
+        "fullname" => $member->fullname,
+        "pkl" => $member->pkl,
+        "instructor" => $member->instructor,
+        "attendances" => $member->attendances->filter(function ($attendance) use ($community) {
+          return $attendance->community_id == $community->id;
+        }),
+      ];
+    })->whereBetween('attendances.created_at', $startOfMonth, $endOfMonth);
 
     return inertia('Community/Attendance/Report/Index', [
-      'attendancesv2' => $attendancesv2,
       'community' => $community,
       "character" => new MemberCommunityResource($character),
       'attendances' => AttendanceReportResource::collection($attendances),
+      'memberAttendances' => $memberAttendances,
     ]);
   }
 

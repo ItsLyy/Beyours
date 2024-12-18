@@ -56,7 +56,7 @@ const Create = ({ community }) => {
               className="flex flex-col 2xl:flex-row gap-4 h-full "
               onSubmit={submit}
             >
-              <div className="flex gap-2 w-full min-w-fit flex-row h-full">
+              <div className="flex gap-2 flex-col w-full min-w-fit md:flex-row h-full">
                 <img
                   src={
                     data.first_journal_image
@@ -65,7 +65,7 @@ const Create = ({ community }) => {
                   }
                   alt="First Journal"
                   className={
-                    "w-full 2xl:w-72 box-border h-fit aspect-[9/16] border-[1px] border-beyours-550 bg-beyours-600 rounded-md text-transparent " +
+                    "w-72 box-border h-fit aspect-[3/4] border-[1px] border-beyours-550 bg-beyours-600 rounded-md text-transparent " +
                     (data.first_journal_image
                       ? "object-cover object-center"
                       : " grayscale")
@@ -79,7 +79,7 @@ const Create = ({ community }) => {
                   }
                   alt="Second Journal"
                   className={
-                    "w-full 2xl:w-72 box-border h-fit aspect-[9/16] border-[1px] border-beyours-550 bg-beyours-600 rounded-md text-transparent " +
+                    "w-72 box-border h-fit aspect-[3/4] border-[1px] border-beyours-550 bg-beyours-600 rounded-md text-transparent " +
                     (data.second_journal_image
                       ? "object-cover object-center"
                       : " grayscale")

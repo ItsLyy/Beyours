@@ -30,6 +30,8 @@ export default function Create() {
     address: "",
     photo_profile: "",
     character_banner: "",
+    pkl: "",
+    instructor: "",
   });
 
   const photoProfileHandler = (e) => {
@@ -239,6 +241,60 @@ export default function Create() {
                         className="mt-2 text-[#fff]"
                       />
                     </div>
+                  </div>
+
+                  <HeaderInputField
+                    title="PKL"
+                    description="this name will displayed in the community and friend"
+                    className="my-4"
+                    required
+                  />
+
+                  <div>
+                    <TextInput
+                      id="pkl"
+                      name="pkl"
+                      value={data.pkl}
+                      className="block w-full"
+                      autoComplete="pkl"
+                      placeholder="Enter your full name"
+                      Icon={IconUser}
+                      isFocused={true}
+                      onChange={(e) => setData("pkl", e.target.value)}
+                      required
+                    />
+
+                    <InputError
+                      message={errors.pkl}
+                      className="mt-2 text-[#fff]"
+                    />
+                  </div>
+
+                  <HeaderInputField
+                    title="Instructor"
+                    description="this name will displayed in the community and friend"
+                    className="my-4"
+                    required
+                  />
+
+                  <div>
+                    <TextInput
+                      id="instructor"
+                      name="instructor"
+                      value={data.instructor}
+                      className="block w-full"
+                      autoComplete="instructor"
+                      placeholder="Enter your full name"
+                      Icon={IconUser}
+                      isFocused={true}
+                      onChange={(e) => setData("instructor", e.target.value)}
+                      required
+                    />
+
+                    <InputError
+                      message={errors.instructor}
+                      className="mt-2 text-[#fff]"
+                    />
                   </div>
 
                   <HeaderInputField
