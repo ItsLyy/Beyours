@@ -19,17 +19,11 @@ import withReactContent from "sweetalert2-react-content";
 import DatePicker from "react-datepicker";
 import { createPortal } from "react-dom";
 import "react-datepicker/dist/react-datepicker.css";
-import SecondaryButton from "@/Components/SecondaryButton";
+import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 
-export default function Index({
-  community,
-  character,
-  attendances,
-  queryParams = null,
-}) {
+const Index = ({ community, character, attendances, queryParams = null }) => {
   const [swalShown, setSwalShown] = useState(false);
   const [reportDate, setReportDate] = useState(new Date());
-  console.log(reportDate);
 
   const queryHandler = (name, value) => {
     const updatedParams = { ...queryParams };
@@ -64,7 +58,7 @@ export default function Index({
   };
 
   return (
-    <CommunityLayout community={community} character={character.data}>
+    <>
       <Head title="Attendance" />
 
       {swalShown &&
@@ -208,12 +202,16 @@ export default function Index({
                                 <div className="flex flex-col gap-3">
                                   <span className="p-2 bg-beyours-550 w-fit text-nowrap rounded-md text-sm">
                                     {attendance.attendances
-                                      ? attendance.attendances.pivot.created_at
+                                      ? attendance.attendances.pivot
+                                          .first_attendance_time ||
+                                        "0000-00-00 00:00:00"
                                       : "0000-00-00 00:00:00"}
                                   </span>
                                   <span className="p-2 bg-beyours-550 w-fit text-nowrap rounded-md text-sm">
                                     {attendance.attendances
-                                      ? attendance.attendances.pivot.updated_at
+                                      ? attendance.attendances.pivot
+                                          .second_attendance_time ||
+                                        "0000-00-00 00:00:00"
                                       : "0000-00-00 00:00:00"}
                                   </span>
                                 </div>
@@ -265,12 +263,16 @@ export default function Index({
                             <div className="flex flex-col gap-3">
                               <span className="p-2 bg-beyours-550 w-fit text-nowrap rounded-md text-sm">
                                 {attendance.attendances
-                                  ? attendance.attendances.pivot.created_at
+                                  ? attendance.attendances.pivot
+                                      .first_attendance_time ||
+                                    "0000-00-00 00:00:00"
                                   : "0000-00-00 00:00:00"}
                               </span>
                               <span className="p-2 bg-beyours-550 w-fit text-nowrap rounded-md text-sm">
                                 {attendance.attendances
-                                  ? attendance.attendances.pivot.updated_at
+                                  ? attendance.attendances.pivot
+                                      .second_attendance_time ||
+                                    "0000-00-00 00:00:00"
                                   : "0000-00-00 00:00:00"}
                               </span>
                             </div>
@@ -296,10 +298,10 @@ export default function Index({
                             </span>
                           </td>
                           <td className="py-6 px-8 ">
-                            <div className="h-full w-full flex justify-end">
+                            <div className="h-full w-full flex justify-end items-center">
                               {attendance.attendances ? (
                                 <Link
-                                  className="rounded-full bg-beyours-1100 border-[1px] border-beyours-900 p-[4px] hover:bg-beyours-900 hover:scale-110 transition-all ease-in-out duration-300 "
+                                  className="rounded-full w-fit h-fit bg-beyours-1100 border-[1px] border-beyours-900 p-[4px] hover:bg-beyours-900 hover:scale-110 transition-all ease-in-out duration-300 "
                                   href={route("community.attendance.show", {
                                     community: community.id,
                                     attendance: attendance.attendances.id,
@@ -323,6 +325,21 @@ export default function Index({
           <div className="w-full flex absolute bottom-0 bg-beyours-650 border-t-beyours-600 border-t-[1px] px-6 py-4 h-20 box-border"></div>
         </div>
       </section>
-    </CommunityLayout>
+    </>
   );
-}
+};
+
+Index.layout = (page) => {
+  return (
+    <AuthenticatedLayout isMain={false}>
+      <CommunityLayout
+        community={page.props.community}
+        character={page.props.character.data}
+      >
+        {page}
+      </CommunityLayout>
+    </AuthenticatedLayout>
+  );
+};
+
+export default Index;

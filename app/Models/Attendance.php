@@ -21,6 +21,6 @@ class Attendance extends Model
 
   public function characters()
   {
-    return $this->belongsToMany(Character::class, 'community_attendances')->as('attendance')->withTimestamps()->withPivot('first_photo_path', 'second_photo_path', 'journal', 'status', 'verified');
+    return $this->belongsToMany(Character::class, 'community_attendances')->as('attendance')->withPivot('first_photo_path', 'second_photo_path', 'journal', 'status', 'verified', 'first_attendance_time', 'second_attendance_time');
   }
 }

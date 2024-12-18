@@ -48,7 +48,7 @@ export default function Login({ status, canResetPassword }) {
                 name="input_type"
                 value={data.input_type}
                 className="mt-1 block w-full"
-                autoComplete="username"
+                autoComplete="email"
                 placeholder="Enter you email or username"
                 Icon={IconEmail}
                 isFocused={true}

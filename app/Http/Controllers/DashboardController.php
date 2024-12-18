@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\LevelCharacterEvent;
 use App\Http\Resources\CharacterResource;
 use App\Models\CharacterCommunity;
 use Illuminate\Console\View\Components\Task;

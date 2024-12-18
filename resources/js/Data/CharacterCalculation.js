@@ -4,11 +4,11 @@ class CharacterCalculation {
   }
 
   calculationMaxExperience(level = 1) {
-    return 10 ^ level;
+    return Math.pow(10, level);
   }
 
   calculationMaxSkillExperience(level = 1) {
-    return 15 ^ level;
+    return Math.pow(15, level);
   }
 
   calculationExperience({

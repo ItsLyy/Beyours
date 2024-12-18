@@ -31,9 +31,10 @@ class AttendanceCommunityController extends Controller
       $endOfDay = Carbon::parse(request('date'))->endOfDay();
     }
 
+
     $members = $community->members()->wherePivot("role", "!=", "owner")
       ->with(['attendances' => function ($query) use ($startOfDay, $endOfDay, $community) {
-        $query->whereBetween('attendances.created_at', [$startOfDay, $endOfDay])->where('attendances.community_id', $community->id);
+        return $query->whereBetween('attendances.created_at', [$startOfDay, $endOfDay])->where('attendances.community_id', $community->id);
       }])
       ->get();
 
@@ -87,11 +88,6 @@ class AttendanceCommunityController extends Controller
       $fileJournalPhoto->move($pathJournalPhoto, $filenameJournalPhoto);
     }
 
-    $attendanceData = [
-      'status' => $validatedAttendance['status'],
-      'photo_path' => $pathJournalPhoto . '/' . $filenameJournalPhoto,
-    ];
-
     $startOfDay = Carbon::today();
     $endOfDay = Carbon::tomorrow();
 
@@ -103,8 +99,9 @@ class AttendanceCommunityController extends Controller
     if ($attendance) {
       $attendance->characters()->syncWithoutDetaching([
         ($character->id) => [
-          "status" => $attendanceData['status'],
-          'first_photo_path' => $pathJournalPhoto . '/' . $filenameJournalPhoto,
+          "status" => $validatedAttendance['status'],
+          "first_photo_path" => $pathJournalPhoto . '/' . $filenameJournalPhoto,
+          "first_attendance_time" => Carbon::now(),
         ]
       ]);
 
@@ -117,8 +114,9 @@ class AttendanceCommunityController extends Controller
 
     $attendanceCreated->characters()->syncWithoutDetaching([
       ($character->id) => [
-        "status" => $attendanceData['status'],
+        "status" => $validatedAttendance['status'],
         'first_photo_path' => $pathJournalPhoto . '/' . $filenameJournalPhoto,
+        "first_attendance_time" => Carbon::now(),
       ]
     ]);
 
@@ -167,7 +165,6 @@ class AttendanceCommunityController extends Controller
       "second_journal_image" => 'required|mimes:png,jpg,jpeg,webp|max:2048',
     ]);
 
-    // Handle file upload if provided
     if ($request->hasFile('second_journal_image')) {
       $fileJournalPhoto = $request->file('second_journal_image');
       $extensionJournalPhoto = $fileJournalPhoto->getClientOriginalExtension();
@@ -179,6 +176,7 @@ class AttendanceCommunityController extends Controller
       $character->attendances()->syncWithoutDetaching([($attendance->id) => [
         'journal' => $request->journal,
         'second_photo_path' => $pathJournalPhoto . '/' . $filenameJournalPhoto,
+        'second_attendance_time' => Carbon::now(),
       ]]);
     }
 

@@ -3,7 +3,7 @@ import CharacterInfo from "./CharacterInfo";
 
 export default function CharacterProfile() {
   return (
-    <div className="w-80 h-fit text-white">
+    <div className="w-80 h-full text-white">
       <BannerCharacter />
       <CharacterInfo />
     </div>

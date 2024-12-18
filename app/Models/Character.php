@@ -49,6 +49,22 @@ class Character extends Model
     return $this->belongsToMany(
       Attendance::class,
       'community_attendances'
-    )->withTimestamps()->withPivot('first_photo_path', 'second_photo_path', 'journal', 'status', 'verified');
+    )->withPivot('first_photo_path', 'second_photo_path', 'journal', 'status', 'verified', 'first_attendance_time', 'second_attendance_time');
+  }
+
+  public function checkLevelUp()
+  {
+    $maxExperience = 10 ** $this->level;
+
+    if ($this->experience >= $maxExperience) {
+      $this->update(['level' => $this->level + 1]);
+    }
+
+    $this->skills->each(function ($skill) {
+      $maxSkillExperience = 15 ** $skill->level;
+      if ($skill->experience >= $maxSkillExperience) {
+        $skill->update(['level' => $skill->level + 1]);
+      }
+    });
   }
 }

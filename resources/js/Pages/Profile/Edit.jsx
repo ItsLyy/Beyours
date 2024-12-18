@@ -4,9 +4,9 @@ import DeleteUserForm from "./Partials/DeleteUserForm";
 import UpdatePasswordForm from "./Partials/UpdatePasswordForm";
 import UpdateProfileInformationForm from "./Partials/UpdateProfileInformationForm";
 
-export default function Edit({ mustVerifyEmail, status }) {
+const Edit = ({ mustVerifyEmail, status }) => {
   return (
-    <AuthenticatedLayout>
+    <>
       <Head title="Profile" />
 
       <div className="py-12 pb-24 xl:pb-12">
@@ -28,6 +28,10 @@ export default function Edit({ mustVerifyEmail, status }) {
           </div>
         </div>
       </div>
-    </AuthenticatedLayout>
+    </>
   );
-}
+};
+
+Edit.layout = (page) => <AuthenticatedLayout>{page}</AuthenticatedLayout>;
+
+export default Edit;

@@ -2,7 +2,7 @@ import CharacterCalculation from "@/Data/CharacterCalculation";
 
 export default function SkillItem({ children, name, level, experience }) {
   const maxExperienceSkill =
-    new CharacterCalculation().calculationMaxSkillExperience();
+    new CharacterCalculation().calculationMaxSkillExperience(level);
 
   return (
     <div className="text-center">

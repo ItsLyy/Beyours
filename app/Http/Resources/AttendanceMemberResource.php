@@ -26,8 +26,8 @@ class AttendanceMemberResource extends JsonResource
         "first_photo_path" => $this->pivot->first_photo_path,
         "second_photo_path" => $this->pivot->second_photo_path,
         "status" => $this->pivot->status,
-        "created_at" => Carbon::createFromFormat('Y-m-d H:i:s', $this->pivot->created_at)->toDateTimeString(),
-        "updated_at" => Carbon::createFromFormat('Y-m-d H:i:s', $this->pivot->updated_at)->toDateTimeString(),
+        "first_attendance_time" => $this->pivot->first_attendance_time ? Carbon::createFromFormat('Y-m-d H:i:s', $this->pivot->first_attendance_time)->toDateTimeString() : null,
+        "second_attendance_time" => $this->pivot->second_attendance_time ? Carbon::createFromFormat('Y-m-d H:i:s', $this->pivot->second_attendance_time)->toDateTimeString() : null,
         "verified" => $this->pivot->verified,
       ],
     ];

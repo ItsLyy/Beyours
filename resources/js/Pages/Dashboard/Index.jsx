@@ -1,5 +1,4 @@
 import BannerCharacter from "@/Components/Dashboard/BannerCharacter";
-import CharacterProfile from "@/Components/Dashboard/CharacterProfile";
 import CharacterInfo from "@/Components/Dashboard/CharacterProfile/CharacterInfo";
 import ContactList from "@/Components/Dashboard/ContactList";
 import HeaderSection from "@/Components/Dashboard/HeaderSection";
@@ -8,11 +7,11 @@ import TaskOverview from "@/Components/Dashboard/Table/TaskOverview";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Head, usePage } from "@inertiajs/react";
 
-export default function DashboardHome({ tasks, character, globalFriends }) {
+function DashboardHome({ tasks, character, globalFriends }) {
   const user = usePage().props.auth.user;
   const titles = ["Task", "Status"];
   return (
-    <AuthenticatedLayout>
+    <>
       <Head title="Dashboard" />
 
       <section className="w-full h-screen box-border p-8">
@@ -22,12 +21,15 @@ export default function DashboardHome({ tasks, character, globalFriends }) {
             subTitle={`Welcome back, ${user.name}`}
           />
           <div className="flex flex-col gap-4 md:flex-row md:h-[90%]">
-            <div className="bg-beyours-700 rounded-md overflow-hidden border-[1px] border-beyours-550 flex-grow col-span-1 row-span-2 relative md:w-[28rem] md:h-fit">
+            <div className="bg-beyours-700 h-[40rem] md:h-auto rounded-md overflow-hidden border-[1px] border-beyours-550 flex-grow col-span-1 row-span-2 relative md:w-[28rem] 2xl:w-[40rem]">
               <BannerCharacter
                 character={character}
-                className="h-auto w-full after:absolute after:bottom-0 after:left-0 after:bg-gradient-to-t after:from-beyours-700 after:h-full after:w-full"
+                className="h-full w-full after:absolute after:bottom-0 after:left-0 after:bg-gradient-to-t after:from-[#010101] after:from-15% after:h-full after:w-full"
               />
-              <CharacterInfo character={character} className="relative z-10" />
+              <CharacterInfo
+                character={character}
+                className="z-10 overflow-y-auto absolute bottom-0"
+              />
             </div>
             <div className="grid grid-cols-1 gap-4 h-full w-full md:grid-cols-3 grid-rows-3 xl:grid-rows-[1fr] box-border">
               <div className="bg-beyours-700 rounded-md max-h-96 border-[1px] border-beyours-550 col-span-1 row-span-1 md:col-span-3 md:row-span-2 md:max-h-none xl:col-span-2 xl:row-span-3">
@@ -43,6 +45,12 @@ export default function DashboardHome({ tasks, character, globalFriends }) {
           </div>
         </div>
       </section>
-    </AuthenticatedLayout>
+    </>
   );
 }
+
+DashboardHome.layout = (page) => (
+  <AuthenticatedLayout>{page}</AuthenticatedLayout>
+);
+
+export default DashboardHome;

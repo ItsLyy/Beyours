@@ -10,17 +10,15 @@ import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import { Head, Link } from "@inertiajs/react";
 import { useState } from "react";
 
-export default function Index({ tasks }) {
+const Index = ({ tasks }) => {
   const [searchValue, setSearchValue] = useState("");
-
-  console.log(tasks);
 
   const searchHandler = (e) => {
     setSearchValue(e.target.value);
   };
 
   return (
-    <AuthenticatedLayout>
+    <>
       <Head title="Task" />
 
       <section className="w-full h-screen p-8">
@@ -47,7 +45,7 @@ export default function Index({ tasks }) {
           </div>
           {/* Content */}
           <div className="w-full h-4/5 box-border bg-beyours-700 rounded-md relative">
-            <div className="w-full max-h-full overflow-y-auto block">
+            <div className="w-full max-h-full overflow-y-auto block pb-24">
               <table className="w-full h-full table-fixed border-collapse">
                 <thead className="border-b-[2px] h-12 border-b-beyours-600 bg-beyours-650 sticky top-0">
                   <tr className="h-16">
@@ -158,6 +156,10 @@ export default function Index({ tasks }) {
           </div>
         </div>
       </section>
-    </AuthenticatedLayout>
+    </>
   );
-}
+};
+
+Index.layout = (page) => <AuthenticatedLayout>{page}</AuthenticatedLayout>;
+
+export default Index;

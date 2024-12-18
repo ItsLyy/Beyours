@@ -12,7 +12,7 @@ import { useState } from "react";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 
-export default function Index({ communities }) {
+const Index = ({ communities }) => {
   const [searchValue, setSearchValue] = useState("");
   const [inputValue, setInputValue] = useState("");
 
@@ -56,7 +56,7 @@ export default function Index({ communities }) {
   };
 
   return (
-    <AuthenticatedLayout>
+    <>
       <Head title="Community" />
 
       <section className="w-full h-screen p-8">
@@ -128,6 +128,10 @@ export default function Index({ communities }) {
           <div className="w-full"></div>
         </div>
       </section>
-    </AuthenticatedLayout>
+    </>
   );
-}
+};
+
+Index.layout = (page) => <AuthenticatedLayout>{page}</AuthenticatedLayout>;
+
+export default Index;

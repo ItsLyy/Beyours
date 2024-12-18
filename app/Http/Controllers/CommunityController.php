@@ -123,7 +123,7 @@ class CommunityController extends Controller
     $community = Community::where('join_token', $token)->first();
 
     if (!$community) {
-      return to_route('community.index');
+      return to_route('community.index')->with(response('There is no community', 401));
     }
 
     $community->members()->syncWithoutDetaching([
@@ -133,6 +133,6 @@ class CommunityController extends Controller
       ],
     ]);
 
-    return to_route('community.index');
+    return route('community.index');
   }
 }

@@ -10,8 +10,9 @@ import { useState } from "react";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 import OptionInput from "@/Components/OptionInput";
+import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 
-export default function Create({ community, character, attendance }) {
+const Create = ({ community }) => {
   const [firstJournalImageName, setFirstJournalImageName] = useState("");
 
   const { data, setData, post, processing, errors } = useForm({
@@ -41,7 +42,7 @@ export default function Create({ community, character, attendance }) {
     });
   };
   return (
-    <CommunityLayout community={community} character={character}>
+    <>
       <Head title="Add Community" />
 
       <section className="flex justify-center items-center w-full min-h-screen p-4 pb-24 2xl:pb-4 h-full 2xl:h-screen">
@@ -154,6 +155,21 @@ export default function Create({ community, character, attendance }) {
           </div>
         </Dialog>
       </section>
-    </CommunityLayout>
+    </>
   );
-}
+};
+
+Create.layout = (page) => {
+  return (
+    <AuthenticatedLayout isMain={false}>
+      <CommunityLayout
+        community={page.props.community}
+        character={page.props.character}
+      >
+        {page}
+      </CommunityLayout>
+    </AuthenticatedLayout>
+  );
+};
+
+export default Create;

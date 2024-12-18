@@ -15,4 +15,9 @@ class Skill extends Model
     'experience',
     'level',
   ];
+
+  public function character()
+  {
+    return $this->belongsTo(Character::class);
+  }
 }

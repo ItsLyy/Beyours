@@ -4,7 +4,7 @@ import Dialog from "@/Components/Dialog";
 import InputError from "@/Components/InputError";
 import PrimaryButton from "@/Components/PrimaryButton";
 import TextInput from "@/Components/TextInput";
-import { Head, router, useForm, usePage } from "@inertiajs/react";
+import { Head, useForm } from "@inertiajs/react";
 import IconCharacterBanner from "@/Components/Icons/IconCharacterBanner";
 import TextAreaInput from "@/Components/TextAreaInput";
 import { useState } from "react";
@@ -12,10 +12,12 @@ import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 import OptionInput from "@/Components/OptionInput";
 import SecondaryButton from "@/Components/SecondaryButton";
+import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 
-export default function Show({ community, character, attendance }) {
+const Show = ({ community, character, attendance }) => {
   const [secondJournalImageName, setSecondJournalImageName] = useState("");
   const [isEdit, setIsEdit] = useState(false);
+
   const { data, setData, post, processing, errors } = useForm({
     second_journal_image: null,
     journal: attendance.attendance.journal || "",
@@ -83,7 +85,7 @@ export default function Show({ community, character, attendance }) {
   };
 
   return (
-    <CommunityLayout community={community} character={character.data}>
+    <>
       <Head title="Detail"></Head>
 
       <section className="flex justify-center items-center w-full min-h-screen p-4 pb-24 2xl:pb-4 h-full 2xl:h-screen">
@@ -108,7 +110,7 @@ export default function Show({ community, character, attendance }) {
                   }
                   alt="First Journal"
                   className={
-                    "w-full 2xl:w-72 box-border h-fit aspect-[9/16] border-[1px] border-beyours-550 bg-beyours-600 rounded-md text-transparent " +
+                    "w-72 box-border h-fit aspect-[3/4] border-[1px] border-beyours-550 bg-beyours-600 rounded-md text-transparent " +
                     (data.first_journal_image ||
                     attendance.attendance.first_photo_path
                       ? "object-cover object-center"
@@ -125,7 +127,7 @@ export default function Show({ community, character, attendance }) {
                   }
                   alt="Second Journal"
                   className={
-                    "w-full 2xl:w-72 box-border h-fit aspect-[9/16] border-[1px] border-beyours-550 bg-beyours-600 rounded-md text-transparent " +
+                    "w-72 box-border h-fit aspect-[3/4] border-[1px] border-beyours-550 bg-beyours-600 rounded-md text-transparent " +
                     (data.second_journal_image ||
                     attendance.attendance.second_photo_path
                       ? "object-cover object-center"
@@ -134,33 +136,39 @@ export default function Show({ community, character, attendance }) {
                 />
               </div>
               <div className="w-full max-h-[94%] h-full overflow-y-auto p-1 pb-16">
-                <HeaderInputField
-                  title="Journal"
-                  description="Capture the essence of your activity today in a few sentences. What makes it special?"
-                  className="my-4"
-                  required
-                />
+                {isEdit || character.data.role === "owner" ? (
+                  <>
+                    <HeaderInputField
+                      title="Journal"
+                      description="Capture the essence of your activity today in a few sentences. What makes it special?"
+                      className="my-4"
+                      required
+                    />
 
-                <div className="mt-4">
-                  <TextAreaInput
-                    readOnly={!isEdit}
-                    id="journal"
-                    type="text"
-                    isFocused={true}
-                    name="journal"
-                    value={data.journal}
-                    className="block w-full h-64"
-                    placeholder="Enter your journal"
-                    autoComplete="journal"
-                    onChange={(e) => setData("journal", e.target.value)}
-                    required
-                  />
+                    <div className="mt-4">
+                      <TextAreaInput
+                        readOnly={!isEdit}
+                        id="journal"
+                        type="text"
+                        isFocused={true}
+                        name="journal"
+                        value={data.journal}
+                        className="block w-full h-64"
+                        placeholder="Enter your journal"
+                        autoComplete="journal"
+                        onChange={(e) => setData("journal", e.target.value)}
+                        required
+                      />
 
-                  <InputError
-                    message={errors.profession}
-                    className="mt-2 text-[#fff]"
-                  />
-                </div>
+                      <InputError
+                        message={errors.profession}
+                        className="mt-2 text-[#fff]"
+                      />
+                    </div>
+                  </>
+                ) : (
+                  ""
+                )}
 
                 <HeaderInputField
                   title="Status"
@@ -193,8 +201,9 @@ export default function Show({ community, character, attendance }) {
                   />
                 </div>
 
-                {!attendance.attendance.journal &&
-                character.data.id === attendance.id ? (
+                {!attendance.attendance.journal ||
+                (!attendance.attendance.second_attendance_time &&
+                  character.data.id === attendance.id) ? (
                   <EditForm
                     isEdit={isEdit}
                     socondAttendanceHandler={socondAttendanceHandler}
@@ -226,11 +235,11 @@ export default function Show({ community, character, attendance }) {
           </div>
         </Dialog>
       </section>
-    </CommunityLayout>
+    </>
   );
-}
+};
 
-function EditForm({
+const EditForm = ({
   isEdit,
   socondAttendanceHandler,
   secondJournalImageHandler,
@@ -238,7 +247,7 @@ function EditForm({
   cancelHandler,
   processing,
   errors,
-}) {
+}) => {
   if (isEdit) {
     return (
       <>
@@ -300,4 +309,19 @@ function EditForm({
       </div>
     );
   }
-}
+};
+
+Show.layout = (page) => {
+  return (
+    <AuthenticatedLayout isMain={false}>
+      <CommunityLayout
+        community={page.props.community}
+        character={page.props.character.data}
+      >
+        {page}
+      </CommunityLayout>
+    </AuthenticatedLayout>
+  );
+};
+
+export default Show;

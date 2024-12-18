@@ -1,5 +1,4 @@
 export default function CharacterBody({ className, character }) {
-  console.log(character);
   return (
     <table className={className}>
       <tbody>

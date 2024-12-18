@@ -1,5 +1,6 @@
+import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import CommunityLayout from "@/Layouts/CommunityLayout";
-import { Head, usePage } from "@inertiajs/react";
+import { Head } from "@inertiajs/react";
 import {
   Document,
   Font,
@@ -11,13 +12,12 @@ import {
   View,
 } from "@react-pdf/renderer";
 
-export default function Index({ community, character, attendances }) {
+const Index = ({ character, attendances }) => {
   return (
-    <CommunityLayout community={community} character={character.data}>
+    <>
       <Head title="Report" />
 
-      <section className="flex flex-col h-screen">
-        <div></div>
+      <section className="flex flex-col h-screen w-full">
         <div className="w-full h-full">
           <PDFViewer className="w-full h-full">
             <ReportDocument
@@ -27,11 +27,11 @@ export default function Index({ community, character, attendances }) {
           </PDFViewer>
         </div>
       </section>
-    </CommunityLayout>
+    </>
   );
-}
+};
 
-function ReportDocument({ character, attendances }) {
+const ReportDocument = ({ character, attendances }) => {
   return (
     <Document
       title="report-attendance"
@@ -88,11 +88,13 @@ function ReportDocument({ character, attendances }) {
                       </Text>
                       <Text style={styles.title}>First Attendance: </Text>
                       <Text style={styles.value}>
-                        {character.attendances.pivot.created_at || ""}
+                        {character.attendances.pivot.first_attendance_time ||
+                          ""}
                       </Text>
                       <Text style={styles.title}>Second Attendance: </Text>
                       <Text style={styles.value}>
-                        {character.attendances.pivot.updated_at || ""}
+                        {character.attendances.pivot.second_attendance_time ||
+                          ""}
                       </Text>
                       <Text style={styles.title}>PKL:</Text>
                       <Text style={styles.value}>PT. Tilikgram</Text>
@@ -113,7 +115,7 @@ function ReportDocument({ character, attendances }) {
       })}
     </Document>
   );
-}
+};
 
 Font.register({
   family: "Roboto",
@@ -219,3 +221,18 @@ const styles = StyleSheet.create({
     color: "grey",
   },
 });
+
+Index.layout = (page) => {
+  return (
+    <AuthenticatedLayout isMain={false}>
+      <CommunityLayout
+        community={page.props.community}
+        character={page.props.character.data}
+      >
+        {page}
+      </CommunityLayout>
+    </AuthenticatedLayout>
+  );
+};
+
+export default Index;

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\LevelCharacterEvent;
 use App\Http\Resources\TaskResource;
 use App\Models\Task;
 use Illuminate\Http\Request;
@@ -158,6 +159,7 @@ class TaskController extends Controller
           $characterId => ['done' => true]
         ]);
       }
+
       return to_route('task.index')->with('success', 'Task deleted successfully and experience updated.');
     }
     return to_route('task.index')->with('error', 'Task not found.');
