@@ -12,7 +12,8 @@ import {
   View,
 } from "@react-pdf/renderer";
 
-const Index = ({ character, attendances }) => {
+const Index = ({ character, attendances, attendancesv2 }) => {
+  console.log(attendancesv2);
   return (
     <>
       <Head title="Report" />
@@ -30,6 +31,92 @@ const Index = ({ character, attendances }) => {
     </>
   );
 };
+
+// const ReportDocument = ({ character, attendances }) => {
+//   return (
+//     <Document
+//       title="report-attendance"
+//       creator={character.data.fullname}
+//       producer={character.data.fullname}
+//     >
+//       {attendances.map((attendance) => {
+//         return attendance.characters.map((character) => {
+//           if (character.attendances) {
+//             return (
+//               <Page key={attendance.id} size="A4">
+//                 <View style={styles.tableHead}>
+//                   <View style={styles.tableHeadRow}>
+//                     <Text style={styles.tableHeadTitle}>
+//                       Nama Peserta Didik
+//                     </Text>
+//                     <Text style={styles.tableHeadValue}>: ...</Text>
+//                   </View>
+//                   <View style={styles.tableHeadRow}>
+//                     <Text style={styles.tableHeadTitle}>
+//                       Dunia Kerja Tempat PKL
+//                     </Text>
+//                     <Text style={styles.tableHeadValue}>: ...</Text>
+//                   </View>
+//                   <View style={styles.tableHeadRow}>
+//                     <Text style={styles.tableHeadTitle}>Nama Instruktur</Text>
+//                     <Text style={styles.tableHeadValue}>: ...</Text>
+//                   </View>
+//                   <View style={styles.tableHeadRow}>
+//                     <Text style={styles.tableHeadTitle}>
+//                       Nama Guru Mapel PKL
+//                     </Text>
+//                     <Text style={styles.tableHeadValue}>: ...</Text>
+//                   </View>
+//                 </View>
+//                 <View style={styles.tableContent}>
+//                   <View style={styles.tableRow}>
+//                     <View style={styles.tableHeader1}>
+//                       <Text style={styles.tableTextTitle}>No.</Text>
+//                     </View>
+//                     <View style={styles.tableHeader2}>
+//                       <Text style={styles.tableTextTitle}>Hari/Tanggal</Text>
+//                     </View>
+//                     <View style={styles.tableHeader3}>
+//                       <Text style={styles.tableTextTitle}>
+//                         Unit Kerja/Pekerjaan
+//                       </Text>
+//                     </View>
+//                     <View style={styles.tableHeader4}>
+//                       <Text style={styles.tableTextTitle}>Catatan</Text>
+//                     </View>
+//                   </View>
+//                   <View style={styles.tableRow}>
+//                     <View style={styles.tableColumn1}>
+//                       <Text style={styles.tableText}>1</Text>
+//                     </View>
+//                     <View style={styles.tableColumn2}>
+//                       <Text style={styles.tableText}>ww</Text>
+//                     </View>
+//                     <View style={styles.tableColumn3}>
+//                       <Text style={styles.tableText}>jwdahjwak</Text>
+//                     </View>
+//                     <View style={styles.tableColumn4}>
+//                       <Text style={styles.tableText}>
+//                         isofjesifosidwa dwad awda dwa
+//                       </Text>
+//                     </View>
+//                   </View>
+//                 </View>
+//                 <Text
+//                   style={styles.pageNumber}
+//                   render={({ pageNumber, totalPages }) =>
+//                     `${pageNumber} / ${totalPages}`
+//                   }
+//                   fixed
+//                 />
+//               </Page>
+//             );
+//           }
+//         });
+//       })}
+//     </Document>
+//   );
+// };
 
 const ReportDocument = ({ character, attendances }) => {
   return (
@@ -124,7 +211,7 @@ Font.register({
 
 const styles = StyleSheet.create({
   content: {
-    paddingTop: 25,
+    paddingTop: 125,
     paddingBottom: 65,
     paddingHorizontal: 15,
   },
@@ -219,6 +306,92 @@ const styles = StyleSheet.create({
     right: 0,
     textAlign: "center",
     color: "grey",
+  },
+  tableRow: {
+    display: "flex",
+    flexDirection: "row",
+    width: "100%",
+  },
+  tableContent: {
+    width: "100%",
+    padding: 18,
+  },
+  tableHeader1: {
+    border: 1,
+    borderColor: "black",
+    padding: 4,
+    width: "8%",
+    textAlign: "center",
+  },
+  tableHeader2: {
+    border: 1,
+    borderColor: "black",
+    padding: 4,
+    width: "22%",
+  },
+  tableHeader3: {
+    border: 1,
+    borderColor: "black",
+    padding: 4,
+    width: "40%",
+  },
+  tableHeader4: {
+    border: 1,
+    borderColor: "black",
+    padding: 4,
+    width: "30%",
+  },
+  tableColumn1: {
+    border: 1,
+    borderColor: "black",
+    padding: 4,
+    width: "8%",
+    textAlign: "center",
+    display: "flex",
+    alignItems: "center",
+  },
+  tableColumn2: {
+    border: 1,
+    borderColor: "black",
+    padding: 4,
+    width: "22%",
+  },
+  tableColumn3: {
+    border: 1,
+    borderColor: "black",
+    padding: 4,
+    width: "40%",
+  },
+  tableColumn4: {
+    border: 1,
+    borderColor: "black",
+    padding: 4,
+    width: "30%",
+  },
+  tableTextTitle: {
+    width: "100%",
+    fontSize: 14,
+  },
+  tableText: {
+    width: "100%",
+    fontSize: 12,
+    height: "auto",
+  },
+  tableHead: {
+    paddingHorizontal: 18,
+    paddingTop: 20,
+  },
+  tableHeadRow: {
+    display: "flex",
+    flexDirection: "row",
+  },
+  tableHeadTitle: {
+    flexGrow: 1,
+    fontSize: 12,
+  },
+  tableHeadValue: {
+    width: "70%",
+    fontSize: 12,
   },
 });
 

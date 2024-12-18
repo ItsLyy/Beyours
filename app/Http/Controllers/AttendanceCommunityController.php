@@ -200,8 +200,10 @@ class AttendanceCommunityController extends Controller
     $endOfMonth = Carbon::parse(request('date'))->endOfMonth();
 
     $attendances = $community->attendances->whereBetween('created_at', [$startOfMonth, $endOfMonth]);
+    $attendancesv2 = auth()->user()->character->with('attendances')->first();
 
     return inertia('Community/Attendance/Report/Index', [
+      'attendancesv2' => $attendancesv2,
       'community' => $community,
       "character" => new MemberCommunityResource($character),
       'attendances' => AttendanceReportResource::collection($attendances),
