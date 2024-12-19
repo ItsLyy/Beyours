@@ -209,9 +209,18 @@ class AttendanceCommunityController extends Controller
         "fullname" => $member->fullname,
         "pkl" => $member->pkl,
         "instructor" => $member->instructor,
-        "attendances" => $member->attendances->filter(function ($attendance) use ($community) {
-          return $attendance->community_id == $community->id;
-        }),
+        "attendances" => $member->attendances->map(function ($attendance) use ($community) {
+          if ($attendance->community_id == $community->id) {
+            return [
+              "id" => $attendance->id,
+              "community_id" => $attendance->community_id,
+              "created_at" => Carbon::parse($attendance->created_at)->format('D, d F Y'),
+              "pivot" => $attendance->pivot,
+            ];
+          }
+        })->filter(function ($attendance) {
+          return $attendance;
+        })
       ];
     })->whereBetween('attendances.created_at', $startOfMonth, $endOfMonth);
 

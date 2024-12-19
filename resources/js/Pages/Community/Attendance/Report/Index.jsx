@@ -13,7 +13,7 @@ import {
 } from "@react-pdf/renderer";
 import { useState } from "react";
 
-const Index = ({ character, attendances, memberAttendances }) => {
+const Index = ({ character, attendances, memberAttendances, community }) => {
   const [isMonthFilter, setIsMonthFilter] = useState(false);
 
   const changeFilterHandler = (e) => {
@@ -36,6 +36,7 @@ const Index = ({ character, attendances, memberAttendances }) => {
               <ReportDocument1
                 members={memberAttendances}
                 character={character}
+                community={community}
               />
             ) : (
               <ReportDocument
@@ -50,7 +51,7 @@ const Index = ({ character, attendances, memberAttendances }) => {
   );
 };
 
-const ReportDocument1 = ({ character, members }) => {
+const ReportDocument1 = ({ character, members, community }) => {
   let i = 1;
   return (
     <Document
@@ -81,13 +82,20 @@ const ReportDocument1 = ({ character, members }) => {
                 </View>
                 <View style={styles.tableHeadRow}>
                   <Text style={styles.tableHeadTitle}>Nama Guru Mapel PKL</Text>
-                  <Text style={styles.tableHeadValue}>: ...</Text>
+                  <Text style={styles.tableHeadValue}>
+                    :{" "}
+                    {
+                      community.members.find(
+                        (member) => member.community.role === "owner"
+                      ).fullname
+                    }
+                  </Text>
                 </View>
               </View>
               <View style={styles.tableContent}>
                 <View style={styles.tableRow}>
                   <View style={styles.tableHeader1}>
-                    <Text style={styles.tableTextTitle}>No.</Text>
+                    <Text style={styles.tableTextTitle}>No</Text>
                   </View>
                   <View style={styles.tableHeader2}>
                     <Text style={styles.tableTextTitle}>Hari/Tanggal</Text>
@@ -131,7 +139,7 @@ const ReportDocument1 = ({ character, members }) => {
                         </View>
                       );
                     })
-                  : ""}
+                  : null}
               </View>
               <Text
                 style={styles.pageNumber}
