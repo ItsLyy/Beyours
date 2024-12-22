@@ -5,7 +5,11 @@ import NoCharacter from "./NoCharacter";
 import { useEffect, useState } from "react";
 import { AuthenticatedProvider } from "@/Contexts/AuthenticatedContext";
 
-export default function AuthenticatedLayout({ children, isMain = true }) {
+export default function AuthenticatedLayout({
+  children,
+  isMain = true,
+  isSidebarOpen,
+}) {
   const character = usePage().props.auth.character ?? null;
   const [onlineUsers, setOnlineUsers] = useState({});
   const isUsersOnline = (characterId) => onlineUsers[characterId];
@@ -54,7 +58,7 @@ export default function AuthenticatedLayout({ children, isMain = true }) {
   }
   return (
     <div className="text-white bg-beyours-750 flex">
-      {character ? <Sidebar /> : ""}
+      {character ? <Sidebar isSidebarOpen={isSidebarOpen} /> : ""}
       <AuthenticatedProvider isUserOnlineHandler={isUsersOnline}>
         {isMain ? (
           <main className="flex-grow relative">

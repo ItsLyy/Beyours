@@ -18,7 +18,7 @@ class CommunityResource extends JsonResource
       "id" => $this->id,
       'name' => $this->name,
       'description' => $this->description,
-      'banner_path' => $this->banner_path,
+      'banner_path' => asset($this->banner_path),
       'token' => $this->join_token,
       'attendance' => $this->attendance,
       'members' => MemberCommunityResource::collection($this->members),

@@ -1,4 +1,9 @@
-export default function PhotoProfile({ className, imagePreview, imageData }) {
+export default function PhotoProfile({
+  className,
+  imagePreview,
+  imageData,
+  defaultImage,
+}) {
   return (
     <div
       className={
@@ -10,7 +15,7 @@ export default function PhotoProfile({ className, imagePreview, imageData }) {
         src={
           imagePreview
             ? URL.createObjectURL(imagePreview)
-            : "/" + (imageData || "images/defaultavatar.png")
+            : imageData || defaultImage
         }
         alt="Default Avatar"
         className="w-full h-full box-border object-cover object-center shadow-sm rounded-full"

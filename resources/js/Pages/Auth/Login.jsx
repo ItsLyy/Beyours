@@ -28,18 +28,7 @@ export default function Login({ status, canResetPassword }) {
     <GuestLayout>
       <Head title="Log in" />
       <div className="flex flex-col items-center justify-center w-full min-h-screen sm:justify-center">
-        <Dialog
-          title="Login"
-          useFooter={true}
-          footerContent={
-            <p className="text-center font-thin text-sm">
-              Don't have an account?{" "}
-              <Link className="text-beyours-900" href={route("register")}>
-                Signup
-              </Link>
-            </p>
-          }
-        >
+        <Dialog title="Login" useFooter={true}>
           <form onSubmit={submit} className="text-beyours-500">
             <div>
               <TextInput

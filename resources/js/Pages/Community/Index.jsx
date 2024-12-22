@@ -64,21 +64,21 @@ const Index = ({ communities }) => {
           {/* Header */}
           <div className="flex justify-between items-center p-2 border-b-beyours-600 border-b-[1px]">
             <HeaderSection
-              title="Community"
-              subTitle="All communitites you joined"
+              title="Komunitas"
+              subTitle="Semua komunitas yang kamu ikuti"
             />
             <div className="flex gap-3">
               <SecondaryButton
                 onClick={joinHandler}
-                className="!w-fit !h-fit !p-[.5rem]"
+                className="!w-fit !h-fit !p-[.5rem] !text-beyours-900 gap-2 !px-4"
               >
-                <IconInCommunity className="size-5 stroke-beyours-900" />
+                Join <IconInCommunity className="size-5 stroke-beyours-900" />
               </SecondaryButton>
               <PrimaryNavigationButton
                 href={route("community.create")}
-                className="!w-fit !h-fit !p-[.5rem]"
+                className="!w-fit !h-fit !p-[.5rem] gap-2 !px-4"
               >
-                <IconAdd className="size-5" />
+                Tambah <IconAdd className="size-5" />
               </PrimaryNavigationButton>
             </div>
           </div>

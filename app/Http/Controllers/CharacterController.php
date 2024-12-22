@@ -25,7 +25,7 @@ class CharacterController extends Controller
   public function create()
   {
     return inertia('Character/Create', [
-      'default_avatar' => asset('images/defaultavatar.png'),
+      'defaultAvatar' => asset('images/defaultavatar.png'),
     ]);
   }
 

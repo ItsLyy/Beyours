@@ -42,7 +42,7 @@ const Show = ({ community, ownerCommunity }) => {
               <div className="w-full relative lg:border-l-[1px] lg:border-l-beyours-550">
                 <img
                   className="h-full w-full object-cover object-center opacity-15 "
-                  src={"/" + community.data.banner_path}
+                  src={community.data.banner_path}
                   alt="Banner Community"
                 />
               </div>
@@ -60,7 +60,7 @@ const Show = ({ community, ownerCommunity }) => {
 
 Show.layout = (page) => {
   return (
-    <AuthenticatedLayout isMain={false}>
+    <AuthenticatedLayout isMain={false} isSidebarOpen={false}>
       <CommunityLayout
         community={page.props.community.data}
         character={page.props.character.data}

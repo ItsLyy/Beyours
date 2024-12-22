@@ -14,13 +14,13 @@ import OptionInput from "@/Components/OptionInput";
 import SecondaryButton from "@/Components/SecondaryButton";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 
-const Show = ({ community, character, attendance }) => {
+const Show = ({ community, character, attendance, logoBeyours }) => {
   const [secondJournalImageName, setSecondJournalImageName] = useState("");
   const [isEdit, setIsEdit] = useState(false);
 
   const { data, setData, post, processing, errors } = useForm({
     second_journal_image: null,
-    journal: attendance.attendance.journal || "",
+    journal: attendance.data.journal || "",
   });
 
   const socondAttendanceHandler = (e) => {
@@ -52,10 +52,10 @@ const Show = ({ community, character, attendance }) => {
         post(
           route("community.attendance.verify", {
             _method: "put",
-            community: community.id,
-            attendance: attendance.attendance.attendance_id,
+            community: community.data.id,
+            attendance: attendance.data.attendance_id,
             character: character,
-            member: attendance.id,
+            member: attendance.data.id,
           })
         );
       },
@@ -76,8 +76,8 @@ const Show = ({ community, character, attendance }) => {
         post(
           route("community.attendance.update", {
             _method: "put",
-            community: community.id,
-            attendance: attendance.attendance.attendance_id,
+            community: community.data.id,
+            attendance: attendance.data.attendance_id,
           })
         );
       },
@@ -104,15 +104,13 @@ const Show = ({ community, character, attendance }) => {
                   src={
                     data.first_journal_image
                       ? URL.createObjectURL(data.first_journal_image)
-                      : "/" +
-                        (attendance.attendance.first_photo_path ||
-                          "logo/logobeyours.svg")
+                      : attendance.data.first_photo_path || logoBeyours
                   }
                   alt="First Journal"
                   className={
                     "w-72 box-border h-fit aspect-[3/4] border-[1px] border-beyours-550 bg-beyours-600 rounded-md text-transparent " +
                     (data.first_journal_image ||
-                    attendance.attendance.first_photo_path
+                    attendance.data.first_photo_path
                       ? "object-cover object-center"
                       : " grayscale")
                   }
@@ -121,15 +119,13 @@ const Show = ({ community, character, attendance }) => {
                   src={
                     data.second_journal_image
                       ? URL.createObjectURL(data.second_journal_image)
-                      : "/" +
-                        (attendance.attendance.second_photo_path ||
-                          "logo/logobeyours.svg")
+                      : attendance.data.second_photo_path || logoBeyours
                   }
                   alt="Second Journal"
                   className={
                     "w-72 box-border h-fit aspect-[3/4] border-[1px] border-beyours-550 bg-beyours-600 rounded-md text-transparent " +
                     (data.second_journal_image ||
-                    attendance.attendance.second_photo_path
+                    attendance.data.second_photo_path
                       ? "object-cover object-center"
                       : " grayscale")
                   }
@@ -190,9 +186,9 @@ const Show = ({ community, character, attendance }) => {
                     }}
                     required
                   >
-                    <option value="present">Present</option>
-                    <option value="sick">Sick</option>
-                    <option value="occupied">Occupied</option>
+                    <option value="present">Hadir</option>
+                    <option value="sick">Sakit</option>
+                    <option value="occupied">Ijin</option>
                   </OptionInput>
 
                   <InputError
@@ -201,8 +197,8 @@ const Show = ({ community, character, attendance }) => {
                   />
                 </div>
 
-                {!attendance.attendance.journal ||
-                (!attendance.attendance.second_attendance_time &&
+                {!attendance.data.journal ||
+                (!attendance.data.second_attendance_time &&
                   character.data.id === attendance.id) ? (
                   <EditForm
                     isEdit={isEdit}
@@ -304,7 +300,7 @@ const EditForm = ({
           className="!w-fit"
           onClick={socondAttendanceHandler}
         >
-          Second Attendance
+          Presensi Pulang
         </PrimaryButton>
       </div>
     );
@@ -313,9 +309,9 @@ const EditForm = ({
 
 Show.layout = (page) => {
   return (
-    <AuthenticatedLayout isMain={false}>
+    <AuthenticatedLayout isMain={false} isSidebarOpen={false}>
       <CommunityLayout
-        community={page.props.community}
+        community={page.props.community.data}
         character={page.props.character.data}
       >
         {page}

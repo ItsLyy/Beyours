@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\AttendanceMemberDetailResource;
 use App\Http\Resources\AttendanceReportMemberResource;
 use App\Http\Resources\AttendanceReportResource;
+use App\Http\Resources\CommunityDetailResource;
+use App\Http\Resources\CommunityResource;
 use App\Http\Resources\MemberAttendancesResource;
 use App\Http\Resources\MemberCommunityResource;
 use App\Models\Attendance;
@@ -44,7 +47,7 @@ class AttendanceCommunityController extends Controller
     $character = $community->members->firstWhere('id', $characterId);
 
     return inertia('Community/Attendance/Index', [
-      "community" => $community,
+      "community" => new CommunityResource($community),
       "character" => new MemberCommunityResource($character),
       "attendances" => $memberAttendances,
       "queryParams" => request()->query(),
@@ -62,8 +65,9 @@ class AttendanceCommunityController extends Controller
     $community->load('attendances');
 
     return inertia("Community/Attendance/Create", [
-      "community" => $community,
+      "community" => new CommunityResource($community),
       "character" => new MemberCommunityResource($character),
+      "logoBeyours" => asset('storage/logobeyours.svg'),
     ]);
   }
 
@@ -137,11 +141,11 @@ class AttendanceCommunityController extends Controller
     $community->load('attendances');
     $attendance = $community->attendances->find($attendance->id);
 
-
     return inertia('Community/Attendance/Show', [
-      "community" => $community,
+      "community" => new CommunityResource($community),
       "character" => new MemberCommunityResource($character),
-      "attendance" => $attendance->characters->firstWhere("id", $characterId),
+      "attendance" => new AttendanceMemberDetailResource($attendance->characters->firstWhere("id", $characterId)),
+      "logoBeyours" => asset('storage/logobeyours.svg'),
     ]);
   }
 
@@ -208,9 +212,12 @@ class AttendanceCommunityController extends Controller
         "id" => $member->id,
         "fullname" => $member->fullname,
         "pkl" => $member->pkl,
+        "role" => $member->community->role,
         "instructor" => $member->instructor,
         "attendances" => $member->attendances->map(function ($attendance) use ($community) {
           if ($attendance->community_id == $community->id) {
+            $attendance["pivot"]["first_photo_path"] = asset($attendance["pivot"]["first_photo_path"]);
+            $attendance["pivot"]["second_photo_path"] = asset($attendance["pivot"]["second_photo_path"]);
             return [
               "id" => $attendance->id,
               "community_id" => $attendance->community_id,
@@ -225,7 +232,7 @@ class AttendanceCommunityController extends Controller
     })->whereBetween('attendances.created_at', $startOfMonth, $endOfMonth);
 
     return inertia('Community/Attendance/Report/Index', [
-      'community' => $community,
+      'community' => new CommunityResource($community),
       "character" => new MemberCommunityResource($character),
       'attendances' => AttendanceReportResource::collection($attendances),
       'memberAttendances' => $memberAttendances,

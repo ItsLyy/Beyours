@@ -11,8 +11,8 @@ export default function NoCharacter() {
       <div className="w-[28rem] flex flex-col items-center text-white text-center font-thin">
         <IconEmail className="!size-24 mb-8 stroke-1" />
         <h2 className="text-xl">
-          Hey @{user.name}, you don’t have a character yet! Create one to start
-          your adventure.
+          Hey @{user.username}, you don’t have a character yet! Create one to
+          start your adventure.
         </h2>
         <p className="text-beyours-400">
           Start completing tasks and building legacy.

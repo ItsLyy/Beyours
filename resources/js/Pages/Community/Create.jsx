@@ -11,7 +11,7 @@ import { useState } from "react";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 
-const Create = () => {
+const Create = ({ logoBeyours }) => {
   const [bannerImageName, setBannerImageName] = useState("");
   const { data, setData, post, processing, errors } = useForm({
     name: "",
@@ -29,12 +29,12 @@ const Create = () => {
     e.preventDefault();
 
     withReactContent(Swal).fire({
-      title: "Are you sure?",
+      title: "Apakah anda yakin?",
       showDenyButton: true,
-      confirmButtonText: "Yes",
-      text: "Are ypu sure to want create a community?",
+      confirmButtonText: "Iya",
+      denyButtonText: "Tidak",
+      text: "Apakah anda yakin ingin membuat komunitas ini?",
       icon: "question",
-      denyButtonText: "No",
       preConfirm: () => {
         post(route("community.store"));
       },
@@ -47,7 +47,7 @@ const Create = () => {
 
       <div className="flex justify-center items-center w-full min-h-screen p-4">
         <Dialog
-          title="Create a community"
+          title="Membuat Komunitas"
           useFooter={true}
           className="md:max-w-none md:w-3/5 md:h-5/6"
         >
@@ -57,7 +57,7 @@ const Create = () => {
               <div className="w-full h-full px-2 py-1">
                 <HeaderInputField
                   title="Name"
-                  description="A unique name that represents your community in style. Let it stand out in the crowd!"
+                  description="Nama yang unik untuk komunitas anda"
                   className="mb-4"
                   required
                 />
@@ -69,7 +69,7 @@ const Create = () => {
                     value={data.name}
                     className="block w-full"
                     autoComplete="name"
-                    placeholder="Enter your community's name"
+                    placeholder="Masukan nama komunitas"
                     isFocused={true}
                     onChange={(e) => setData("name", e.target.value)}
                     required
@@ -82,8 +82,8 @@ const Create = () => {
                 </div>
 
                 <HeaderInputField
-                  title="Description"
-                  description="Capture the essence of your community in a few sentences. What makes it special?"
+                  title="Deskripsi"
+                  description="Deskripsikan komunitas anda"
                   className="my-4"
                   required
                 />
@@ -108,8 +108,8 @@ const Create = () => {
                 </div>
 
                 <HeaderInputField
-                  title="Banner Community"
-                  description="A visual masterpiece! This banner will shine in the community overview and list. Choose wisely."
+                  title="Banner Komunitas"
+                  description="Sebuah gambar yang mewujudkan komunitas anda."
                   className="my-4"
                   required
                 />
@@ -118,7 +118,7 @@ const Create = () => {
                   src={
                     data.banner_image_file
                       ? URL.createObjectURL(data.banner_image_file)
-                      : "/logo/logobeyours.svg"
+                      : logoBeyours
                   }
                   alt="Banner Community"
                   className={
@@ -149,11 +149,11 @@ const Create = () => {
                   />
                 </div>
 
-                <label htmlFor="attendance">
+                <label htmlFor="attendance" className="cursor-pointer">
                   <div className="flex justify-between items-center">
                     <HeaderInputField
-                      title="Attendance"
-                      description="Enable this feature to track members' participation in your community events seamlessly."
+                      title="Daftar hadir"
+                      description="Menyalakan fitur ini dapat membuka fitur jurnal."
                       className="my-4"
                       required
                     />

@@ -18,7 +18,7 @@ function DashboardHome({ tasks, character, globalFriends }) {
         <div className="flex flex-col w-full md:h-full gap-4 pb-24 md:pb-0">
           <HeaderSection
             title="Dashboard"
-            subTitle={`Welcome back, ${user.name}`}
+            subTitle={`Welcome back, ${user.username}`}
           />
           <div className="flex flex-col gap-4 md:flex-row md:h-[90%]">
             <div className="bg-beyours-700 h-[40rem] md:h-auto rounded-md overflow-hidden border-[1px] border-beyours-550 flex-grow col-span-1 row-span-2 relative md:w-[28rem] 2xl:w-[40rem]">

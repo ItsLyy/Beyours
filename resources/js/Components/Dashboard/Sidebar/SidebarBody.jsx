@@ -15,7 +15,8 @@ export default function SidebarBody({ isOpen }) {
           active={route().current("dashboard")}
           aria-label="Home Navigation"
         >
-          <IconHome /> <NavigationLabel isOpen={isOpen}>Home</NavigationLabel>
+          <IconHome />{" "}
+          <NavigationLabel isOpen={isOpen}>Beranda</NavigationLabel>
         </NavigationButton>
         <NavigationButton
           className={isOpen ? "" : "pl-5"}
@@ -23,7 +24,7 @@ export default function SidebarBody({ isOpen }) {
           active={route().current("task.index")}
           aria-label="Task Navigation"
         >
-          <IconTask /> <NavigationLabel isOpen={isOpen}>Task</NavigationLabel>
+          <IconTask /> <NavigationLabel isOpen={isOpen}>Tugas</NavigationLabel>
         </NavigationButton>
         <NavigationButton
           className={isOpen ? "" : "pl-5"}
@@ -32,7 +33,7 @@ export default function SidebarBody({ isOpen }) {
           aria-label="Community Navigation"
         >
           <IconCommunity />
-          <NavigationLabel isOpen={isOpen}>Community</NavigationLabel>
+          <NavigationLabel isOpen={isOpen}>Komunitas</NavigationLabel>
         </NavigationButton>
         <NavigationButton
           className={isOpen ? "" : "pl-5"}

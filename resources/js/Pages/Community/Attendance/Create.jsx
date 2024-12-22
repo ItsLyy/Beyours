@@ -12,7 +12,7 @@ import withReactContent from "sweetalert2-react-content";
 import OptionInput from "@/Components/OptionInput";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 
-const Create = ({ community }) => {
+const Create = ({ community, logoBeyours }) => {
   const [firstJournalImageName, setFirstJournalImageName] = useState("");
 
   const { data, setData, post, processing, errors } = useForm({
@@ -37,7 +37,7 @@ const Create = ({ community }) => {
       icon: "question",
       denyButtonText: "No",
       preConfirm: () => {
-        post(route("community.attendance.store", [community.id]));
+        post(route("community.attendance.store", [community.data.id]));
       },
     });
   };
@@ -61,7 +61,7 @@ const Create = ({ community }) => {
                   src={
                     data.first_journal_image
                       ? URL.createObjectURL(data.first_journal_image)
-                      : "/logo/logobeyours.svg"
+                      : logoBeyours
                   }
                   alt="First Journal"
                   className={
@@ -75,7 +75,7 @@ const Create = ({ community }) => {
                   src={
                     data.second_journal_image
                       ? URL.createObjectURL(data.second_journal_image)
-                      : "/logo/logobeyours.svg"
+                      : logoBeyours
                   }
                   alt="Second Journal"
                   className={
@@ -89,7 +89,7 @@ const Create = ({ community }) => {
               <div className="w-full h-full overflow-y-auto pb-24 p-1">
                 <HeaderInputField
                   title="Status"
-                  description="Select your current status: Present, Sick, or Excused."
+                  description="Pilihlah status presensi kalian: Hadir, Sakit, or Ijin."
                   className="my-4"
                   required
                 />
@@ -99,7 +99,7 @@ const Create = ({ community }) => {
                     id="status"
                     name="status"
                     value={data.status}
-                    className="block w-full"
+                    className="block w-full font-geist"
                     autoComplete="status"
                     placeholder="Enter your attendance's status"
                     onChange={(e) => {
@@ -107,9 +107,9 @@ const Create = ({ community }) => {
                     }}
                     required
                   >
-                    <option value="present">Present</option>
-                    <option value="sick">Sick</option>
-                    <option value="excused">Excused</option>
+                    <option value="present">Hadir</option>
+                    <option value="sick">Sakit</option>
+                    <option value="excused">Ijin</option>
                   </OptionInput>
 
                   <InputError
@@ -119,8 +119,8 @@ const Create = ({ community }) => {
                 </div>
 
                 <HeaderInputField
-                  title="Capture the Moment"
-                  description="Take a photo to celebrate your first attendance! A second photo can be taken during your next attendance."
+                  title="Foto Presensi Masuk"
+                  description="Ambil foto presensi pertama kalian."
                   className="my-4"
                   required
                 />
@@ -161,9 +161,9 @@ const Create = ({ community }) => {
 
 Create.layout = (page) => {
   return (
-    <AuthenticatedLayout isMain={false}>
+    <AuthenticatedLayout isMain={false} isSidebarOpen={false}>
       <CommunityLayout
-        community={page.props.community}
+        community={page.props.community.data}
         character={page.props.character}
       >
         {page}

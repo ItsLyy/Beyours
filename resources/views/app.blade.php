@@ -5,8 +5,8 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="App grinding in real life more fun">
+  <link rel="shortcut icon" href="logo/logobeyours.svg" type="image/x-icon">
   <link rel="manifest" href="/app.webmanifest">
-  <link rel="shortcut icon" href="/logo/logobeyours.svg" type="image/x-icon">
 
   <title inertia>{{ config('app.name', 'Beyours') }}</title>
 

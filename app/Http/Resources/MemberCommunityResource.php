@@ -19,7 +19,7 @@ class MemberCommunityResource extends JsonResource
       "fullname" => $this->fullname,
       "profession" => $this->profession,
       "role" => $this->community->role,
-      "photo_profile" => $this->user->photo_profile,
+      "photo_profile" => asset($this->user->photo_profile),
       "email" => $this->user->email,
       "phone_number" => $this->user->phone_number,
       "skills" => SkillResource::collection($this->skills),

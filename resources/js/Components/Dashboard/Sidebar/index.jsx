@@ -3,8 +3,8 @@ import SidebarBody from "./SidebarBody";
 import SidebarFooter from "./SidebarFooter";
 import SidebarHeader from "./SidebarHeader";
 
-export default function Sidebar() {
-  const [isOpen, setIsOpen] = useState(false);
+export default function Sidebar({ isSidebarOpen = true }) {
+  const [isOpen, setIsOpen] = useState(isSidebarOpen);
 
   const openCloseHeader = () => {
     if (isOpen) {

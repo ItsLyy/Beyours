@@ -35,7 +35,7 @@ const Index = ({ community, character, attendances, queryParams = null }) => {
 
     queryParams = updatedParams;
     router.get(
-      route("community.attendance.index", [community.id, updatedParams])
+      route("community.attendance.index", [community.data.id, updatedParams])
     );
   };
 
@@ -80,7 +80,7 @@ const Index = ({ community, character, attendances, queryParams = null }) => {
               onClick={() => {
                 window.open(
                   route("community.attendance.report", {
-                    community: community.id,
+                    community: community.data.id,
                     date: reportDate,
                   }),
                   "_blank"
@@ -126,9 +126,10 @@ const Index = ({ community, character, attendances, queryParams = null }) => {
                 attendance.id === character.data.id && attendance.attendances
             ) && character.data.role !== "owner" ? (
               <PrimaryNavigationButton
-                href={route("community.attendance.create", community.id)}
+                href={route("community.attendance.create", community.data.id)}
                 className="!w-fit !h-fit !p-[.5rem]"
               >
+                Presensi Masuk
                 <IconAdd className="size-5" />
               </PrimaryNavigationButton>
             ) : null}
@@ -303,7 +304,7 @@ const Index = ({ community, character, attendances, queryParams = null }) => {
                                 <Link
                                   className="rounded-full w-fit h-fit bg-beyours-1100 border-[1px] border-beyours-900 p-[4px] hover:bg-beyours-900 hover:scale-110 transition-all ease-in-out duration-300 "
                                   href={route("community.attendance.show", {
-                                    community: community.id,
+                                    community: community.data.id,
                                     attendance: attendance.attendances.id,
                                     c: attendance.id,
                                   })}
@@ -331,9 +332,9 @@ const Index = ({ community, character, attendances, queryParams = null }) => {
 
 Index.layout = (page) => {
   return (
-    <AuthenticatedLayout isMain={false}>
+    <AuthenticatedLayout isMain={false} isSidebarOpen={false}>
       <CommunityLayout
-        community={page.props.community}
+        community={page.props.community.data}
         character={page.props.character.data}
       >
         {page}

@@ -18,7 +18,7 @@ class MemberAttendancesResource extends JsonResource
       "id" => $this->id,
       "fullname" => $this->fullname,
       "profession" => $this->profession,
-      "photo_profile" => $this->user->photo_profile,
+      "photo_profile" => asset($this->user->photo_profile),
       "address" => $this->user->address,
       "email" => $this->user->email,
       "phone_number" => $this->user->phone_number,

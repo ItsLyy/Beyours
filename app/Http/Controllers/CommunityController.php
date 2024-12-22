@@ -7,6 +7,7 @@ use App\Http\Resources\CommunityResource;
 use App\Http\Resources\MemberCommunityResource;
 use App\Models\Character;
 use App\Models\Community;
+use Illuminate\Container\Attributes\Storage;
 use Illuminate\Http\Request;
 
 class CommunityController extends Controller
@@ -31,7 +32,9 @@ class CommunityController extends Controller
    */
   public function create()
   {
-    return inertia('Community/Create');
+    return inertia('Community/Create', [
+      "logoBeyours" => asset('storage/logobeyours.svg'),
+    ]);
   }
 
   /**

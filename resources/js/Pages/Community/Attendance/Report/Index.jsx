@@ -15,7 +15,6 @@ import { useState } from "react";
 
 const Index = ({ character, attendances, memberAttendances, community }) => {
   const [isMonthFilter, setIsMonthFilter] = useState(false);
-
   const changeFilterHandler = (e) => {
     e.preventDefault();
 
@@ -59,99 +58,107 @@ const ReportDocument1 = ({ character, members, community }) => {
       creator={character.data.fullname}
       producer={character.data.fullname}
     >
-      {members.map((member) => {
-        if (member.attendances) {
-          return (
-            <Page key={member.id} size="A4">
-              <View style={styles.tableHead}>
-                <View style={styles.tableHeadRow}>
-                  <Text style={styles.tableHeadTitle}>Nama Peserta Didik</Text>
-                  <Text style={styles.tableHeadValue}>: {member.fullname}</Text>
-                </View>
-                <View style={styles.tableHeadRow}>
-                  <Text style={styles.tableHeadTitle}>
-                    Dunia Kerja Tempat PKL
-                  </Text>
-                  <Text style={styles.tableHeadValue}>: {member.pkl}</Text>
-                </View>
-                <View style={styles.tableHeadRow}>
-                  <Text style={styles.tableHeadTitle}>Nama Instruktur</Text>
-                  <Text style={styles.tableHeadValue}>
-                    : {member.instructor}
-                  </Text>
-                </View>
-                <View style={styles.tableHeadRow}>
-                  <Text style={styles.tableHeadTitle}>Nama Guru Mapel PKL</Text>
-                  <Text style={styles.tableHeadValue}>
-                    :{" "}
-                    {
-                      community.members.find(
-                        (member) => member.community.role === "owner"
-                      ).fullname
-                    }
-                  </Text>
-                </View>
-              </View>
-              <View style={styles.tableContent}>
-                <View style={styles.tableRow}>
-                  <View style={styles.tableHeader1}>
-                    <Text style={styles.tableTextTitle}>No</Text>
-                  </View>
-                  <View style={styles.tableHeader2}>
-                    <Text style={styles.tableTextTitle}>Hari/Tanggal</Text>
-                  </View>
-                  <View style={styles.tableHeader3}>
-                    <Text style={styles.tableTextTitle}>
-                      Unit Kerja/Pekerjaan
+      {members
+        .filter((member) => member.role != "owner")
+        .map((member) => {
+          if (member.attendances) {
+            return (
+              <Page key={member.id} size="A4">
+                <View style={styles.tableHead}>
+                  <View style={styles.tableHeadRow}>
+                    <Text style={styles.tableHeadTitle}>
+                      Nama Peserta Didik
+                    </Text>
+                    <Text style={styles.tableHeadValue}>
+                      : {member.fullname}
                     </Text>
                   </View>
-                  <View style={styles.tableHeader4}>
-                    <Text style={styles.tableTextTitle}>Catatan</Text>
+                  <View style={styles.tableHeadRow}>
+                    <Text style={styles.tableHeadTitle}>
+                      Dunia Kerja Tempat PKL
+                    </Text>
+                    <Text style={styles.tableHeadValue}>: {member.pkl}</Text>
+                  </View>
+                  <View style={styles.tableHeadRow}>
+                    <Text style={styles.tableHeadTitle}>Nama Instruktur</Text>
+                    <Text style={styles.tableHeadValue}>
+                      : {member.instructor}
+                    </Text>
+                  </View>
+                  <View style={styles.tableHeadRow}>
+                    <Text style={styles.tableHeadTitle}>
+                      Nama Guru Mapel PKL
+                    </Text>
+                    <Text style={styles.tableHeadValue}>
+                      :{" "}
+                      {
+                        community.data.members.find(
+                          (member) => member.role === "owner"
+                        ).fullname
+                      }
+                    </Text>
                   </View>
                 </View>
-                {member.attendances.length > 0
-                  ? member.attendances.map((attendance) => {
-                      return (
-                        <View key={attendance.id} style={styles.tableRow}>
-                          <View style={styles.tableColumn1}>
-                            <Text style={styles.tableText}>{i++}</Text>
+                <View style={styles.tableContent}>
+                  <View style={styles.tableRow}>
+                    <View style={styles.tableHeader1}>
+                      <Text style={styles.tableTextTitle}>No</Text>
+                    </View>
+                    <View style={styles.tableHeader2}>
+                      <Text style={styles.tableTextTitle}>Hari/Tanggal</Text>
+                    </View>
+                    <View style={styles.tableHeader3}>
+                      <Text style={styles.tableTextTitle}>
+                        Unit Kerja/Pekerjaan
+                      </Text>
+                    </View>
+                    <View style={styles.tableHeader4}>
+                      <Text style={styles.tableTextTitle}>Catatan</Text>
+                    </View>
+                  </View>
+                  {member.attendances.length > 0
+                    ? member.attendances.map((attendance) => {
+                        return (
+                          <View key={attendance.id} style={styles.tableRow}>
+                            <View style={styles.tableColumn1}>
+                              <Text style={styles.tableText}>{i++}</Text>
+                            </View>
+                            <View style={styles.tableColumn2}>
+                              <Text style={styles.tableText}>
+                                {attendance.created_at}
+                              </Text>
+                            </View>
+                            <View style={styles.tableColumn3}>
+                              <Text style={styles.tableText}>
+                                {attendance.pivot.journal}
+                              </Text>
+                            </View>
+                            <View style={styles.tableColumn4}>
+                              <Image
+                                style={styles.tableImage}
+                                source={attendance.pivot.first_photo_path}
+                              />
+                              <Image
+                                style={styles.tableImage}
+                                source={attendance.pivot.second_photo_path}
+                              />
+                            </View>
                           </View>
-                          <View style={styles.tableColumn2}>
-                            <Text style={styles.tableText}>
-                              {attendance.created_at}
-                            </Text>
-                          </View>
-                          <View style={styles.tableColumn3}>
-                            <Text style={styles.tableText}>
-                              {attendance.pivot.journal}
-                            </Text>
-                          </View>
-                          <View style={styles.tableColumn4}>
-                            <Image
-                              style={styles.tableImage}
-                              source={"/" + attendance.pivot.first_photo_path}
-                            />
-                            <Image
-                              style={styles.tableImage}
-                              source={"/" + attendance.pivot.second_photo_path}
-                            />
-                          </View>
-                        </View>
-                      );
-                    })
-                  : null}
-              </View>
-              <Text
-                style={styles.pageNumber}
-                render={({ pageNumber, totalPages }) =>
-                  `${pageNumber} / ${totalPages}`
-                }
-                fixed
-              />
-            </Page>
-          );
-        }
-      })}
+                        );
+                      })
+                    : null}
+                </View>
+                <Text
+                  style={styles.pageNumber}
+                  render={({ pageNumber, totalPages }) =>
+                    `${pageNumber} / ${totalPages}`
+                  }
+                  fixed
+                />
+              </Page>
+            );
+          }
+        })}
     </Document>
   );
 };
@@ -173,14 +180,13 @@ const ReportDocument = ({ character, attendances }) => {
                     <Image
                       style={styles.image}
                       source={
-                        "/" + character.attendances.pivot.first_photo_path || ""
+                        character.attendances.pivot.first_photo_path || ""
                       }
                     />
                     <Image
                       style={styles.image}
                       source={
-                        "/" + character.attendances.pivot.second_photo_path ||
-                        ""
+                        character.attendances.pivot.second_photo_path || ""
                       }
                     />
                   </View>
@@ -189,7 +195,7 @@ const ReportDocument = ({ character, attendances }) => {
                     <View style={styles.profile}>
                       <Image
                         style={styles.photoProfile}
-                        src={"/" + character.photo_profile}
+                        src={character.photo_profile}
                       />
                       <View>
                         <Text style={styles.nameProfile}>
@@ -443,9 +449,9 @@ const styles = StyleSheet.create({
 
 Index.layout = (page) => {
   return (
-    <AuthenticatedLayout isMain={false}>
+    <AuthenticatedLayout isMain={false} isSidebarOpen={false}>
       <CommunityLayout
-        community={page.props.community}
+        community={page.props.community.data}
         character={page.props.character.data}
       >
         {page}

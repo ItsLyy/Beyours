@@ -17,7 +17,7 @@ import { useState } from "react";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 
-export default function Create() {
+export default function Create({ defaultAvatar }) {
   const [photoProfileName, setPhotoProfileName] = useState("");
   const [characterBannerName, setCharacterBannerName] = useState("");
 
@@ -48,12 +48,12 @@ export default function Create() {
     e.preventDefault();
 
     withReactContent(Swal).fire({
-      title: "Are you sure?",
+      title: "Apakah anda yakin?",
       showDenyButton: true,
-      confirmButtonText: "Yes",
-      text: "Are you sure to want create a character?",
+      confirmButtonText: "Iya",
+      denyButtonText: "Tidak",
+      text: "Apakah anda yakin ingin membuat karakter ini?",
       icon: "question",
-      denyButtonText: "No",
       preConfirm: () => {
         post(route("character.store"));
       },
@@ -62,12 +62,12 @@ export default function Create() {
 
   return (
     <div className="bg-beyours-750 text-beyours-100">
-      <Head title="Character" />
+      <Head title="Karakter" />
 
       <section className="w-full">
         <div className="flex justify-center items-center w-full min-h-screen p-4">
           <Dialog
-            title="Create a character"
+            title="Membuat Karakter"
             useFooter={true}
             className="w-full md:max-w-none xl:w-3/5 md:h-5/6"
           >
@@ -80,16 +80,18 @@ export default function Create() {
                   <PhotoProfile
                     className="size-20 absolute -bottom-8"
                     imagePreview={data.photo_profile || null}
+                    defaultImage={defaultAvatar}
                   />
                   <BannerCharacter
                     className="w-96"
                     imagePreview={data.character_banner || null}
+                    defaultImage={defaultAvatar}
                   />
                 </div>
                 <div className="w-full h-full px-2 py-1">
                   <HeaderInputField
-                    title="Full Name"
-                    description="this name will displayed in the community and friend"
+                    title="Nama Lengkap"
+                    description="Nama ini akan ditampilkan pada saat Presensi"
                     className="mb-4"
                     required
                   />
@@ -101,7 +103,7 @@ export default function Create() {
                       value={data.fullname}
                       className="block w-full"
                       autoComplete="fullname"
-                      placeholder="Enter your full name"
+                      placeholder="Masukan nama lengkap"
                       Icon={IconUser}
                       isFocused={true}
                       onChange={(e) => setData("fullname", e.target.value)}
@@ -115,8 +117,8 @@ export default function Create() {
                   </div>
 
                   <HeaderInputField
-                    title="Profession"
-                    description="Describe your profession or passion and choose only one. Example: Programmer, Artist, Adventurer."
+                    title="Profesi"
+                    description="Deskripsikan profesi atau pekerjaan anda."
                     className="my-4"
                     required
                   />
@@ -128,7 +130,7 @@ export default function Create() {
                       name="profession"
                       value={data.profession}
                       className="block w-full"
-                      placeholder="Enter your profession"
+                      placeholder="Masukan profesi"
                       Icon={IconProfession}
                       autoComplete="profession"
                       onChange={(e) => setData("profession", e.target.value)}
@@ -142,8 +144,8 @@ export default function Create() {
                   </div>
 
                   <HeaderInputField
-                    title="Skills"
-                    description="Add two skills that represent your abilities. Example: Coding, Video Editing, Swordsmanship."
+                    title="Kemampuan"
+                    description="Berikan dua kemampuan yang menggambarkan anda. Contoh: Coding, Video Editing, Swordsmanship."
                     className="my-4"
                     required
                   />
@@ -156,7 +158,7 @@ export default function Create() {
                         name="first_skill"
                         value={data.first_skill}
                         className="block w-full"
-                        placeholder="Enter your first skill"
+                        placeholder="Masukan kemampuan pertama"
                         Icon={IconSkill}
                         autoComplete="first_skill"
                         onChange={(e) => setData("first_skill", e.target.value)}
@@ -176,7 +178,7 @@ export default function Create() {
                         name="second_skill"
                         value={data.second_skill}
                         className="block w-full"
-                        placeholder="Enter your second skill"
+                        placeholder="Masukan kemampuan kedua"
                         Icon={IconSkill}
                         autoComplete="second_skill"
                         onChange={(e) =>
@@ -193,8 +195,8 @@ export default function Create() {
                   </div>
 
                   <HeaderInputField
-                    title="Aditional Information"
-                    description='Required details like "Phone Number: +6282112341234", "Address: 123 Main Street".'
+                    title="Detail Informasi"
+                    description='Memembutuhkan informasi "Nomer Telepon: 082112341234", "Alamat: 123 Main Street".'
                     className="my-4"
                     required
                   />
@@ -207,7 +209,7 @@ export default function Create() {
                         name="phone_number"
                         value={data.phone_number}
                         className="block w-full"
-                        placeholder="Enter your phone number"
+                        placeholder="Masukan nomer telepon"
                         Icon={IconPhone}
                         autoComplete="phone_number"
                         onChange={(e) =>
@@ -229,7 +231,7 @@ export default function Create() {
                         name="address"
                         value={data.address}
                         className="block w-full"
-                        placeholder="Enter your address"
+                        placeholder="Masukan alamat"
                         Icon={IconLocation}
                         autoComplete="address"
                         onChange={(e) => setData("address", e.target.value)}
@@ -245,7 +247,7 @@ export default function Create() {
 
                   <HeaderInputField
                     title="PKL"
-                    description="this name will displayed in the community and friend"
+                    description="Tempat anda melakukan kegiatan PKL"
                     className="my-4"
                     required
                   />
@@ -257,8 +259,8 @@ export default function Create() {
                       value={data.pkl}
                       className="block w-full"
                       autoComplete="pkl"
-                      placeholder="Enter your full name"
-                      Icon={IconUser}
+                      placeholder="Masukan tempat pkl"
+                      Icon={IconLocation}
                       isFocused={true}
                       onChange={(e) => setData("pkl", e.target.value)}
                       required
@@ -271,8 +273,8 @@ export default function Create() {
                   </div>
 
                   <HeaderInputField
-                    title="Instructor"
-                    description="this name will displayed in the community and friend"
+                    title="Instruktur"
+                    description="Nama instruktuk di tempat PKL anda. Peringatan: instruktur merupakan pembimbing atau yang mengurus di masing-masing DUDI anda, berbeda dengan Guru pembimbing sekolah"
                     className="my-4"
                     required
                   />
@@ -284,7 +286,7 @@ export default function Create() {
                       value={data.instructor}
                       className="block w-full"
                       autoComplete="instructor"
-                      placeholder="Enter your full name"
+                      placeholder="Masukan nama lengkap instruktur pkl"
                       Icon={IconUser}
                       isFocused={true}
                       onChange={(e) => setData("instructor", e.target.value)}
@@ -298,8 +300,8 @@ export default function Create() {
                   </div>
 
                   <HeaderInputField
-                    title="Photo Profile"
-                    description="this photo profile will displayed in the community and friend"
+                    title="Foto Profil"
+                    description="Foto ini akan ditampilkan di komunitas dan saat melakukan presensi"
                     className="my-4"
                     required
                   />
@@ -328,8 +330,8 @@ export default function Create() {
                   </div>
 
                   <HeaderInputField
-                    title="Banner Character"
-                    description="this banner character will displayed in dashboard"
+                    title="Banner Karakter"
+                    description="banner ini hanya akan ditampilkan di dashboard anda"
                     className="my-4"
                     required
                   />
