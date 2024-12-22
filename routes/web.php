@@ -27,7 +27,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
   Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
   Route::post('/task/{task}/done', [TaskController::class, 'done'])->name('task.done');
   Route::resource('task', TaskController::class);
-  Route::post('/community/join/{token}', [CommunityController::class, 'join'])->name('community.join');
+  Route::get('/community/join/{token}', [CommunityController::class, 'join'])->name('community.join');
   Route::resource('community.assignment', AssignmentCommunityController::class);
   Route::get('/community/{community}/attendance/report', [AttendanceCommunityController::class, 'report'])->name('community.attendance.report');
   Route::put('/community/{community}/attendance/{attendance}/verify', [AttendanceCommunityController::class, 'verify'])->middleware(OwnerCommunityMiddleware::class)->name('community.attendance.verify');

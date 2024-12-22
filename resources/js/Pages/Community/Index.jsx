@@ -27,6 +27,8 @@ const Index = ({ communities }) => {
         title: "Get token community",
         text: "Get token from the owner's community so you can join with the token",
         input: "text",
+        showDenyButton: true,
+        denyButtonText: "No",
         icon: "info",
         inputValue,
         preConfirm: (inputValue) => {
@@ -43,12 +45,14 @@ const Index = ({ communities }) => {
         if (result.isConfirmed) {
           // Use the generated URL to send a POST request
           axios
-            .post(result.value)
+            .get(result.value)
             .then((response) => {
+              console.log(response);
               Swal.fire("Success", "You have joined the community!", "success");
               route("community.index");
             })
             .catch((error) => {
+              console.log(error);
               Swal.fire("Error", "Failed to join the community.", "error");
             });
         }

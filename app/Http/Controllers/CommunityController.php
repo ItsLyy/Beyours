@@ -126,7 +126,13 @@ class CommunityController extends Controller
     $community = Community::where('join_token', $token)->first();
 
     if (!$community) {
-      return to_route('community.index')->with(response('There is no community', 401));
+      return to_route('community.index')->with(response('Tidak ada komunitas dengan token tersebut', 404));
+    }
+
+    $isCharacterAlreadyJoin = $community->members->where('community.character_id', $character->id)->first() ? true : false;
+
+    if ($isCharacterAlreadyJoin) {
+      return to_route('community.index')->with(response("Anda telah mengikuti komunitas ini", 404));
     }
 
     $community->members()->syncWithoutDetaching([
@@ -136,6 +142,6 @@ class CommunityController extends Controller
       ],
     ]);
 
-    return route('community.index');
+    return to_route('community.index');
   }
 }
