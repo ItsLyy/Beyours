@@ -19,24 +19,28 @@ export default function UpdateCharacterInformation({
       instructor: character.instructor,
     });
 
-  const submit = (e) => {
+  const submitCharacter = (e) => {
     e.preventDefault();
-    patch(route("character.update", {character: character.id}));
+    patch(route("character.update", { character: character.id }), {
+      preserveScroll: true,
+    });
   };
 
   return (
     <section className={className}>
       <header>
-        <h2 className="text-lg font-medium text-white">Character Information</h2>
+        <h2 className="text-lg font-medium text-white">
+          Character Information
+        </h2>
 
         <p className="mt-1 text-sm text-beyours-100">
           Update your character's profile information.
         </p>
       </header>
 
-      <form onSubmit={submit} className="mt-6 space-y-6 text-white">
+      <form onSubmit={submitCharacter} className="mt-6 space-y-6 text-white">
         <div>
-          <InputLabel htmlFor="fullname" value="fullname" />
+          <InputLabel htmlFor="fullname" value="Nama Lengkap" />
 
           <TextInput
             id="fullname"
@@ -48,11 +52,11 @@ export default function UpdateCharacterInformation({
             autoComplete="fullname"
           />
 
-          <InputError className="mt-2" message={errors.username} />
+          <InputError className="mt-2" message={errors.fullname} />
         </div>
 
         <div>
-          <InputLabel htmlFor="pkl" value="pkl" />
+          <InputLabel htmlFor="pkl" value="Tempat PKL" />
 
           <TextInput
             id="pkl"
@@ -63,11 +67,11 @@ export default function UpdateCharacterInformation({
             autoComplete="pkl"
           />
 
-          <InputError className="mt-2" message={errors.email} />
+          <InputError className="mt-2" message={errors.pkl} />
         </div>
 
         <div>
-          <InputLabel htmlFor="instructor" value="instructor" />
+          <InputLabel htmlFor="instructor" value="Nama Instruktur" />
 
           <TextInput
             id="instructor"
@@ -78,10 +82,8 @@ export default function UpdateCharacterInformation({
             autoComplete="instructor"
           />
 
-          <InputError className="mt-2" message={errors.email} />
+          <InputError className="mt-2" message={errors.instructor} />
         </div>
-
-
 
         {mustVerifyEmail && user.email_verified_at === null && (
           <div>

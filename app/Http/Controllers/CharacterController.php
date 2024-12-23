@@ -8,6 +8,7 @@ use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Redirect;
 
 class CharacterController extends Controller
 {
@@ -140,7 +141,8 @@ class CharacterController extends Controller
       "pkl" => $validadateCharacter['pkl'],
       "instructor" => $validadateCharacter['instructor'],
     ]);
-    return inertia('Profile/Edit');
+
+    return Redirect::route('profile.edit');
   }
 
   /**

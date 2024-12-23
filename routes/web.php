@@ -34,13 +34,12 @@ Route::middleware(['auth', 'verified'])->group(function () {
   Route::resource('community.attendance', AttendanceCommunityController::class);
   Route::resource('community.member', MemberCommunityController::class);
   Route::resource('community', CommunityController::class);
-  Route::resource('character', CharacterController::class)->middleware([CharacterMiddleware::class]);
-});
-
-Route::middleware('auth')->group(function () {
+  Route::resource('character', CharacterController::class);
   Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
   Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
   Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
+
+Route::middleware('auth')->group(function () {});
 
 require __DIR__ . '/auth.php';
