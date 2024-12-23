@@ -1,3 +1,4 @@
+import PrimaryButton from "@/Components/PrimaryButton";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import CommunityLayout from "@/Layouts/CommunityLayout";
 import { Head } from "@inertiajs/react";
@@ -26,8 +27,8 @@ const Index = ({ character, attendances, memberAttendances, community }) => {
       <Head title="Report" />
 
       <section className="flex flex-col h-screen w-full">
-        <div className="h-48">
-          <button onClick={changeFilterHandler}>CHANGE FILTER</button>
+        <div className="p-4 pt-24">
+          <PrimaryButton className="!w-fit" onClick={changeFilterHandler}>{isMonthFilter ? "Laporan Per Hari" : "Laporan Per Bulan"}</PrimaryButton>
         </div>
         <div className="w-full h-full">
           <PDFViewer className="w-full h-full">
@@ -117,7 +118,8 @@ const ReportDocument1 = ({ character, members, community }) => {
                     </View>
                   </View>
                   {member.attendances.length > 0
-                    ? member.attendances.map((attendance) => {
+                    ? member.attendances.filter(attendance => attendance.pivot.verified)
+                      .map((attendance) => {
                         return (
                           <View key={attendance.id} style={styles.tableRow}>
                             <View style={styles.tableColumn1}>
@@ -329,6 +331,7 @@ const styles = StyleSheet.create({
     display: "flex",
     flexDirection: "column",
     backgroundColor: "grey",
+    height: "20rem",
   },
   image: {
     aspectRatio: 3 / 4,
@@ -443,6 +446,8 @@ const styles = StyleSheet.create({
   },
   tableImage: {
     aspectRatio: 3 / 4,
+    objectFit: "cover",
+    objectPosition: "center",
     width: 50,
   },
 });

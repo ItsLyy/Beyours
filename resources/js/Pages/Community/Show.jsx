@@ -1,9 +1,10 @@
 import PhotoProfile from "@/Components/Dashboard/PhotoProfile";
+import PrimaryNavigationButton from "@/Components/PrimaryNavigationButton";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
 import CommunityLayout from "@/Layouts/CommunityLayout";
 import { Head } from "@inertiajs/react";
 
-const Show = ({ community, ownerCommunity }) => {
+const Show = ({ community, ownerCommunity, character }) => {
   return (
     <>
       <Head title={community.data.name} />
@@ -49,7 +50,7 @@ const Show = ({ community, ownerCommunity }) => {
             </div>
           </div>
           <div className="flex w-full h-3/5 rounded-md overflow-hidden border-[1px] border-beyours-550">
-            <div className="flex-1 w-full h-full bg-beyours-700 border-r-[1px] border-r-beyours-550"></div>
+            <div className="flex-1 w-full h-full bg-beyours-700 border-r-[1px] border-r-beyours-550 flex items-end">{character.data.id ? <PrimaryNavigationButton href={route('community.edit', {community: community.data.id})}>Edit Komunitas</PrimaryNavigationButton> : "" }</div>
             <div className="flex-1 w-full h-full"></div>
           </div>
         </div>

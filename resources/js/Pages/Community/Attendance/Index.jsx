@@ -4,7 +4,6 @@ import IconAdd from "@/Components/Icons/IconAdd";
 import IconDetail from "@/Components/Icons/IconDetail";
 import PrimaryButton from "@/Components/PrimaryButton";
 import PrimaryNavigationButton from "@/Components/PrimaryNavigationButton";
-import TextInput from "@/Components/TextInput";
 import {
   ATTENDANCE_STATUS_CLASS_MAP,
   ATTENDANCE_STATUS_TEXT_MAP,
@@ -20,6 +19,9 @@ import DatePicker from "react-datepicker";
 import { createPortal } from "react-dom";
 import "react-datepicker/dist/react-datepicker.css";
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout";
+import { Datepicker as DateFilter } from "flowbite-react";
+
+
 
 const Index = ({ community, character, attendances, queryParams = null }) => {
   const [swalShown, setSwalShown] = useState(false);
@@ -94,25 +96,25 @@ const Index = ({ community, character, attendances, queryParams = null }) => {
         )}
 
       <section className="w-full h-screen box-border text-white flex justify-center items-center flex-col p-8 py-24 md:py-8">
-        <div className="flex justify-between items-center p-2 border-b-beyours-600 border-b-[1px] w-full mb-4 text-sm md:text-base">
+        <div className="flex justify-between items-center gap-2 p-2 border-b-beyours-600 border-b-[1px] w-full mb-4 text-sm md:text-base">
           <HeaderSection
             title="Attendance List"
             subTitle="Take any attendance every morning and afternoon"
           />
-          <div className="flex gap-2">
+          <div className="flex !gap-2">
             {character.data.role === "owner" ? (
               <>
-                <TextInput
-                  type="date"
+                <DateFilter
                   id="filter-date"
                   name="filter-date"
-                  className="cursor-pointer"
-                  value={queryParams ? queryParams["date"] : ""}
-                  onChange={(e) => queryHandler("date", e.target.value)}
-                />
+                  className="dark"
+                  language="id-ID"
+                  value={queryParams ? new Date(queryParams['date']) : new Date()}
+                  onChange={(e) => queryHandler("date", e.toDateString())}/>
+
                 <PrimaryButton
                   onClick={exportDataHandler}
-                  className="text-nowrap"
+                  className="text-nowrap !w-fit"
                 >
                   Export
                 </PrimaryButton>

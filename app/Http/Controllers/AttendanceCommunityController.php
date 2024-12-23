@@ -29,7 +29,6 @@ class AttendanceCommunityController extends Controller
     $startOfDay = Carbon::today();
     $endOfDay = Carbon::tomorrow();
 
-
     if (request("date")) {
       $startOfDay = Carbon::parse(request('date'))->startOfDay();
       $endOfDay = Carbon::parse(request('date'))->endOfDay();
@@ -50,7 +49,7 @@ class AttendanceCommunityController extends Controller
       "community" => new CommunityResource($community),
       "character" => new MemberCommunityResource($character),
       "attendances" => $memberAttendances,
-      "queryParams" => request()->query(),
+      "queryParams" => request()->query() ? request()->query() : null ,
     ]);
   }
 

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Resources\CommunityDetailResource;
 use App\Http\Resources\CommunityResource;
 use App\Http\Resources\MemberCommunityResource;
+use App\Models\Attendance;
 use App\Models\Character;
 use App\Models\Community;
 use Illuminate\Container\Attributes\Storage;
@@ -98,25 +99,76 @@ class CommunityController extends Controller
   /**
    * Show the form for editing the specified resource.
    */
-  public function edit(string $id)
+  public function edit(Community $community)
   {
-    //
+    $characterId = auth()->user()->character->id;
+
+    $community = $community->load('members');
+    $members = $community->members;
+    $character = $members->firstWhere('id', $characterId);
+    return inertia('Community/Edit', [
+      "community" => new CommunityResource($community),
+      "character" => new MemberCommunityResource($character),
+    ]);
   }
 
   /**
    * Update the specified resource in storage.
    */
-  public function update(Request $request, string $id)
+  public function update(Request $request, Community $community)
   {
-    //
+    $validateCommunity = $request->validate([
+      "name" => 'required|max:50|string',
+      "description" => 'required|max:255|string',
+      "attendance" => 'required|boolean',
+      "banner_image_file" => 'required|mimes:png,jpg,jpeg,webp',
+    ]);
+
+    if ($request->has('banner_image_file')) {
+      $fileCommunityBanner = $request->file('banner_image_file');
+      $extensionCommunityBanner = $fileCommunityBanner->getClientOriginalExtension();
+
+      $fileNameCommunityBanner = time() . '.' . $extensionCommunityBanner;
+      $pathCommunityBanner = 'images/banner_community/' . str()->random(20);
+      $fileCommunityBanner->move($pathCommunityBanner, $fileNameCommunityBanner);
+    }
+
+    $dataCommunity = [
+      "name" => $validateCommunity["name"],
+      "description" => $validateCommunity["description"],
+      "attendance" => $validateCommunity["attendance"],
+      "banner_path" => $pathCommunityBanner . '/' . $fileNameCommunityBanner,
+    ];
+
+    $community->update($dataCommunity);
+
+    return to_route('community.index');
   }
 
   /**
    * Remove the specified resource from storage.
    */
-  public function destroy(string $id)
+  public function destroy(Community $community)
   {
-    //
+    $characterId = auth()->user()->character->id;
+    $community->members()->detach();
+    $attendances = $community->attendances;
+    if($attendances) {
+      foreach($attendances as $attendance) {
+        $attendance->characters()->detach();
+        $attendance->delete();
+      }
+    }
+
+    $community->delete();
+
+    $communities = Community::whereHas('members', function ($query) use ($characterId) {
+      $query->where('characters.id', $characterId);
+    })->get();
+
+    return inertia('Community/Index', [
+      "communities" => CommunityResource::collection($communities)
+    ]);
   }
 
   public function join(string $token)

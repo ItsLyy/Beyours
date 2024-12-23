@@ -99,7 +99,7 @@ const Show = ({ community, character, attendance, logoBeyours }) => {
               className="flex flex-col 2xl:flex-row gap-4 h-full "
               onSubmit={submit}
             >
-              <div className="flex gap-2 w-full min-w-fit flex-row h-full">
+              <div className="flex gap-2 w-full min-w-fit flex-col md:flex-row h-full">
                 <img
                   src={
                     data.first_journal_image
@@ -197,9 +197,10 @@ const Show = ({ community, character, attendance, logoBeyours }) => {
                   />
                 </div>
 
-                {!attendance.data.journal ||
-                (!attendance.data.second_attendance_time &&
-                  character.data.id === attendance.id) ? (
+                {(!attendance.data.journal ||
+                !attendance.data.second_attendance_time) &&
+                  character.data.id === attendance.data.id &&
+                  character.data.role === 'member' ? (
                   <EditForm
                     isEdit={isEdit}
                     socondAttendanceHandler={socondAttendanceHandler}
@@ -213,7 +214,7 @@ const Show = ({ community, character, attendance, logoBeyours }) => {
                   ""
                 )}
 
-                {character.data.role === "owner" ? (
+                {character.data.role === "owner" && !attendance.data.verify ? (
                   <div className="mt-16 flex items-center justify-end gap-4">
                     <PrimaryButton
                       disabled={processing}

@@ -16,9 +16,9 @@ export const ATTENDANCE_STATUS_CLASS_MAP = {
 };
 
 export const ATTENDANCE_STATUS_TEXT_MAP = {
-  present: "Present",
-  sick: "Sick",
-  excused: "Excused",
+  present: "Hadir",
+  sick: "Sakit",
+  excused: "Ijin",
   none: "None",
 };
 

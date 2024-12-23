@@ -127,9 +127,20 @@ class CharacterController extends Controller
   /**
    * Update the specified resource in storage.
    */
-  public function update(Request $request, string $id)
+  public function update(Request $request, Character $character)
   {
-    //
+    $validadateCharacter = $request->validate([
+      "fullname" => 'required|max:50|string',
+      "pkl" => 'required|max:50|string',
+      "instructor" => 'required|max:50|string',
+    ]);
+
+    $character->update([
+      "fullname" => $validadateCharacter['fullname'],
+      "pkl" => $validadateCharacter['pkl'],
+      "instructor" => $validadateCharacter['instructor'],
+    ]);
+    return inertia('Profile/Edit');
   }
 
   /**

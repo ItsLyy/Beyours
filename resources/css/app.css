@@ -109,3 +109,8 @@ html {
   fill: #242425;
   color: #242425;
 }
+
+#filter-date {
+  height: 3rem;
+  border-radius: 4px;
+}
